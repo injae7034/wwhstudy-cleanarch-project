@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header"/>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader"/>
+    <div>
+        <div>
+            <form role="form" action="/find"
+                  th:object="${findPersonalForm}" method="get">
+                <div class="form-group">
+                    <label th:for="name">이름</label>
+                    <input type="text" th:field="*{name}" class="form-control"
+                           placeholder="이름을 입력하세요">
+                    <a th:href="'javascript:search('+*{name}+')'"
+                       class="btn btn-danger">찾기</a>
+
+<!--                    <form role="form" action="/find" method="get">-->
+<!--                        <div class="form-group">-->
+<!--                            <label th:for="name">이름</label>-->
+<!--                            <input type="text" id="name" name="name"-->
+<!--                                   class="form-control"-->
+<!--                                   placeholder="이름을 입력하세요">-->
+<!--                            <a th:href="'javascript:search('+name+')'"-->
+<!--                               class="btn btn-danger">찾기</a>-->
+<!--                        </div>-->
+<!--                    </form>-->
+
+                </div>
+            </form>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+<!--                <th>id</th>-->
+                <th>이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>이메일주소</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:if="${personals != null}"
+                th:each="personal : ${personals}">
+<!--                <td th:text="${personal.id}"></td>-->
+                <td th:text="${personal.name}"></td>
+                <td th:text="${personal.address}"></td>
+                <td th:text="${personal.telephoneNumber}"></td>
+                <td th:text="${personal.emailAddress}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</div> <!-- /container -->
+</body>
+<script>
+ function search(name) {
+ var form = document.createElement("form");
+ form.setAttribute("method", "get");
+ form.setAttribute("action", "/find/" + name);
+ document.body.appendChild(form);
+ form.submit();
+ }
+</script>
+</html>

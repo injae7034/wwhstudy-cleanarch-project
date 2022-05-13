@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <h1>주소록</h1>
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/record">기재하기</a>
+            <a class="btn btn-lg btn-dark" href="/find">찾기</a>
+            <a class="btn btn-lg btn-info" href="/correct">고치기</a>
+            <a class="btn btn-lg btn-dark" href="/erase">지우기</a>
+            <a class="btn btn-lg btn-info" href="/arrange">정리하기</a>
+        </p>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+<!--                <th>id</th>-->
+                <th>이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>이메일주소</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="personal : ${personals}">
+<!--                <td th:text="${personal.id}"></td>-->
+                <td th:text="${personal.name}"></td>
+                <td th:text="${personal.address}"></td>
+                <td th:text="${personal.telephoneNumber}"></td>
+                <td th:text="${personal.emailAddress}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+</html>

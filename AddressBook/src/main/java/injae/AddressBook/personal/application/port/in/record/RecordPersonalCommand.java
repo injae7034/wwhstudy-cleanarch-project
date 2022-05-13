@@ -4,6 +4,7 @@ import injae.AddressBook.common.PersonalCommandValidating;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -18,6 +19,7 @@ public class RecordPersonalCommand
     private final String address;
     @NotNull @NotEmpty
     private final String telephoneNumber;
+    @Email
     private final String emailAddress;
 
     public RecordPersonalCommand(String name, String address,

@@ -2,7 +2,7 @@ package injae.AddressBook.personal.application.service;
 
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalCommand;
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
-import injae.AddressBook.personal.application.port.out.PersonalRepository;
+import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RecordPersonalService implements RecordPersonalUseCase {
 
-    private final PersonalRepository personalRepository;
+    private final RecordPersonalRepository repository;
 
     @Override
     public Long recordPersonal(RecordPersonalCommand command) {
@@ -21,7 +21,7 @@ public class RecordPersonalService implements RecordPersonalUseCase {
                 command.getAddress(), command.getTelephoneNumber(),
                 command.getEmailAddress());
 
-        personalRepository.save(personal);
+        repository.save(personal);
 
         return personal.getId();
     }
