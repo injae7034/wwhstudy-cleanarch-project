@@ -16,19 +16,6 @@
 fieldError' : 'form-control'">
                     <p th:if="${#fields.hasErrors('name')}"
                        th:errors="*{name}">Incorrect date</p>
-<!--                    <a th:href="'javascript:search('+${findPersonalForm.name}+')'"-->
-<!--                       class="btn btn-danger">찾기</a>-->
-<!--                    <form role="form" action="/find" method="get">-->
-<!--                        <div class="form-group">-->
-<!--                            <label th:for="name">이름</label>-->
-<!--                            <input type="text" id="name" name="name"-->
-<!--                                   class="form-control"-->
-<!--                                   placeholder="이름을 입력하세요">-->
-<!--                            <a th:href="'javascript:search('+name+')'"-->
-<!--                               class="btn btn-danger">찾기</a>-->
-<!--                        </div>-->
-<!--                    </form>-->
-
                 </div>
                 <button type="submit" class="btn btn-primary">찾기</button>
             </form>
