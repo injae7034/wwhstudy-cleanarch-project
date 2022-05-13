@@ -1,6 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsUseCase;
+import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Slf4j
 public class HomeController {
 
-    private final GetPersonalsUseCase useCase;
+    private final GetPersonalsQuery useCase;
 
     @RequestMapping("/")
     public String home(Model model) {

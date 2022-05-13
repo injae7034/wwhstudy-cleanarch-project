@@ -1,8 +1,7 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsUseCase;
+import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalsRepository;
-import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class GetPersonalsService implements GetPersonalsUseCase {
+public class GetPersonalsService implements GetPersonalsQuery {
 
     private final GetPersonalsRepository repository;
 
