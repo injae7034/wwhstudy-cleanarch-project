@@ -7,14 +7,17 @@
     <div>
         <div>
             <form role="form" action="/find"
-                  th:object="${findPersonalForm}" method="get">
+                  th:object="${findPersonalForm}" method="post">
                 <div class="form-group">
                     <label th:for="name">이름</label>
                     <input type="text" th:field="*{name}" class="form-control"
-                           placeholder="이름을 입력하세요">
-                    <a th:href="'javascript:search('+*{name}+')'"
-                       class="btn btn-danger">찾기</a>
-
+                           placeholder="이름을 입력하세요"
+                           th:class="${#fields.hasErrors('name')}? 'form-control
+fieldError' : 'form-control'">
+                    <p th:if="${#fields.hasErrors('name')}"
+                       th:errors="*{name}">Incorrect date</p>
+<!--                    <a th:href="'javascript:search('+${findPersonalForm.name}+')'"-->
+<!--                       class="btn btn-danger">찾기</a>-->
 <!--                    <form role="form" action="/find" method="get">-->
 <!--                        <div class="form-group">-->
 <!--                            <label th:for="name">이름</label>-->
@@ -27,6 +30,7 @@
 <!--                    </form>-->
 
                 </div>
+                <button type="submit" class="btn btn-primary">찾기</button>
             </form>
         </div>
         <table class="table table-striped">
@@ -39,9 +43,8 @@
                 <th>이메일주소</th>
             </tr>
             </thead>
-            <tbody>
-            <tr th:if="${personals != null}"
-                th:each="personal : ${personals}">
+            <tbody th:if="${personals != null}">
+            <tr th:each="personal : ${personals}">
 <!--                <td th:text="${personal.id}"></td>-->
                 <td th:text="${personal.name}"></td>
                 <td th:text="${personal.address}"></td>
@@ -54,13 +57,4 @@
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 </body>
-<script>
- function search(name) {
- var form = document.createElement("form");
- form.setAttribute("method", "get");
- form.setAttribute("action", "/find/" + name);
- document.body.appendChild(form);
- form.submit();
- }
-</script>
 </html>
