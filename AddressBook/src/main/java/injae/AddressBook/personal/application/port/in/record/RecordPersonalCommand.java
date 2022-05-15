@@ -13,13 +13,13 @@ import javax.validation.constraints.NotNull;
 public class RecordPersonalCommand
         extends PersonalCommandValidating<RecordPersonalCommand> {
 
-    @NotNull @NotEmpty
+    @NotNull
     private final String name;
-    @NotNull @NotEmpty
+    @NotNull
     private final String address;
-    @NotNull @NotEmpty
+    @NotNull
     private final String telephoneNumber;
-    @Email
+
     private final String emailAddress;
 
     public RecordPersonalCommand(String name, String address,

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class FindPersonalCommand
         extends PersonalCommandValidating<RecordPersonalCommand> {
 
-    @NotNull @NotEmpty
+    @NotNull
     private final String name;
 
     public FindPersonalCommand(String name) {
