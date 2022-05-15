@@ -15,7 +15,7 @@ public class RecordPersonalForm {
     private String address;
     @NotEmpty(message = "전화번호는 필수입니다.")
     private String telephoneNumber;
-    @Email
+    @Email(message = "이메일 형식을 지켜주세요.")
     private String emailAddress;
 
 }
