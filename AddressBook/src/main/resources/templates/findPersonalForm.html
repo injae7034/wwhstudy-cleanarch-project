@@ -17,7 +17,11 @@ fieldError' : 'form-control'">
                     <p th:if="${#fields.hasErrors('name')}"
                        th:errors="*{name}">Incorrect date</p>
                 </div>
+                <br>
                 <button type="submit" class="btn btn-primary">찾기</button>
+                &nbsp;&nbsp;
+                <a href="/"class="btn btn-info">돌아가기</a>
+                <br>
             </form>
         </div>
         <table class="table table-striped">

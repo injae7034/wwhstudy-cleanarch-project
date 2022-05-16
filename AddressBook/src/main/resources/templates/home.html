@@ -8,14 +8,14 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div class="jumbotron">
-        <h1>주소록</h1>
         <p>
             <a class="btn btn-lg btn-secondary" href="/record">기재하기</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a class="btn btn-lg btn-dark" href="/find">찾기</a>
-            <a class="btn btn-lg btn-info" href="/correct">고치기</a>
-            <a class="btn btn-lg btn-dark" href="/erase">지우기</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a class="btn btn-lg btn-info" href="/arrange">정리하기</a>
         </p>
+        <br>
     </div>
     <div>
         <table class="table table-striped">
@@ -35,6 +35,14 @@
                 <td th:text="${personal.address}"></td>
                 <td th:text="${personal.telephoneNumber}"></td>
                 <td th:text="${personal.emailAddress}"></td>
+                <td>
+                    <a href="#" th:href="@{/correct/{id} (id=${personal.id})}"
+                       class="btn btn-primary" role="button">수정</a>
+                </td>
+                <td>
+                    <a href="#" th:href="'javascript:erase('+${personal.id}+')'"
+                       class="btn btn-danger" role="button">지우기</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -42,4 +50,17 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
+<script>
+function erase(id){
+    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+        var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/erase/" + id);
+        document.body.appendChild(form);
+        form.submit();
+    }else{   //취소
+        return;
+    }
+}
+</script>
 </html>

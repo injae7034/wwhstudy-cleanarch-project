@@ -4,6 +4,6 @@ import injae.AddressBook.personal.domain.Personal;
 
 public interface RecordPersonalRepository {
 
-    public void save(Personal personal);
+    void save(Personal personal);
 
 }

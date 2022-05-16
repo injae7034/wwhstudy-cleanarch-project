@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.application.port.in.find;
+package injae.AddressBook.personal.application.port.in.get;
 
 import injae.AddressBook.common.PersonalCommandValidating;
 import lombok.EqualsAndHashCode;
@@ -8,15 +8,14 @@ import javax.validation.constraints.NotNull;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class FindPersonalCommand
-        extends PersonalCommandValidating<FindPersonalCommand> {
+public class GetPersonalCommand
+        extends PersonalCommandValidating<GetPersonalCommand> {
 
     @NotNull
-    private final String name;
+    private final Long id;
 
-    public FindPersonalCommand(String name) {
-        this.name = name;
+    public GetPersonalCommand(Long id) {
+        this.id = id;
         this.validatePersonalCommand();
     }
 }
-

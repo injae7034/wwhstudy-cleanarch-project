@@ -1,24 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="fragments/header :: header" />
-<style>
- .fieldError {
- border-color: #bd2130;
- }
-</style>
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" action="/record" th:object="${recordPersonalForm}"
+    <form role="form" th:object="${correctPersonalForm}"
           method="post">
+        <!-- id -->
+        <input type="hidden" th:field="*{id}" />
         <div class="form-group">
-            <label th:for="name">이름</label>
-            <input type="text" th:field="*{name}" class="form-control"
-                   placeholder="이름을 입력하세요"
-                   th:class="${#fields.hasErrors('name')}? 'form-control
-fieldError' : 'form-control'">
-            <p th:if="${#fields.hasErrors('name')}"
-               th:errors="*{name}">Incorrect date</p>
+            <h4 th:for="name">이름: <span th:text="*{name}">message</span> </h4>
+            <input type="hidden" th:field="*{name}" />
         </div>
         <div class="form-group">
             <label th:for="address">주소</label>
@@ -41,18 +33,17 @@ fieldError' : 'form-control'">
         <div class="form-group">
             <label th:for="emailAddress">이메일주소</label>
             <input type="text" th:field="*{emailAddress}" class="form-control"
-                   placeholder="이메일주소를 입력하세요"
+                   placeholder="이메일을 입력하세요"
                    th:class="${#fields.hasErrors('emailAddress')}? 'form-control
 fieldError' : 'form-control'">
             <p th:if="${#fields.hasErrors('emailAddress')}"
                th:errors="*{emailAddress}">Incorrect date</p>
         </div>
         <br>
-        <button type="submit" class="btn btn-primary">기재하기</button>
+        <button type="submit" class="btn btn-primary">수정하기</button>
         &nbsp;&nbsp;
         <a href="/"class="btn btn-info">돌아가기</a>
     </form>
-    <br/>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
