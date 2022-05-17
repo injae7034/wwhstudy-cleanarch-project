@@ -41,6 +41,14 @@ fieldError' : 'form-control'">
                 <td th:text="${personal.address}"></td>
                 <td th:text="${personal.telephoneNumber}"></td>
                 <td th:text="${personal.emailAddress}"></td>
+                <td>
+                    <a href="#" th:href="@{/correct/{id} (id=${personal.id})}"
+                       class="btn btn-primary" role="button">수정</a>
+                </td>
+                <td>
+                    <a href="#" th:href="'javascript:erase('+${personal.id}+')'"
+                       class="btn btn-danger" role="button">지우기</a>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -48,4 +56,17 @@ fieldError' : 'form-control'">
     <div th:replace="fragments/footer :: footer"/>
 </div> <!-- /container -->
 </body>
+<script>
+function erase(id){
+    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+        var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/erase/" + id);
+        document.body.appendChild(form);
+        form.submit();
+    }else{   //취소
+        return;
+    }
+}
+</script>
 </html>
