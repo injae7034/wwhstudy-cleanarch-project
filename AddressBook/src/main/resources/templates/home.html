@@ -13,7 +13,6 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a class="btn btn-lg btn-dark" href="/find">이름으로 찾기</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<!--            <a class="btn btn-lg btn-info" href="/arrange">정리하기</a>-->
         </p>
         <br>
     </div>
@@ -27,7 +26,7 @@
                 <th>전화번호</th>
                 <th>이메일주소</th>
                 <th th:if="${isArrangeChecked == true}">
-                    <input type="checkbox" onclick="check(this)"
+                    <input type="checkbox" onclick="location.href='/'"
                     checked>정렬하기</th>
                 <th th:if="${isArrangeChecked == false}">
                     <input type="checkbox" onclick="check(this)"
@@ -70,14 +69,14 @@ function erase(id){
 }
 
 function check(box){
-     var form = document.createElement("form");
-
-    if(box.checked == true) {
-         form.setAttribute("method", "post");
-    } else {
-         form.setAttribute("method", "get");
-    }
-
+<!--    if(box.checked == true) {-->
+<!--         -->
+<!--    } else {-->
+<!--         form.setAttribute("method", "get");-->
+<!--        form.setAttribute("action", "redirect:/");-->
+<!--    }-->
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
     document.body.appendChild(form);
     form.submit();
 }
