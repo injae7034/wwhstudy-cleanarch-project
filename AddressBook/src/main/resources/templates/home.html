@@ -26,7 +26,7 @@
                 <th>전화번호</th>
                 <th>이메일주소</th>
                 <th th:if="${isArrangeChecked == true}">
-                    <input type="checkbox" onclick="location.href='/'"
+                    <input type="checkbox" onclick="check(this)"
                     checked>정렬하기</th>
                 <th th:if="${isArrangeChecked == false}">
                     <input type="checkbox" onclick="check(this)"
