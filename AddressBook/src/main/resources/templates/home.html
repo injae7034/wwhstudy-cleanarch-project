@@ -26,10 +26,10 @@
                 <th>전화번호</th>
                 <th>이메일주소</th>
                 <th th:if="${isArrangeChecked == true}">
-                    <input type="checkbox" onclick="check(this)"
+                    <input type="checkbox" onclick="check()"
                     checked>정렬하기</th>
                 <th th:if="${isArrangeChecked == false}">
-                    <input type="checkbox" onclick="check(this)"
+                    <input type="checkbox" onclick="check()"
                     unchecked>정렬하기</th>
             </tr>
             </thead>
@@ -68,7 +68,7 @@ function erase(id){
     }
 }
 
-function check(box){
+function check(){
 <!--    if(box.checked == true) {-->
 <!--         -->
 <!--    } else {-->
