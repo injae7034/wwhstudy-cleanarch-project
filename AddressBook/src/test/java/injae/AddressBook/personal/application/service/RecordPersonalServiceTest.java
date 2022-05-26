@@ -1,45 +1,123 @@
 package injae.AddressBook.personal.application.service;
 
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalCommand;
+import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
+import injae.AddressBook.personal.domain.Personal;
+
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.mockito.Mockito;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
-import static org.assertj.core.api.Assertions.*;
-
-@SpringBootTest
-@Transactional
 class RecordPersonalServiceTest {
 
-    @Autowired
-    RecordPersonalService service;
-    @Autowired
-    RecordPersonalRepository recordPersonalRepository;
+    private final RecordPersonalRepository repository =
+            Mockito.mock(RecordPersonalRepository.class);
+
+    private final RecordPersonalUseCase useCase = new RecordPersonalService(repository);
 
     @Test
     void recordPersonalTest() {
-        //given
-        RecordPersonalCommand command = new RecordPersonalCommand(
+
+        //given & when
+        useCase.recordPersonal(new RecordPersonalCommand(
                 "홍길동",
                 "서울시 중구",
-                "01033450093",
+                "023349090",
                 "hong@naver.com"
-        );
+        ));
 
-        //when
-        Long saveId = service.recordPersonal(command);
+        //then
+        verify(repository).save(any(Personal.class));
 
-//        //then
-//        assertThat(command.getName())
-//                .isEqualTo(recordPersonalRepository.findOne(saveId).getName());
-//        assertThat(command.getAddress())
-//                .isEqualTo(recordPersonalRepository.findOne(saveId).getAddress());
-//        assertThat(command.getTelephoneNumber())
-//                .isEqualTo(recordPersonalRepository.findOne(saveId).getTelephoneNumber());
-//        assertThat(command.getEmailAddress())
-//                .isEqualTo(recordPersonalRepository.findOne(saveId).getEmailAddress());
+//        Personal personal = PersonalTestData.defaultPersonal().build();
+//
+//        RecordPersonalCommand recordCommand = new RecordPersonalCommand(
+//                personal.getName(),
+//                personal.getAddress(),
+//                personal.getTelephoneNumber(),
+//                personal.getEmailAddress()
+//        );
+//
+//        //when
+//        Long newId = 1L;
+//        Personal newPersonal = new Personal(
+//                newId,
+//                personal.getName(),
+//                personal.getAddress(),
+//                personal.getTelephoneNumber(),
+//                personal.getEmailAddress()
+//        );
+//
+//        given(useCase.recordPersonal(recordCommand)).willReturn(newId);
+//
+//        Long id = useCase.recordPersonal(recordCommand);
+//
+//        verify(repository).save(any(Personal.class));
+//        assertThat(id).isEqualTo(newId);
+//        doNothing().when(repository).save(newPersonal);
+
+//        doAnswer(invocation -> {
+//            Personal value = invocation.getArgument(0);
+////            value.setId(newId);
+//            Personal newPersonal = new Personal(
+//                    newId,
+//                    personal.getName(),
+//                    personal.getAddress(),
+//                    personal.getTelephoneNumber(),
+//                    personal.getEmailAddress()
+//            );
+//            return newPersonal;
+//        }).when(repository).save(any(Personal.class));
+
+//        Answer<Personal> answer = new Answer<Personal>() {
+//            public Personal answer(InvocationOnMock invocation) throws Throwable {
+//                return  new Personal(
+//                        newId,
+//                        personal.getName(),
+//                        personal.getAddress(),
+//                        personal.getTelephoneNumber(),
+//                        personal.getEmailAddress()
+//                );
+//            }
+//        };
+//        doAnswer(answer).when(repository).save(any(Personal.class));
+//
+//
+//        then(repository).should()
+//                .save(any(Personal.class));
+
+//        when(repository).save(any(Personal.class)).will();
+//
+//        given(repository.save(any(Personal.class)))
+//                .will(invocation -> {
+//                    Long id = invocation.getArgument(0);
+//                    Task source = invocation.getArgument(1);
+//                    return new Task(
+//                            id,
+//                            source.getTitle()
+//                    );
+//                });
+
+
+
+
+
+//        assertThat(id).isEqualTo(newId);
+//        GetPersonalCommand getCommand = new GetPersonalCommand(saveId);
+
+        //then
+//        assertThat(saveId).isNotNull();
+//        assertThat(personal.getName())
+//                .isEqualTo(query.getPersonal(getCommand).getName());
+//        assertThat(personal.getAddress())
+//                .isEqualTo(query.getPersonal(getCommand).getAddress());
+//        assertThat(personal.getTelephoneNumber())
+//                .isEqualTo(query.getPersonal(getCommand).getTelephoneNumber());
+//        assertThat(personal.getEmailAddress())
+//                .isEqualTo(query.getPersonal(getCommand).getEmailAddress());
 
     }
+
 }
