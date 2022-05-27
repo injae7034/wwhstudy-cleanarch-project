@@ -35,6 +35,7 @@ addressbook
 |    |    |
 |    |    |____out
 |    |         |____persistence
+|    |              |____JpaArrangePersonalByNameRepository
 |    |              |____JpaCorrectPersonalRepository
 |    |              |____JpaErasePersonalRepository
 |    |              |____JpaFindPersonalRepositroy
@@ -45,6 +46,9 @@ addressbook
 |    |____application
 |    |    |____port
 |    |    |    |____in
+|    |    |    |    |____arrange
+|    |    |    |    |    |____ArrangePersonalQuery
+|    |    |    |    |
 |    |    |    |    |____correct
 |    |    |    |    |    |____CorrectPersonalCommand
 |    |    |    |    |    |____CorrectPersonalUsecase
@@ -66,6 +70,7 @@ addressbook
 |    |    |    |         |____RecordPersonalUseCase
 |    |    |    |
 |    |    |    |____out
+|    |    |         |____ArrangePersoanlRepository
 |    |    |         |____CorrectPersoanlRepository
 |    |    |         |____ErasePersonalRepository
 |    |    |         |____FindPersonalRepository
@@ -74,6 +79,7 @@ addressbook
 |    |    |         |____RecordPersonalRepository
 |    |    |
 |    |    |____service
+|    |         |____ArrangePersonalByNameService
 |    |         |____CorrectPersonalService
 |    |         |____ErasePersonalService
 |    |         |____FindPersonalService
