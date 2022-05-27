@@ -6,14 +6,15 @@ import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
+
 
 class RecordPersonalServiceTest {
 
     private final RecordPersonalRepository repository =
-            Mockito.mock(RecordPersonalRepository.class);
+            mock(RecordPersonalRepository.class);
 
     private final RecordPersonalUseCase useCase = new RecordPersonalService(repository);
 

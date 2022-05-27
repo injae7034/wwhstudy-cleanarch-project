@@ -6,15 +6,16 @@ import injae.AddressBook.personal.application.port.out.CorrectPersonalRepository
 import injae.AddressBook.personal.domain.Personal;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
+
 
 class CorrectPersonalServiceTest {
 
     private final CorrectPersonalRepository repository =
-            Mockito.mock(CorrectPersonalRepository.class);
+            mock(CorrectPersonalRepository.class);
 
     private final CorrectPersonalUseCase useCase =
             new CorrectPersonalService(repository);
@@ -33,7 +34,6 @@ class CorrectPersonalServiceTest {
 
         //then
         verify(repository).update(any(Personal.class));
-
 
     }
 }

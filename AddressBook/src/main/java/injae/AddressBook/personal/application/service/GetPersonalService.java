@@ -1,6 +1,5 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.find.FindPersonalCommand;
 import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
 import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalRepository;
