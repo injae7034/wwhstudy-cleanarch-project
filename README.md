@@ -81,7 +81,7 @@ addressbook
 |____AddressBookApplication
 ```
 
-<br><br><br><br>
+<br><br>
 
 # 2. 홈화면
 
