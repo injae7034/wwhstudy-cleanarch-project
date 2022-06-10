@@ -1,8 +1,8 @@
-package wwhstudycleanarchproject.tomorrowHouseShop.domain;
+package wwhstudycleanarchproject.no24shop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
-import wwhstudycleanarchproject.tomorrowHouseShop.domain.product.Product;
+import wwhstudycleanarchproject.no24shop.domain.product.Product;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

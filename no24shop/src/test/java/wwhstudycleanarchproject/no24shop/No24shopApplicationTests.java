@@ -1,10 +1,10 @@
-package wwhstudycleanarchproject.tomorrowHouseShop;
+package wwhstudycleanarchproject.no24shop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TomorrowHouseShopApplicationTests {
+class No24shopApplicationTests {
 
 	@Test
 	void contextLoads() {

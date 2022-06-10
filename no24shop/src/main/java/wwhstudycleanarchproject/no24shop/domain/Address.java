@@ -1,4 +1,4 @@
-package wwhstudycleanarchproject.tomorrowHouseShop.domain;
+package wwhstudycleanarchproject.no24shop.domain;
 
 import lombok.Getter;
 
