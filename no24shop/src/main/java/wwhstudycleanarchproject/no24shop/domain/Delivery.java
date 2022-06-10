@@ -48,13 +48,13 @@ public class Delivery {
     @Column(name = "delivery_fee")
     private int deliveryFee;
 
-    @OneToOne(mappedBy = "delivery", fetch = LAZY)
-    private Order order;
-
     @Embedded
     private Address address;
 
     @Enumerated(EnumType.STRING)
     private DeliveryStatus status; //READY, COMP
+
+    @OneToOne(mappedBy = "delivery", fetch = LAZY)
+    private Order order;
 
 }

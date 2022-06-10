@@ -64,8 +64,8 @@ public class Order {
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
-    @Column(name = "order_time")
-    private LocalDateTime orderTime; // 주문시간
+    @Column(name = "order_date")
+    private LocalDateTime orderDate; // 주문시간
 
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
