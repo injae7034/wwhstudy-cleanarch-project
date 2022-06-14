@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class GetPersonalsService implements GetPersonalsQuery {
 

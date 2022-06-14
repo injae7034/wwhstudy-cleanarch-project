@@ -6,10 +6,8 @@ import injae.AddressBook.personal.application.port.out.GetPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Transactional
 @Service
 public class GetPersonalService implements GetPersonalQuery {
 
