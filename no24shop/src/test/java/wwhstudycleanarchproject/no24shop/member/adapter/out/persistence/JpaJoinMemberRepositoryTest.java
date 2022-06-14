@@ -3,15 +3,15 @@ package wwhstudycleanarchproject.no24shop.member.adapter.out.persistence;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import wwhstudycleanarchproject.no24shop.common.CreateAndUpdateTimeAndBy;
 import wwhstudycleanarchproject.no24shop.domain.Address;
 import wwhstudycleanarchproject.no24shop.member.application.port.out.GetMemberRepository;
 import wwhstudycleanarchproject.no24shop.member.application.port.out.JoinMemberRepository;
 import wwhstudycleanarchproject.no24shop.member.domain.Member;
-
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -29,21 +29,13 @@ class JpaJoinMemberRepositoryTest {
     @Test
     void saveTest() {
         //given
-        CreateAndUpdateTimeAndBy timeAndBy = new CreateAndUpdateTimeAndBy(
-                LocalDateTime.now(),
-                "홍길동",
-                null,
-                null
-        );
-
         Member member = new Member(
-                "홍길동",
-                "GENERAL",
-                "123456",
-                "USER",
-                new Address("서울시", "중구", "123"),
                 "hong@naver.com",
-                timeAndBy);
+                "123456",
+                "홍길동",
+                new Address("서울시", "중구", "123"),
+                "GENERAL",
+                "USER");
 
         System.out.println(member.getId());
 

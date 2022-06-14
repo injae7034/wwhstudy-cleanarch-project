@@ -22,12 +22,11 @@ class JoinMemberServiceTest {
     void joinTest() {
         //given & when
         useCase.join(new JoinMemberCommand(
-                "홍길동",
-                "GENERAL",
+                "hong@naver.com",
                 "123456",
-                "USER",
+                "홍길동",
                 new Address("서울시", "중구", "123"),
-                "hong@naver.com"));
+                null, null));
 
         //then
         verify(repository).save(any(Member.class));

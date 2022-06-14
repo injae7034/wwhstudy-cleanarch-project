@@ -13,27 +13,34 @@ public class JoinMemberCommand
         extends CommandValidating<JoinMemberCommand> {
 
     @NotNull
-    private String name;
-    @NotNull
-    private String type;
+    private String email;
     @NotNull
     private String password;
     @NotNull
-    private String role;
-
+    private String name;
+    @NotNull
     private Address address;
 
-    private String email;
+    private String type;
+    private String role;
 
-    public JoinMemberCommand(String name, String type,
-                             String password, String role,
-                             Address address, String email) {
-        this.name = name;
-        this.type = type;
-        this.password = password;
-        this.role = role;
-        this.address = address;
+    public JoinMemberCommand(String email, String password,
+                             String name, Address address,
+                             String type, String role) {
         this.email = email;
+        this.password = password;
+        this.name = name;
+        this.address = address;
+        if(type == null) {
+            this.type = "GENERAL";
+        } else {
+            this.type = type;
+        }
+        if (role == null) {
+            this.role = "USER";
+        } else {
+            this.role = role;
+        }
         this.validateCommand();
     }
 }
