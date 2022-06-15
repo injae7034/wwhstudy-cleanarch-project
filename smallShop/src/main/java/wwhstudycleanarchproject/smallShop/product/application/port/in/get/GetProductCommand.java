@@ -8,7 +8,8 @@ import javax.validation.constraints.NotNull;
 
 @Value
 @EqualsAndHashCode(callSuper = false)
-public class GetProductCommand extends CommandValidating {
+public class GetProductCommand
+        extends CommandValidating<GetProductCommand> {
 
     @NotNull
     private final Long id;

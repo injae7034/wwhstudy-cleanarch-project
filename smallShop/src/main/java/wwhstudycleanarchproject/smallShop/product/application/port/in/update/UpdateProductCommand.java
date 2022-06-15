@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Value
 @EqualsAndHashCode(callSuper = false)
 public class UpdateProductCommand
-        extends CommandValidating<CreateProductCommand> {
+        extends CommandValidating<UpdateProductCommand> {
 
     @NotNull
     private final Long id;
