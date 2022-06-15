@@ -23,7 +23,7 @@ class JpaGetAllProductsRepositoryTest {
     GetAllProductsRepository getAllProductsRepository;
 
     @Test
-    void findAll() {
+    void findAllTest() {
         //given & when
         Product one = new Product("스프링", "한빛미디어", 10000, 100);
         System.out.println(one.getId());

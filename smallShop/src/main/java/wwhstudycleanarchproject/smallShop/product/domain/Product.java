@@ -32,4 +32,26 @@ public class Product {
     public Product(String name, String maker, int price, int stockQuantity) {
         this(null, name, maker, price, stockQuantity);
     }
+
+    public void changeProductInfo(Product product) {
+        String name = product.getName();
+        if (this.name.compareTo(name) != 0) {
+            this.name = name;
+        }
+
+        String maker = product.getMaker();
+        if (this.maker.compareTo(maker) != 0) {
+            this.maker = maker;
+        }
+
+        int price = product.getPrice();
+        if (this.price != price) {
+            this.price = price;
+        }
+
+        int stockQuantity = product.getStockQuantity();
+        if (this.stockQuantity != stockQuantity) {
+            this.stockQuantity = stockQuantity;
+        }
+    }
 }

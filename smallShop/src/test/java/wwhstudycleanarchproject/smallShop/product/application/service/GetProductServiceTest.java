@@ -17,7 +17,7 @@ class GetProductServiceTest {
     private final static long ANY_ID = 1L;
 
     @Test
-    void getProduct() {
+    void getProductTest() {
         //given & when
         useCase.getProduct(new GetProductCommand(ANY_ID));
 

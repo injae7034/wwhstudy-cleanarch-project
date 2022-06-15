@@ -16,7 +16,7 @@ class GetAllProductsServiceTest {
             new GetAllProductsService(repository);
 
     @Test
-    void getAllProducts() {
+    void getAllProductsTest() {
         //given & when
         query.getAllProducts();
 
