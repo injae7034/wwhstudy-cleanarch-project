@@ -24,11 +24,10 @@ class JpaGetProductRepositoryTest {
 
     @Test
     void findOneTest() {
-        //given
+        //given & when
         Product product = new Product("스프링", "한빛미디어", 10000, 100);
         System.out.println(product.getId());
 
-        //when
         Product savedProduct = createProductRepository.save(product);
         System.out.println(savedProduct.getId());
 
