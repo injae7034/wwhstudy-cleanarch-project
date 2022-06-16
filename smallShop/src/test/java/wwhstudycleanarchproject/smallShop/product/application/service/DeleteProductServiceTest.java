@@ -1,7 +1,7 @@
 package wwhstudycleanarchproject.smallShop.product.application.service;
 
 import org.junit.jupiter.api.Test;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.delete.DeleteProductUseCase;
+import wwhstudycleanarchproject.smallShop.product.application.port.in.DeleteProductUseCase;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.DeleteProductRepository;
 import wwhstudycleanarchproject.smallShop.product.domain.Product;
 

@@ -2,7 +2,7 @@ package wwhstudycleanarchproject.smallShop.product.application.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.get.GetAllProductsQuery;
+import wwhstudycleanarchproject.smallShop.product.application.port.in.GetAllProductsQuery;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.GetAllProductsRepository;
 import wwhstudycleanarchproject.smallShop.product.domain.Product;
 

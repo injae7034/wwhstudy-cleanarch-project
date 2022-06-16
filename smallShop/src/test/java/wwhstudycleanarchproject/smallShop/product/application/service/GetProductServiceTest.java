@@ -1,8 +1,7 @@
 package wwhstudycleanarchproject.smallShop.product.application.service;
 
 import org.junit.jupiter.api.Test;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.get.GetProductCommand;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.get.GetProductQuery;
+import wwhstudycleanarchproject.smallShop.product.application.port.in.GetProductQuery;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.GetProductRepository;
 
 import static org.mockito.Mockito.mock;
@@ -19,7 +18,7 @@ class GetProductServiceTest {
     @Test
     void getProductTest() {
         //given & when
-        useCase.getProduct(new GetProductCommand(ANY_ID));
+        useCase.getProduct(ANY_ID);
 
         //then
         verify(repository).findOne(ANY_ID);

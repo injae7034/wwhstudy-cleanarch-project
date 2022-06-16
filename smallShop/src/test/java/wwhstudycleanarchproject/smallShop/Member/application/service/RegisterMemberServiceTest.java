@@ -1,8 +1,7 @@
 package wwhstudycleanarchproject.smallShop.Member.application.service;
 
 import org.junit.jupiter.api.Test;
-import wwhstudycleanarchproject.smallShop.Member.application.port.in.register.RegisterMemberCommand;
-import wwhstudycleanarchproject.smallShop.Member.application.port.in.register.RegisterMemberUseCase;
+import wwhstudycleanarchproject.smallShop.Member.application.port.in.RegisterMemberUseCase;
 import wwhstudycleanarchproject.smallShop.Member.application.port.out.RegisterMemberRepository;
 import wwhstudycleanarchproject.smallShop.Member.domain.Member;
 
@@ -21,7 +20,7 @@ class RegisterMemberServiceTest {
     @Test
     void registerMemberTest() {
         //given & when
-        useCase.registerMember(new RegisterMemberCommand(
+        useCase.registerMember(new Member(
                 "hong@naver.com",
                 "123456",
                 "홍길동",

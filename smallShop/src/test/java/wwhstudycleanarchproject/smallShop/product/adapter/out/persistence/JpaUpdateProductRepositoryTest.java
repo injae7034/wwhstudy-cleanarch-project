@@ -5,11 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Transactional;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.update.UpdateProductCommand;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.update.UpdateProductUseCase;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.CreateProductRepository;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.UpdateProductRepository;
-import wwhstudycleanarchproject.smallShop.product.application.service.UpdateProductService;
 import wwhstudycleanarchproject.smallShop.product.domain.Product;
 
 import static org.assertj.core.api.Assertions.assertThat;

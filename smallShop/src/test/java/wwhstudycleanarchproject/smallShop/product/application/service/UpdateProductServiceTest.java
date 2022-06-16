@@ -1,8 +1,7 @@
 package wwhstudycleanarchproject.smallShop.product.application.service;
 
 import org.junit.jupiter.api.Test;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.update.UpdateProductCommand;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.update.UpdateProductUseCase;
+import wwhstudycleanarchproject.smallShop.product.application.port.in.UpdateProductUseCase;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.UpdateProductRepository;
 import wwhstudycleanarchproject.smallShop.product.domain.Product;
 
@@ -21,7 +20,7 @@ class UpdateProductServiceTest {
     @Test
     void updateProductTest() {
 
-        useCase.updateProduct(new UpdateProductCommand(
+        useCase.updateProduct(new Product(
                 1L,
                 "스프링",
                 "한빛미디어",

@@ -1,7 +1,7 @@
 package wwhstudycleanarchproject.smallShop.product.application.service;
 
 import org.junit.jupiter.api.Test;
-import wwhstudycleanarchproject.smallShop.product.application.port.in.get.GetAllProductsQuery;
+import wwhstudycleanarchproject.smallShop.product.application.port.in.GetAllProductsQuery;
 import wwhstudycleanarchproject.smallShop.product.application.port.out.GetAllProductsRepository;
 
 import static org.mockito.Mockito.mock;
