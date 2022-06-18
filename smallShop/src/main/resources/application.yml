@@ -18,5 +18,8 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.type: trace
 
+jwt:
+  secret: 12345678901234567890123456789012
+
 
 

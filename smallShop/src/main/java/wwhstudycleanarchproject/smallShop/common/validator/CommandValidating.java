@@ -1,4 +1,4 @@
-package wwhstudycleanarchproject.smallShop.common;
+package wwhstudycleanarchproject.smallShop.common.validator;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
