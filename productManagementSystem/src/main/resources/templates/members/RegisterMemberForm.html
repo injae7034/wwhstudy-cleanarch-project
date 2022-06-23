@@ -25,8 +25,8 @@
     </div>
     <div>
       <label for="loginId">로그인 ID</label>
-      <input type="text" id="loginId" th:field="*{loginId}" class="form-control" th:errorclass="field-error">
-      <div class="field-error" th:errors="*{loginId}" />
+      <input type="text" id="loginId" th:field="*{email}" class="form-control" th:errorclass="field-error">
+      <div class="field-error" th:errors="*{email}" />
     </div>
     <div>
       <label for="password">비밀번호</label>
