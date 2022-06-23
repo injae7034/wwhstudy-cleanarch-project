@@ -12,8 +12,11 @@ public class RegisterMemberForm {
     @NotEmpty(message = "아이디는 필수로 적어야 합니다.")
     @Email(message = "이메일 형식을 지켜주세요.")
     private String email; // 로그인 ID
-    @NotEmpty(message = "이름은 필수로 적어야 합니다.")
-    private String name; // 사용자 이름
     @NotEmpty(message = "비밀번호는 필수로 적어야 합니다.")
     private String password;
+    @NotEmpty(message = "비밀번호 확인도 필수로 적어야 합니다.")
+    private String confirmPassword;
+    @NotEmpty(message = "이름은 필수로 적어야 합니다.")
+    private String name; // 사용자 이름
+
 }

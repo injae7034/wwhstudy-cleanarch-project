@@ -27,10 +27,18 @@ public class RegisterMemberController {
     @PostMapping("/register")
     public String registerMember(@Valid @ModelAttribute RegisterMemberForm form,
                                  BindingResult bindingResult) {
+        //비밀번호와 비밀번호 확인이 서로 일치 하지 않으면 전체 예외
+        if(!form.getPassword().equals(form.getConfirmPassword())) {
+            bindingResult.reject("notSamePassword",
+                    "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
+        }
+
+        //공백이 있을 경우 예외 발생
         if (bindingResult.hasErrors()) {
             return "members/registerMemberForm";
         }
 
+        //성공 로직
         Member newMember = new Member(form.getEmail(), form.getPassword(), form.getName());
 
         useCase.registerMember(newMember);

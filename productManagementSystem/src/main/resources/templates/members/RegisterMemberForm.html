@@ -25,17 +25,26 @@
     </div>
     <div>
       <label for="email">로그인 ID</label>
-      <input type="text" id="email" th:field="*{email}" class="form-control" th:errorclass="field-error">
+      <input type="text" id="email" th:field="*{email}" class="form-control" th:errorclass="field-error"
+             placeholder="ID로 사용할 이메일을 입력하세요.">
       <div class="field-error" th:errors="*{email}" />
     </div>
     <div>
       <label for="password">비밀번호</label>
-      <input type="password" id="password" th:field="*{password}" class="form-control" th:errorclass="field-error">
+      <input type="password" id="password" th:field="*{password}" class="form-control" th:errorclass="field-error"
+             placeholder="비밀번호를 입력하세요.">
       <div class="field-error" th:errors="*{password}" />
     </div>
     <div>
+      <label for="confirmPassword">확인 비밀번호</label>
+      <input type="password" id="confirmPassword" th:field="*{confirmPassword}" class="form-control" th:errorclass="field-error"
+             placeholder="비밀번호를 다시 입력하세요.">
+      <div class="field-error" th:errors="*{confirmPassword}" />
+    </div>
+    <div>
       <label for="name">이름</label>
-      <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="field-error">
+      <input type="text" id="name" th:field="*{name}" class="form-control" th:errorclass="field-error"
+             placeholder="이름을 입력하세요.">
       <div class="field-error" th:errors="*{name}" />
     </div>
     <hr class="my-4">
