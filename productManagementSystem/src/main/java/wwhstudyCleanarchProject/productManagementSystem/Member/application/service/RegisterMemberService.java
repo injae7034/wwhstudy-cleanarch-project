@@ -31,7 +31,7 @@ public class RegisterMemberService implements RegisterMemberUseCase {
         Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
 
         if (findMember != null) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
+            throw new IllegalStateException("이미 존재하는 아이디입니다.");
         }
     }
 
