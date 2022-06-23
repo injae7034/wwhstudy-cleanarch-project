@@ -18,21 +18,19 @@ public class Product {
     private Long id;
 
     private String name;
-    private String maker;
     private int price;
-    private int stockQuantity;
+    private int quantity;
 
-    public Product(Long id, String name, String maker,
-                   int price, int stockQuantity) {
+    public Product(Long id, String name,
+                   int price, int quantity) {
         this.id = id;
         this.name = name;
-        this.maker = maker;
         this.price = price;
-        this.stockQuantity = stockQuantity;
+        this.quantity = quantity;
     }
 
-    public Product(String name, String maker, int price, int stockQuantity) {
-        this(null, name, maker, price, stockQuantity);
+    public Product(String name, int price, int quantity) {
+        this(null, name, price, quantity);
     }
 
     public void changeProductInfo(Product product) {
@@ -41,19 +39,14 @@ public class Product {
             this.name = name;
         }
 
-        String maker = product.getMaker();
-        if (this.maker.compareTo(maker) != 0) {
-            this.maker = maker;
-        }
-
         int price = product.getPrice();
         if (this.price != price) {
             this.price = price;
         }
 
-        int stockQuantity = product.getStockQuantity();
-        if (this.stockQuantity != stockQuantity) {
-            this.stockQuantity = stockQuantity;
+        int stockQuantity = product.getQuantity();
+        if (this.quantity != stockQuantity) {
+            this.quantity = stockQuantity;
         }
     }
 }

@@ -2,10 +2,8 @@ package wwhstudycleanarchproject.smallShop.Member.application.port.in;
 
 import wwhstudycleanarchproject.smallShop.Member.domain.Member;
 
-import java.util.List;
+public interface ChangePasswordUseCase {
 
-public interface GetAllMembersQuery {
-
-    List<Member> getAllMembers();
+    Member changePassword(Member member);
 
 }

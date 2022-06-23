@@ -18,39 +18,24 @@ public class Member {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "user_id")
+    @Column(name = "login_id")
     private String email;
     private String password;
 
     private String name;
-    private String address;
 
-    public Member(Long id, String email, String password, String name, String address) {
+    public Member(Long id, String email, String password, String name) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.address = address;
     }
 
-    public Member(String email, String password, String name, String address) {
-        this(null, email, password, name, address);
+    public Member(String email, String password, String name) {
+        this(null, email, password, name);
     }
 
-    public void changeMemberInfo(Member member) {
-        String password = member.getPassword();
-        if (this.password.compareTo(password) != 0) {
-            this.password = password;
-        }
-
-        String name = member.getName();
-        if (this.name.compareTo(name) != 0) {
-            this.name = name;
-        }
-
-        String address = member.getAddress();
-        if (this.address != address) {
-            this.address = address;
-        }
+    public void changePassword(String password) {
+        this.password = password;
     }
 }

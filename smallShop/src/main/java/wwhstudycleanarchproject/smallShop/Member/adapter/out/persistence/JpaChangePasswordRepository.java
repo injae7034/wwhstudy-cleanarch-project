@@ -2,14 +2,14 @@ package wwhstudycleanarchproject.smallShop.Member.adapter.out.persistence;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import wwhstudycleanarchproject.smallShop.Member.application.port.out.UpdateMemberRepository;
+import wwhstudycleanarchproject.smallShop.Member.application.port.out.ChangePasswordRepository;
 import wwhstudycleanarchproject.smallShop.Member.domain.Member;
 
 import javax.persistence.EntityManager;
 
 @Repository
 @RequiredArgsConstructor
-public class JpaUpdateMemberRepository implements UpdateMemberRepository {
+public class JpaChangePasswordRepository implements ChangePasswordRepository {
 
     private final EntityManager em;
 
@@ -17,7 +17,7 @@ public class JpaUpdateMemberRepository implements UpdateMemberRepository {
     public Member update(Member member) {
         Member findMember = em.find(Member.class, member.getId());
 
-        findMember.changeMemberInfo(member);
+        findMember.changePassword(member.getPassword());
 
         return findMember;
     }
