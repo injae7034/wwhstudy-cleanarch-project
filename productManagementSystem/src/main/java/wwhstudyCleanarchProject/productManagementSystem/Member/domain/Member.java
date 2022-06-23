@@ -2,6 +2,7 @@ package wwhstudyCleanarchProject.productManagementSystem.Member.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,8 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Getter @NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue

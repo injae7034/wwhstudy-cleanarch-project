@@ -1,4 +1,4 @@
-package wwhstudyCleanarchProject.productManagementSystem.Member.adapter.in.web;
+package wwhstudyCleanarchProject.productManagementSystem.Member.adapter.in.web.register;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,17 +20,20 @@ public class RegisterMemberController {
     private final RegisterMemberUseCase useCase;
 
     @GetMapping("/register")
-    public String registerForm(@ModelAttribute("member") Member member) {
+    public String registerForm(@ModelAttribute RegisterMemberForm form) {
         return "members/registerMemberForm";
     }
 
     @PostMapping("/register")
-    public String registerMember(@Valid @ModelAttribute Member member, BindingResult bindingResult) {
+    public String registerMember(@Valid @ModelAttribute RegisterMemberForm form,
+                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "members/registerMemberForm";
         }
 
-        useCase.registerMember(member);
+        Member newMember = new Member(form.getEmail(), form.getPassword(), form.getName());
+
+        useCase.registerMember(newMember);
 
         return "redirect:/";
     }
