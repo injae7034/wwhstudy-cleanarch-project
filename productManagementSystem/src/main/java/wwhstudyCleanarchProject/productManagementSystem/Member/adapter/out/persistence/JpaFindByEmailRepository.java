@@ -6,6 +6,7 @@ import wwhstudyCleanarchProject.productManagementSystem.Member.application.port.
 import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 
 import javax.persistence.EntityManager;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -14,11 +15,11 @@ public class JpaFindByEmailRepository implements FindByEmailRepository {
     private final EntityManager em;
 
     @Override
-    public Member findByEmail(String email) {
-        return em.createQuery(
+    public Optional<Member> findByEmail(String email) {
+        return Optional.of(em.createQuery(
                         "select m from Member m where m.email = :email",
                         Member.class)
                 .setParameter("email", email)
-                .getSingleResult();
+                .getSingleResult());
     }
 }

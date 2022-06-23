@@ -2,8 +2,8 @@ package wwhstudyCleanarchProject.productManagementSystem.Member.application.port
 
 import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 
-public interface DeleteMemberUseCase {
+public interface LoginMemberUseCase {
 
-    Member deleteMember(Member member);
+    Member loginMember(String loginId, String password);
 
 }

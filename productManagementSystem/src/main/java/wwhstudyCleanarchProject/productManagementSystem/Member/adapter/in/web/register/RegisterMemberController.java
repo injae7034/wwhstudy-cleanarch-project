@@ -27,8 +27,10 @@ public class RegisterMemberController {
     @PostMapping("/register")
     public String registerMember(@Valid @ModelAttribute RegisterMemberForm form,
                                  BindingResult bindingResult) {
-        //비밀번호와 비밀번호 확인이 서로 일치 하지 않으면 전체 예외
-        if(!form.getPassword().equals(form.getConfirmPassword())) {
+        //이미 존재하는 아이디를 입력할 경우 전체
+
+        //비밀번호와 확인 비밀번호가 서로 일치 하지 않으면 예외 발생생
+       if(!form.getPassword().equals(form.getConfirmPassword())) {
             bindingResult.reject("notSamePassword",
                     "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
         }

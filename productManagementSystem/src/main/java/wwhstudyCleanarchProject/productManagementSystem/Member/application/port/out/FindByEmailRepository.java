@@ -3,8 +3,10 @@ package wwhstudyCleanarchProject.productManagementSystem.Member.application.port
 
 import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 
+import java.util.Optional;
+
 public interface FindByEmailRepository {
 
-    Member findByEmail(String email);
+    Optional<Member> findByEmail(String email);
 
 }
