@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import wwhstudyCleanarchProject.productManagementSystem.Member.application.port.in.RegisterMemberUseCase;
+import wwhstudyCleanarchProject.productManagementSystem.Member.application.port.out.FindByEmailRepository;
 import wwhstudyCleanarchProject.productManagementSystem.Member.application.port.out.RegisterMemberRepository;
 import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 
@@ -12,10 +13,27 @@ import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 @Service
 public class RegisterMemberService implements RegisterMemberUseCase {
 
-    private final RegisterMemberRepository repository;
+    private final RegisterMemberRepository registerRepository;
+
+    private final FindByEmailRepository findRepository;
 
     @Override
-    public Member registerMember(Member member) {
-        return repository.save(member);
+    public Member registerMember(Member member) throws IllegalStateException {
+
+        //이미 존재하는 회원인지 확인
+        validateDuplicateMember(member);
+
+        //새로운 회원이면 저장함.
+        return registerRepository.save(member);
     }
+
+    private void validateDuplicateMember(Member member) {
+        Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
+
+        if (findMember != null) {
+            throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+    }
+
+
 }

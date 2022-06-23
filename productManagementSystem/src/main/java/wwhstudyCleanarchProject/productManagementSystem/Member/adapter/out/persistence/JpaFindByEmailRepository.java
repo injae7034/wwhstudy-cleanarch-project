@@ -16,10 +16,10 @@ public class JpaFindByEmailRepository implements FindByEmailRepository {
 
     @Override
     public Optional<Member> findByEmail(String email) {
-        return Optional.of(em.createQuery(
+        return em.createQuery(
                         "select m from Member m where m.email = :email",
                         Member.class)
                 .setParameter("email", email)
-                .getSingleResult());
+                .getResultStream().findAny();
     }
 }
