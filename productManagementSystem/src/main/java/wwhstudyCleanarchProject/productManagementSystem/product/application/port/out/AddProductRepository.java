@@ -3,7 +3,7 @@ package wwhstudyCleanarchProject.productManagementSystem.product.application.por
 
 import wwhstudyCleanarchProject.productManagementSystem.product.domain.Product;
 
-public interface CreateProductRepository {
+public interface AddProductRepository {
 
     Product save(Product product);
 

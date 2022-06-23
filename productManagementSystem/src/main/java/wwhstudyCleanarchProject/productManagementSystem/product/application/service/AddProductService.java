@@ -3,19 +3,19 @@ package wwhstudyCleanarchProject.productManagementSystem.product.application.ser
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import wwhstudyCleanarchProject.productManagementSystem.product.application.port.in.CreateProductUseCase;
-import wwhstudyCleanarchProject.productManagementSystem.product.application.port.out.CreateProductRepository;
+import wwhstudyCleanarchProject.productManagementSystem.product.application.port.in.AddProductUseCase;
+import wwhstudyCleanarchProject.productManagementSystem.product.application.port.out.AddProductRepository;
 import wwhstudyCleanarchProject.productManagementSystem.product.domain.Product;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
-public class CreateProductService implements CreateProductUseCase {
+public class AddProductService implements AddProductUseCase {
 
-    private final CreateProductRepository repository;
+    private final AddProductRepository repository;
 
     @Override
-    public Product createProduct(Product product) {
+    public Product addProduct(Product product) {
         return repository.save(product);
     }
 }

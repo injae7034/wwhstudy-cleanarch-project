@@ -2,8 +2,8 @@ package wwhstudyCleanarchProject.productManagementSystem.product.application.por
 
 import wwhstudyCleanarchProject.productManagementSystem.product.domain.Product;
 
-public interface CreateProductUseCase {
+public interface AddProductUseCase {
 
-    Product createProduct(Product product);
+    Product addProduct(Product product);
 
 }

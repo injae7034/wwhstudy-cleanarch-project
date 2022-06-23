@@ -10,12 +10,12 @@ import wwhstudyCleanarchProject.productManagementSystem.product.application.port
 @Controller
 @RequestMapping("/products")
 @RequiredArgsConstructor
-public class ProductListController {
+public class ProductHomeController {
 
     private final GetAllProductsQuery query;
 
     @GetMapping
-    public String productList(Model model) {
+    public String productHome(Model model) {
         model.addAttribute("products", query.getAllProducts());
         return "products/products";
     }

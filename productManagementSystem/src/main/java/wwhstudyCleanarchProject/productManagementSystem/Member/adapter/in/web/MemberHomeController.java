@@ -9,9 +9,9 @@ import wwhstudyCleanarchProject.productManagementSystem.Member.domain.Member;
 
 @Controller
 @RequiredArgsConstructor
-public class HomeController {
+public class MemberHomeController {
     @GetMapping("/")
-    public String homeLoginV3Spring(
+    public String memberHome(
             @SessionAttribute(name = "loginMember", required = false) Member loginMember,
             Model model) {
 
