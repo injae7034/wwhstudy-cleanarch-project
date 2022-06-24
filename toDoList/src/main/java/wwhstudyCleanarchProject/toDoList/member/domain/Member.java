@@ -2,14 +2,23 @@ package wwhstudyCleanarchProject.toDoList.member.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import wwhstudyCleanarchProject.toDoList.task.domain.Task;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @Entity
-@Getter @NoArgsConstructor
+@Getter
+@NoArgsConstructor
 public class Member {
 
     @Id @GeneratedValue
@@ -21,6 +30,9 @@ public class Member {
     private String password;
 
     private String name;
+
+    @OneToMany(mappedBy = "member")
+    private Set<Date> dates = new LinkedHashSet<>();
 
     public Member(Long id, String email, String password, String name) {
         this.id = id;
@@ -36,4 +48,5 @@ public class Member {
     public void changePassword(String password) {
         this.password = password;
     }
+
 }

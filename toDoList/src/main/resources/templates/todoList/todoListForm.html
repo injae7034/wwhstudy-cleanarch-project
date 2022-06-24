@@ -16,7 +16,7 @@
         <div class="col">
             <button class="btn btn-primary float-end"
                     th:onclick="|location.href='@{/tasks/add}'|"
-                    type="button">오늘 할 일 추가하기</button>
+                    type="button">할 일 추가하기</button>
         </div>
     </div>
 
@@ -34,7 +34,7 @@
             <tbody>
             <tr th:each="task : ${tasks}">
                 <td th:text="${task.startTime}"></td>
-                <td th:text="${task.name}"></td>
+                <td th:text="${task.title}"></td>
                 <td th:text="${task.estimatedTime}"></td>
                 <td><input type="checkbox" checked></td>
                 <td>

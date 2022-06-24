@@ -14,9 +14,15 @@
     <hr class="my-4">
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" type="button"
+            <button class="w-100 btn btn-primary btn-lg" type="button"
                     th:onclick="|location.href='@{/todoLists}'|">
                 오늘 할 일 관리
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg" type="button"
+                    th:onclick="|location.href='@{/todoLists}'|">
+                지난 기록 보기
             </button>
         </div>
         <div class="col">
