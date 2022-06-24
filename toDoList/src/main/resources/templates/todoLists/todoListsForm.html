@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>오늘 할 일 목록</h2>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end"
+                    th:onclick="|location.href='@{/tasks/add}'|"
+                    type="button">오늘 할 일 추가하기</button>
+        </div>
+    </div>
+
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>시작 시간</th>
+                <th>할 일</th>
+                <th>소요 시간</th>
+                <th>완료</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="task : ${tasks}">
+                <td th:text="${task.startTime}"></td>
+                <td th:text="${task.name}"></td>
+                <td th:text="${task.estimatedTime}"></td>
+                <td><input type="checkbox" checked></td>
+                <td>
+                    <a href="#" th:href="@{/tasks/{id}/edit (id=${task.id})}"
+                       class="btn btn-primary" role="button">수정</a>
+                </td>
+                <td>
+                    <a href="#" th:href="'javascript:erase('+${task.id}+')'"
+                       class="btn btn-danger" role="button">삭제</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div> <!-- /container -->
+
+</body>
+</html>
