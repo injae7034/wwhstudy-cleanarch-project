@@ -24,7 +24,7 @@ public class Task {
     @Column(name = "task_id")
     private Long id;
 
-    private LocalDateTime startTime;
+    private String startTime;
     private String title;
     private String estimatedTime;
     private boolean isFinished;
@@ -32,4 +32,18 @@ public class Task {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "date_id")
     private Date date;
+
+    public void changeTaskInfo(Task task) {
+        this.startTime = task.getStartTime();
+        this.title = task.getTitle();
+        this.estimatedTime = task.getEstimatedTime();
+    }
+
+    public void finish() {
+        isFinished = true;
+    }
+
+    public void notFinish() {
+        isFinished = false;
+    }
 }

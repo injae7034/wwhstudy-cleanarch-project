@@ -35,7 +35,7 @@ public class LoginMemberController {
 
         //공백이 있을 경우 예외 발생
         if (bindingResult.hasErrors()) {
-            return "members/loginMemberForm";
+            return "members/login";
         }
 
         Member loginMember = useCase.loginMember(form.getEmail(), form.getPassword());
