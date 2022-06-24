@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+        .container {
+            max-width: 560px;
+        }
+        .field-error {
+            border-color: #dc3545;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="py-5 text-center">
+    <h2>오늘 할 일 추가</h2>
+  </div>
+
+  <form action="item.html" th:action th:object="${addTaskForm}" method="post">
+
+    <div th:if="${#fields.hasGlobalErrors()}">
+      <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">글로벌 오류 메시지</p>
+    </div>
+
+    <div>
+      <label for="startTime">시작 시간</label>
+      <input type="text" id="startTime" th:field="*{startTime}"
+             th:errorclass="field-error" class="form-control" placeholder="시작 시간을 입력하세요">
+      <div class="field-error" th:errors="*{startTime}">
+        시작 시간 오류
+      </div>
+    </div>
+
+    <div>
+      <label for="title">할 일</label>
+      <input type="text" id="title" th:field="*{title}"
+             th:errorclass="field-error" class="form-control" placeholder="할 일을 입력하세요">
+      <div class="field-error" th:errors="*{title}">
+        할 일 오류
+      </div>
+    </div>
+
+    <div>
+      <label for="estimatedTime">소요 시간</label>
+      <input type="text" id="estimatedTime" th:field="*{estimatedTime}"
+             th:errorclass="field-error" class="form-control" placeholder="예상 소요 시간을 입력하세요">
+      <div class="field-error" th:errors="*{estimatedTime}">
+        소요 시간 오류
+      </div>
+    </div>
+
+
+<!--    <div>-->
+<!--      <label for="estimatedTime">소요 시간</label>-->
+<!--      <select id="estimatedTime" th:field="*{estimatedTime}" class="form-select">-->
+<!--        <option value="">==예상 소요 시간 선택(15분 단위)==</option>-->
+<!--        <option th:each="estimatedTime : ${estimatedTimes}" th:value="${estimatedTime.estimatedTime}"-->
+<!--                th:text="${estimatedTime.displayName}">15분</option>-->
+<!--      </select>-->
+<!--      <div class="field-error" th:errors="*{estimatedTime}">-->
+<!--        소요 시간 오류-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <hr class="my-4">
+
+    <div class="row">
+      <div class="col">
+        <button class="w-100 btn btn-primary btn-lg" type="submit">할 일 추가</button>
+      </div>
+      <div class="col">
+        <button class="w-100 btn btn-secondary btn-lg"
+                onclick="location.href='items.html'"
+                th:onclick="|location.href='@{/tasks}'|"
+                type="button">돌아가기</button>
+      </div>
+    </div>
+
+  </form>
+
+</div> <!-- /container -->
+</body>
+</html>

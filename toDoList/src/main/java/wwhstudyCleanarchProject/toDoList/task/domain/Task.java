@@ -2,7 +2,6 @@ package wwhstudyCleanarchProject.toDoList.task.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import wwhstudyCleanarchProject.toDoList.member.domain.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.time.LocalDateTime;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -32,6 +30,14 @@ public class Task {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "date_id")
     private Date date;
+
+    public Task(String startTime, String title, String estimatedTime, boolean isFinished, Date date) {
+        this.startTime = startTime;
+        this.title = title;
+        this.estimatedTime = estimatedTime;
+        this.isFinished = isFinished;
+        this.date = date;
+    }
 
     public void changeTaskInfo(Task task) {
         this.startTime = task.getStartTime();
