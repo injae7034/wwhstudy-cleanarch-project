@@ -29,7 +29,7 @@ public class RecordPersonalController {
     public String recordPersonal(@Valid RecordPersonalForm form, BindingResult result) {
 
         if (result.hasErrors()) {
-            return "recordPersonalForm";
+            return "personal/recordPersonalForm";
         }
 
         RecordPersonalCommand command = new RecordPersonalCommand(

@@ -40,7 +40,7 @@ public class FindPersonalController {
                                BindingResult result) {
 
         if (result.hasErrors()) {
-            return "findPersonalForm";
+            return "personal/findPersonalForm";
         }
 
         personals = useCase.findPersonalByName(

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: header">
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <title>Title</title>
+</head>
+<body>
+<div class="container">
+    <div th:replace="fragments/bodyHeader :: bodyHeader" />
+    <div class="jumbotron">
+        <p>
+            <a class="btn btn-lg btn-secondary" href="/record">기재하기</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a class="btn btn-lg btn-dark" href="/find">이름으로 찾기</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </p>
+        <br>
+    </div>
+    <div>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+<!--                <th>id</th>-->
+                <th>이름</th>
+                <th>주소</th>
+                <th>전화번호</th>
+                <th>이메일주소</th>
+                <th th:if="${isArrangeChecked == true}">
+                    <input type="checkbox" onclick="check()"
+                    checked>정렬하기</th>
+                <th th:if="${isArrangeChecked == false}">
+                    <input type="checkbox" onclick="check()"
+                    unchecked>정렬하기</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="personal : ${personals}">
+<!--                <td th:text="${personal.id}"></td>-->
+                <td th:text="${personal.name}"></td>
+                <td th:text="${personal.address}"></td>
+                <td th:text="${personal.telephoneNumber}"></td>
+                <td th:text="${personal.emailAddress}"></td>
+                <td>
+                    <a href="#" th:href="@{/correct/{id} (id=${personal.id})}"
+                       class="btn btn-primary" role="button">수정</a>
+                </td>
+                <td>
+                    <a href="#" th:href="'javascript:erase('+${personal.id}+')'"
+                       class="btn btn-danger" role="button">지우기</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer" />
+</div> <!-- /container -->
+</body>
+<script>
+function erase(id){
+    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+        var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/erase/" + id);
+        document.body.appendChild(form);
+        form.submit();
+    }else{   //취소
+        return;
+    }
+}
+
+function check(){
+<!--    if(box.checked == true) {-->
+<!--         -->
+<!--    } else {-->
+<!--         form.setAttribute("method", "get");-->
+<!--        form.setAttribute("action", "redirect:/");-->
+<!--    }-->
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+</html>

@@ -31,4 +31,19 @@ public class Member {
     @OneToMany(mappedBy = "member")
     private List<Personal> personals = new ArrayList<>();
 
+    public Member(Long id, String email, String password, String name) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+    }
+
+    public Member(String email, String password, String name) {
+        this(null, email, password, name);
+    }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
+
 }
