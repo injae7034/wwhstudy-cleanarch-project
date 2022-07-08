@@ -52,7 +52,7 @@ public class RegisterMemberController {
             return "members/registerMemberForm";
         }
 
-        //예와가 없으면 홈화면으로 돌아감
+        //예외가 없으면 홈화면으로 돌아감
         return "redirect:/";
     }
 }
