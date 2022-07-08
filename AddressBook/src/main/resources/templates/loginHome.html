@@ -8,12 +8,19 @@
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader" />
     <div class="jumbotron">
-        <p>
-            <a class="btn btn-lg btn-secondary" href="/record">기재하기</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <a class="btn btn-lg btn-dark" href="/find">이름으로 찾기</a>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </p>
+        <div class="row">
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{record}'|">
+                    기재하기
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-dark btn-lg"
+                        onclick="location.href='items.html'" th:onclick="|location.href='@{find}'|" type="button">
+                    이름으로 찾기
+                </button>
+            </div>
+        </div>
         <br>
     </div>
     <div>

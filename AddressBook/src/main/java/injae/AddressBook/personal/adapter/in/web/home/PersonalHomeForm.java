@@ -8,7 +8,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class HomeForm {
+public class PersonalHomeForm {
 
     private boolean isArrangeChecked;
     private List<Personal> personals;
