@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.domain;
 
+import injae.AddressBook.member.domain.Member;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -25,6 +30,10 @@ public class Personal {
     private String address;
     private String telephoneNumber;
     private String emailAddress;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     public Personal(Long id, String name, String address,
                     String telephoneNumber, String emailAddress) {
