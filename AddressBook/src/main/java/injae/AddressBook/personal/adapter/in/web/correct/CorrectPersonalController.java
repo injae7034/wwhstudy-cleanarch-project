@@ -34,7 +34,7 @@ public class CorrectPersonalController {
                         personal.getTelephoneNumber(),
                         personal.getEmailAddress()));
 
-        return "correctPersonalForm";
+        return "personal/correctPersonalForm";
     }
 
     @PostMapping("/correct/{id}")

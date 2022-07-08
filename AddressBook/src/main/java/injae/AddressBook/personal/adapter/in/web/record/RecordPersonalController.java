@@ -22,7 +22,7 @@ public class RecordPersonalController {
     @GetMapping("/record")
     public String createForm(Model model) {
         model.addAttribute("recordPersonalForm", new RecordPersonalForm());
-        return "recordPersonalForm";
+        return "personal/recordPersonalForm";
     }
 
     @PostMapping("/record")

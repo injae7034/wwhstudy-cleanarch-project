@@ -32,7 +32,7 @@ public class FindPersonalController {
 
         personals = null;
 
-        return "findPersonalForm";
+        return "personal/findPersonalForm";
     }
 
     @PostMapping("/find")
