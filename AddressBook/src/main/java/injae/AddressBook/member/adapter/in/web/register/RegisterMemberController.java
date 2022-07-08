@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -27,7 +30,11 @@ public class RegisterMemberController {
 
     @PostMapping("/register")
     public String registerMember(@Valid @ModelAttribute RegisterMemberForm form,
-                                 BindingResult bindingResult) {
+                                 BindingResult bindingResult,
+                                 HttpServletRequest request) {
+
+        //회원가입 성공 여부 boolean
+        Boolean isRegisteringMemberSucceed = null;
 
         //비밀번호와 확인 비밀번호가 서로 일치 하지 않으면 예외 발생
         if(!form.getPassword().equals(form.getConfirmPassword())) {
@@ -53,7 +60,15 @@ public class RegisterMemberController {
             return "member/registerMemberForm";
         }
 
-        //예와가 없으면 홈화면으로 돌아감
+        //회원가입 성공 처리
+        isRegisteringMemberSucceed = true;
+        //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
+        HttpSession session = request.getSession();
+        //세션에 회웝 가입 성공 저장
+        session.setAttribute("isRegisteringMemberSucceed",
+                isRegisteringMemberSucceed);
+
+        //예외가 없으면(회원가입이 성공적으로 처리되면) 홈화면으로 돌아감
         return "redirect:/";
     }
 }

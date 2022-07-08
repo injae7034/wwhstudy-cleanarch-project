@@ -21,6 +21,10 @@
                 </button>
             </div>
         </div>
+        <br>
+        <div th:if="${isRegisteringMemberSucceed != null}">
+            <h3>회원 가입에 성공하셨습니다.</h3>
+        </div>
     </div>
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
