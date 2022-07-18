@@ -1,15 +1,15 @@
 package injae.AddressBook.personal.adapter.in.web.record;
 
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalCommand;
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
+import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.validation.Valid;
 
@@ -26,20 +26,16 @@ public class RecordPersonalController {
     }
 
     @PostMapping("/record")
-    public String recordPersonal(@Valid RecordPersonalForm form, BindingResult result) {
+    public String recordPersonal(@Valid RecordPersonalForm form, BindingResult result,
+                                 @SessionAttribute(name = "loginMember")
+                                         Member loginMember) {
 
         if (result.hasErrors()) {
             return "personal/recordPersonalForm";
         }
 
-        RecordPersonalCommand command = new RecordPersonalCommand(
-                form.getName(),
-                form.getAddress(),
-                form.getTelephoneNumber(),
-                form.getEmailAddress()
-        );
-
-        useCase.recordPersonal(command);
+        useCase.recordPersonal(form.getName(), form.getAddress(),
+                form.getTelephoneNumber(), form.getEmailAddress(), loginMember);
 
         return "redirect:/";
     }

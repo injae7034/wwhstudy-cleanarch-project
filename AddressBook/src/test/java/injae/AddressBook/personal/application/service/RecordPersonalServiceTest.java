@@ -1,6 +1,5 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalCommand;
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
@@ -22,12 +21,12 @@ class RecordPersonalServiceTest {
     void recordPersonalTest() {
 
         //given & when
-        useCase.recordPersonal(new RecordPersonalCommand(
-                "홍길동",
-                "서울시 중구",
-                "023349090",
-                "hong@naver.com"
-        ));
+//        useCase.recordPersonal(new RecordPersonalCommand(
+//                "홍길동",
+//                "서울시 중구",
+//                "023349090",
+//                "hong@naver.com"
+//        ));
 
         //then
         verify(repository).save(any(Personal.class));

@@ -4,5 +4,5 @@ import injae.AddressBook.member.domain.Member;
 
 public interface RegisterMemberUseCase {
 
-    Long registerMember(Member member);
+    Long registerMember(String email, String password, String name);
 }

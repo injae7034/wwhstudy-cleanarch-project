@@ -29,30 +29,4 @@
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
-<script>
-function erase(id){
-    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
-        var form = document.createElement("form");
-        form.setAttribute("method", "get");
-        form.setAttribute("action", "/erase/" + id);
-        document.body.appendChild(form);
-        form.submit();
-    }else{   //취소
-        return;
-    }
-}
-
-function check(){
-<!--    if(box.checked == true) {-->
-<!--         -->
-<!--    } else {-->
-<!--         form.setAttribute("method", "get");-->
-<!--        form.setAttribute("action", "redirect:/");-->
-<!--    }-->
-    var form = document.createElement("form");
-    form.setAttribute("method", "post");
-    document.body.appendChild(form);
-    form.submit();
-}
-</script>
 </html>

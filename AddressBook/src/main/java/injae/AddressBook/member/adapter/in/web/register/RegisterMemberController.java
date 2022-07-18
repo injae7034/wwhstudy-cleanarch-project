@@ -48,10 +48,8 @@ public class RegisterMemberController {
         }
 
         //성공 로직
-        Member newMember = new Member(form.getEmail(), form.getPassword(), form.getName());
-
         try {
-            useCase.registerMember(newMember);
+            useCase.registerMember(form.getEmail(), form.getPassword(), form.getName());
         } catch (DuplicateMemberException e) {
             //이미 존재하는 아이디를 입력하여 회원 가입할 경우
             bindingResult.reject("duplicateMember",

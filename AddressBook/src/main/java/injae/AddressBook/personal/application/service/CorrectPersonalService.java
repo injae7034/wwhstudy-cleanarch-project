@@ -17,16 +17,17 @@ public class CorrectPersonalService implements CorrectPersonalUseCase {
 
     @Override
     public Long correctPersonal(CorrectPersonalCommand command) {
-        Personal personal = new Personal(
-                command.getId(),
-                command.getName(),
-                command.getAddress(),
-                command.getTelephoneNumber(),
-                command.getEmailAddress());
-
-        repository.update(personal);
-
-        return personal.getId();
+//        Personal personal = new Personal(
+//                command.getId(),
+//                command.getName(),
+//                command.getAddress(),
+//                command.getTelephoneNumber(),
+//                command.getEmailAddress());
+//
+//        repository.update(personal);
+//
+//        return personal.getId();
+        return null;
     }
 
 }

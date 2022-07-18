@@ -19,19 +19,20 @@ public class RegisterMemberService implements RegisterMemberUseCase {
     private final FindByEmailRepository findByEmailRepository;
 
     @Override
-    public Long registerMember(Member member) {
+    public Long registerMember(String email, String password, String name) {
 
         //이미 존재하는 회원 id 여부 확인
-        validateDuplicateMember(member);
+        validateDuplicateMember(email);
 
-        //새로운 회원 id이면 DB에 저장함.(회원가입 승인)
-        registerMemberRepository.save(member);
+        //새로운 회원 id이면 Member를 생성해서 DB에 저장함.(회원가입 승인)
+        Member newMember = new Member(email, password, name);
+        registerMemberRepository.save(newMember);
 
-        return member.getId();
+        return newMember.getId();
     }
 
-    private void validateDuplicateMember(Member member) {
-        Member findMember = findByEmailRepository.findByEmail(member.getEmail()).orElse(null);
+    private void validateDuplicateMember(String email) {
+        Member findMember = findByEmailRepository.findByEmail(email).orElse(null);
 
         if (findMember != null) {
             throw new DuplicateMemberException("이미 존재하는 아이디입니다.");

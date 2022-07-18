@@ -36,17 +36,18 @@ public class Personal {
     private Member member;
 
     public Personal(Long id, String name, String address,
-                    String telephoneNumber, String emailAddress) {
+                    String telephoneNumber, String emailAddress, Member member) {
         this.id = id;
         this.name = name;
         this.address = address;
         this.telephoneNumber = telephoneNumber;
         this.emailAddress = emailAddress;
+        this.member = member;
     }
 
     public Personal(String name, String address,
-                    String telephoneNumber, String emailAddress) {
-        this(null, name, address, telephoneNumber, emailAddress);
+                    String telephoneNumber, String emailAddress, Member member) {
+        this(null, name, address, telephoneNumber, emailAddress, member);
     }
 
     public void changePersonalInfo(Personal personal) {
@@ -66,7 +67,4 @@ public class Personal {
         }
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 }
