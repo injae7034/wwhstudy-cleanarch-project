@@ -1,5 +1,6 @@
 package injae.AddressBook.common;
 
+import injae.AddressBook.member.application.service.FindMemberService;
 import injae.AddressBook.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+
+    private final FindMemberService findMemberService;
 
     @GetMapping("/")
     public String home(
@@ -39,9 +42,12 @@ public class HomeController {
 
         //세션이 유지되면 로그인으로 이동
         model.addAttribute("member", loginMember);
-//        if (loginMember.getPersonals().size() > 0) {
-//            model.addAttribute("personals", loginMember.getPersonals());
-//        }
+
+        Member findMember = findMemberService.findMember(loginMember.getId());
+
+        if (findMember.getPersonals().size() > 0) {
+            model.addAttribute("personals", findMember.getPersonals());
+        }
         return "loginHome";
     }
 

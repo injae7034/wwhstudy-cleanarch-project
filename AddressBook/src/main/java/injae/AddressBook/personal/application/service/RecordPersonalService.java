@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
+import injae.AddressBook.member.application.port.out.FindByEmailRepository;
 import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
@@ -13,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class RecordPersonalService implements RecordPersonalUseCase {
 
-    private final RecordPersonalRepository repository;
+    private final RecordPersonalRepository recordRepository;
+
+    private final FindByEmailRepository findRepository;
 
     @Override
     public Long recordPersonal(String name, String address, String telephoneNumber,
@@ -22,10 +25,16 @@ public class RecordPersonalService implements RecordPersonalUseCase {
         Personal personal = new Personal(name, address, telephoneNumber,
                 emailAddress, member);
 
-        member.getPersonals().add(personal);
+        recordRepository.save(personal);
 
-        repository.save(personal);
+        Member findMember = findRepository.findByEmail(personal.getEmailAddress()).orElse(null);
 
-        return personal.getId();
+        if (findMember != null) {
+            findMember.getPersonals().add(personal);
+
+            return personal.getId();
+        } else {
+            throw new IllegalStateException();
+        }
     }
 }
