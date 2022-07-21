@@ -15,7 +15,7 @@ class RecordPersonalServiceTest {
     private final RecordPersonalRepository repository =
             mock(RecordPersonalRepository.class);
 
-    private final RecordPersonalUseCase useCase = new RecordPersonalService(repository);
+//    private final RecordPersonalUseCase useCase = new RecordPersonalService(repository);
 
     @Test
     void recordPersonalTest() {

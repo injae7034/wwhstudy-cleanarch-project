@@ -27,7 +27,7 @@ public class RecordPersonalService implements RecordPersonalUseCase {
 
         recordRepository.save(personal);
 
-        Member findMember = findRepository.findByEmail(personal.getEmailAddress()).orElse(null);
+        Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
 
         if (findMember != null) {
             findMember.getPersonals().add(personal);

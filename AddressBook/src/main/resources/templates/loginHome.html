@@ -15,9 +15,13 @@
                 </button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-dark btn-lg"
-                        onclick="location.href='items.html'" th:onclick="|location.href='@{find}'|" type="button">
+                <button class="w-100 btn btn-dark btn-lg" type="button" th:onclick="|location.href='@{find}'|" >
                     이름으로 찾기
+                </button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-info btn-lg" type="button" th:onclick="|location.href='@{logout}'|" >
+                    로그아웃
                 </button>
             </div>
         </div>
