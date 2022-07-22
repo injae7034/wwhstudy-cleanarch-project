@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.application.port.in.erase;
+package injae.AddressBook.personal.application.port.in;
 
 import injae.AddressBook.personal.domain.Personal;
 

@@ -1,11 +1,10 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalsRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

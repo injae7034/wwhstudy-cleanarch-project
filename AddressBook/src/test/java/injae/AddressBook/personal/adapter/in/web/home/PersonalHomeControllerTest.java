@@ -1,7 +1,7 @@
 package injae.AddressBook.personal.adapter.in.web.home;
 
-import injae.AddressBook.personal.application.port.in.arrange.ArrangePersonalQuery;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
+import injae.AddressBook.personal.application.port.in.ArrangePersonalQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;

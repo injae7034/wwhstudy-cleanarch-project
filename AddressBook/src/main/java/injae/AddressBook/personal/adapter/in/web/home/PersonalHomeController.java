@@ -1,9 +1,8 @@
 package injae.AddressBook.personal.adapter.in.web.home;
 
-import injae.AddressBook.personal.application.port.in.arrange.ArrangePersonalQuery;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
+import injae.AddressBook.personal.application.port.in.ArrangePersonalQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

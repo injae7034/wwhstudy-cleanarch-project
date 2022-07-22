@@ -1,8 +1,7 @@
 package injae.AddressBook.personal.adapter.in.web.correct;
 
 import injae.AddressBook.personal.application.port.in.CorrectPersonalUseCase;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalQuery;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -23,7 +22,7 @@ public class CorrectPersonalController {
 
     @GetMapping("/correct/{id}")
     public String createForm(@PathVariable("id") Long id, Model model) {
-        Personal personal = query.getPersonal(new GetPersonalCommand(id));
+        Personal personal = query.getPersonal(id);
 
         model.addAttribute("correctPersonalForm",
                 new CorrectPersonalForm(

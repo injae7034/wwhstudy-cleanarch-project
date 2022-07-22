@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.application.port.in.get;
+package injae.AddressBook.personal.application.port.in;
 
 import injae.AddressBook.personal.domain.Personal;
 

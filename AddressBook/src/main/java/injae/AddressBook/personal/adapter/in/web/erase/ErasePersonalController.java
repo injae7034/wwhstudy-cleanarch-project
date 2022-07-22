@@ -1,8 +1,7 @@
 package injae.AddressBook.personal.adapter.in.web.erase;
 
-import injae.AddressBook.personal.application.port.in.erase.ErasePersonalUseCase;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
+import injae.AddressBook.personal.application.port.in.ErasePersonalUseCase;
+import injae.AddressBook.personal.application.port.in.GetPersonalQuery;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -18,7 +17,7 @@ public class ErasePersonalController {
 
     @GetMapping("/erase/{id}")
     public String erasePersonal(@PathVariable("id") Long id) {
-        Personal personal = query.getPersonal(new GetPersonalCommand(id));
+        Personal personal = query.getPersonal(id);
 
         useCase.erasePersonal(personal);
 

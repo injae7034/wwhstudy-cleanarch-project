@@ -1,6 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalsQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalsRepository;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web.find;
 
-import injae.AddressBook.personal.application.port.in.find.FindPersonalCommand;
-import injae.AddressBook.personal.application.port.in.find.FindPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.FindPersonalUseCase;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -43,9 +42,7 @@ public class FindPersonalController {
             return "personal/findPersonalForm";
         }
 
-        personals = useCase.findPersonalByName(
-                new FindPersonalCommand(form.getName())
-        );
+        personals = useCase.findPersonalByName(form.getName());
 
         return "redirect:/find";
     }

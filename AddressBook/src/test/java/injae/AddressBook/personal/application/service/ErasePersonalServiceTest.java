@@ -1,7 +1,7 @@
 package injae.AddressBook.personal.application.service;
 
 import injae.AddressBook.common.PersonalTestData;
-import injae.AddressBook.personal.application.port.in.erase.ErasePersonalUseCase;
+import injae.AddressBook.personal.application.port.in.ErasePersonalUseCase;
 import injae.AddressBook.personal.application.port.out.ErasePersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import org.junit.jupiter.api.Test;

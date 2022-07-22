@@ -1,6 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.arrange.ArrangePersonalQuery;
+import injae.AddressBook.personal.application.port.in.ArrangePersonalQuery;
 import injae.AddressBook.personal.application.port.out.ArrangePersonalRepository;
 import org.junit.jupiter.api.Test;
 

@@ -1,7 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalRepository;
 import org.junit.jupiter.api.Test;
 
@@ -22,7 +21,7 @@ class GetPersonalServiceTest {
     void getPersonal() {
 
         //given & when
-        query.getPersonal(new GetPersonalCommand(ANY_ID));
+//        query.getPersonal(new GetPersonalCommand(ANY_ID));
 
         //then
         verify(repository).findOne(ANY_ID);

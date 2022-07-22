@@ -1,7 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
-import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
+import injae.AddressBook.personal.application.port.in.GetPersonalQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,8 @@ public class GetPersonalService implements GetPersonalQuery {
     private final GetPersonalRepository repository;
 
     @Override
-    public Personal getPersonal(GetPersonalCommand command) {
-        return repository.findOne(command.getId());
+    public Personal getPersonal(Long id) {
+        return repository.findOne(id);
     }
 
 }

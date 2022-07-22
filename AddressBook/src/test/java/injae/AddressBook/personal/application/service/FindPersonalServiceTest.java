@@ -1,10 +1,8 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.find.FindPersonalCommand;
-import injae.AddressBook.personal.application.port.in.find.FindPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.FindPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.FindPersonalRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.mock;
@@ -25,7 +23,7 @@ class FindPersonalServiceTest {
     void findPersonalTest() {
 
         //given & when
-        useCase.findPersonalByName(new FindPersonalCommand(ANY_NAME));
+//        useCase.findPersonalByName(new FindPersonalCommand(ANY_NAME));
 
         //then
         verify(repository).findByName(ANY_NAME);

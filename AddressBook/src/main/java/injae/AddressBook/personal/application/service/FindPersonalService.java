@@ -1,7 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.find.FindPersonalCommand;
-import injae.AddressBook.personal.application.port.in.find.FindPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.FindPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.FindPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class FindPersonalService implements FindPersonalUseCase {
     private final FindPersonalRepository repository;
 
     @Override
-    public List<Personal> findPersonalByName(FindPersonalCommand command) {
-        return repository.findByName(command.getName());
+    public List<Personal> findPersonalByName(String name) {
+        return repository.findByName(name);
     }
 }
