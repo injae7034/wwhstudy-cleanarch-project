@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.application.port.in.record;
+package injae.AddressBook.personal.application.port.in;
 
 import injae.AddressBook.member.domain.Member;
 

@@ -2,7 +2,7 @@ package injae.AddressBook.personal.application.service;
 
 import injae.AddressBook.member.application.port.out.FindByEmailRepository;
 import injae.AddressBook.member.domain.Member;
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.RecordPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;

@@ -1,9 +1,8 @@
 package injae.AddressBook.personal.application.port.out;
 
-import injae.AddressBook.personal.domain.Personal;
-
 public interface CorrectPersonalRepository {
 
-    void update(Personal personal);
+    void update(Long id, String address,
+                String telephoneNumber, String emailAddress);
 
 }

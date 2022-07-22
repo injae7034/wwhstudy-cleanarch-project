@@ -50,18 +50,15 @@ public class Personal {
         this(null, name, address, telephoneNumber, emailAddress, member);
     }
 
-    public void changePersonalInfo(Personal personal) {
-        String address = personal.getAddress();
+    public void changePersonalInfo(String address, String telephoneNumber, String emailAddress) {
         if (this.address.compareTo(address) != 0) {
             this.address = address;
         }
 
-        String telephoneNumber = personal.getTelephoneNumber();
         if (this.telephoneNumber.compareTo(telephoneNumber) != 0) {
             this.telephoneNumber = telephoneNumber;
         }
 
-        String emailAddress = personal.getEmailAddress();
         if (this.emailAddress.compareTo(emailAddress) != 0) {
             this.emailAddress = emailAddress;
         }

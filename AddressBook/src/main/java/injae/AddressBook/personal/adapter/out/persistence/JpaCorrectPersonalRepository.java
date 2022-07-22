@@ -14,9 +14,11 @@ public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
     private final EntityManager em;
 
     @Override
-    public void update(Personal personalParam) {
-        Personal findPersonal = em.find(Personal.class, personalParam.getId());
+    public void update(Long id, String address,
+                       String telephoneNumber, String emailAddress) {
+        Personal findPersonal = em.find(Personal.class, id);
 
-        findPersonal.changePersonalInfo(personalParam);
+        findPersonal.changePersonalInfo(address, telephoneNumber, emailAddress);
+
     }
 }

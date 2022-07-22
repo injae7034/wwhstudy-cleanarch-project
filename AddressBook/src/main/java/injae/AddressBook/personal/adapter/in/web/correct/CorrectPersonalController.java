@@ -1,7 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web.correct;
 
-import injae.AddressBook.personal.application.port.in.correct.CorrectPersonalCommand;
-import injae.AddressBook.personal.application.port.in.correct.CorrectPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.CorrectPersonalUseCase;
 import injae.AddressBook.personal.application.port.in.get.GetPersonalCommand;
 import injae.AddressBook.personal.application.port.in.get.GetPersonalQuery;
 import injae.AddressBook.personal.domain.Personal;
@@ -45,14 +44,10 @@ public class CorrectPersonalController {
             return "correctPersonalForm";
         }
 
-        CorrectPersonalCommand command = new CorrectPersonalCommand(
-                correctPersonalForm.getId(),
-                correctPersonalForm.getName(),
+        useCase.correctPersonal(correctPersonalForm.getId(),
                 correctPersonalForm.getAddress(),
                 correctPersonalForm.getTelephoneNumber(),
                 correctPersonalForm.getEmailAddress());
-
-        useCase.correctPersonal(command);
 
         return "redirect:/";
     }

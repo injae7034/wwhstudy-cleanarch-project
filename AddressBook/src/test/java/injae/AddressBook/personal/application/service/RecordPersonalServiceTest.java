@@ -1,6 +1,5 @@
 package injae.AddressBook.personal.application.service;
 
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
 import injae.AddressBook.personal.application.port.out.RecordPersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 

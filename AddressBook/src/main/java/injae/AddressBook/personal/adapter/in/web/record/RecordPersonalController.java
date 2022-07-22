@@ -1,8 +1,7 @@
 package injae.AddressBook.personal.adapter.in.web.record;
 
 import injae.AddressBook.member.domain.Member;
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
-import injae.AddressBook.personal.domain.Personal;
+import injae.AddressBook.personal.application.port.in.RecordPersonalUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

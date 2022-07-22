@@ -2,7 +2,7 @@ package injae.AddressBook.personal.adapter.in.web.record;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import injae.AddressBook.common.PersonalTestData;
-import injae.AddressBook.personal.application.port.in.record.RecordPersonalUseCase;
+import injae.AddressBook.personal.application.port.in.RecordPersonalUseCase;
 import injae.AddressBook.personal.domain.Personal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
