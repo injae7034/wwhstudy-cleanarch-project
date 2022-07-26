@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web.find;
 
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.FindPersonalUseCase;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
+
 import javax.validation.Valid;
 import java.util.List;
 
@@ -35,14 +38,15 @@ public class FindPersonalController {
     }
 
     @PostMapping("/find")
-    public String findPersonal(@Valid FindPersonalForm form,
-                               BindingResult result) {
+    public String findPersonal(
+            @SessionAttribute(name = "loginMember", required = false) Member loginMember,
+            @Valid FindPersonalForm form, BindingResult result) {
 
         if (result.hasErrors()) {
             return "personal/findPersonalForm";
         }
 
-        personals = useCase.findPersonalByName(form.getName());
+        personals = useCase.findPersonalByName(loginMember, form.getName());
 
         return "redirect:/find";
     }

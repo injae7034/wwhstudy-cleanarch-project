@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.adapter.out.persistence;
 
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.out.ArrangePersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +16,10 @@ public class JpaArrangePersonalByNameRepository implements ArrangePersonalReposi
     private final EntityManager em;
 
     @Override
-    public List<Personal> arrange() {
-        return em.createQuery("select p from Personal p order by p.name",
+    public List<Personal> arrange(Member member) {
+        return em.createQuery("select p from Personal p where p.member = :member order by p.name ",
                         Personal.class)
+                .setParameter("member", member)
                 .getResultList();
     }
 }

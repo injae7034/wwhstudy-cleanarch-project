@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.ArrangePersonalQuery;
 import injae.AddressBook.personal.application.port.out.ArrangePersonalRepository;
 import injae.AddressBook.personal.domain.Personal;
@@ -17,7 +18,7 @@ public class ArrangePersonalByNameService implements ArrangePersonalQuery {
     private final ArrangePersonalRepository repository;
 
     @Override
-    public List<Personal> arrangePersonal() {
-        return repository.arrange();
+    public List<Personal> arrangePersonal(Member member) {
+        return repository.arrange(member);
     }
 }

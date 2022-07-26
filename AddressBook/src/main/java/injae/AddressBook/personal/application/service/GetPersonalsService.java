@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.application.service;
 
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import injae.AddressBook.personal.application.port.out.GetPersonalsRepository;
 import injae.AddressBook.personal.domain.Personal;
@@ -15,7 +16,8 @@ public class GetPersonalsService implements GetPersonalsQuery {
     private final GetPersonalsRepository repository;
 
     @Override
-    public List<Personal> getPersonals() {
-        return repository.findAll();
+    public List<Personal> getPersonals(Member member) {
+
+        return repository.findAll(member);
     }
 }
