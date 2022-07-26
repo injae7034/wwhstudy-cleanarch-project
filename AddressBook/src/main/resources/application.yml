@@ -1,6 +1,8 @@
 server:
   servlet:
-    session.tracking-modes: cookie
+    session:
+      tracking-modes: cookie
+      timeout: 1800
 
 spring:
   datasource:
