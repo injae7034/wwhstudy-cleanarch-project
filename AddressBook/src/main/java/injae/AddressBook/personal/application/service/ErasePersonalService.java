@@ -15,9 +15,7 @@ public class ErasePersonalService implements ErasePersonalUseCase {
     private final ErasePersonalRepository repository;
 
     @Override
-    public Personal erasePersonal(Personal personal) {
+    public void erasePersonal(Personal personal) {
         repository.delete(personal);
-
-        return personal;
     }
 }

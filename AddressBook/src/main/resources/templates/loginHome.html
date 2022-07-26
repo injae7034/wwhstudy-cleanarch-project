@@ -70,7 +70,7 @@
             </button>
         </div>
         <div class="col">
-            <button class="w-100 btn btn-warning btn-lg" type="button" th:onclick="|location.href='@{member/change}'|" >
+            <button class="w-100 btn btn-warning btn-lg" type="button" th:onclick="'javascript:withdrawal()'" >
                 회원탈퇴
             </button>
         </div>
@@ -103,6 +103,18 @@ function check(){
     form.setAttribute("method", "post");
     document.body.appendChild(form);
     form.submit();
+}
+
+function withdrawal(){
+     if (confirm("정말 회원탈퇴하시겠습니까?") == true){    //확인
+        var form = document.createElement("form");
+        form.setAttribute("method", "get");
+        form.setAttribute("action", "/member/withdrawal");
+        document.body.appendChild(form);
+        form.submit();
+    }else{   //취소
+        return;
+    }
 }
 </script>
 </html>
