@@ -33,17 +33,17 @@ public class LoginMemberController {
                               @RequestParam(defaultValue = "/") String redirectURL,
                               HttpServletRequest request) {
 
-        //공백이 있을 경우 예외 발생
+        //예외 처리
         if (bindingResult.hasErrors()) {
-            return "members/login";
+            return "member/loginMemberForm";
         }
 
         Member loginMember = useCase.loginMember(form.getEmail(), form.getPassword());
 
         if (loginMember == null) {
             bindingResult.reject("loginFail",
-                    "아이디 또는 비밀번호가 맞지 않습니다.");
-            return "members/loginMemberForm";
+                    "아이디 또는 비밀번호가 일치하지 않습니다.");
+            return "member/loginMemberForm";
         }
 
         //로그인 성공 처리

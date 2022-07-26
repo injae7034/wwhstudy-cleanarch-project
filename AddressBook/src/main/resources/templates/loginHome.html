@@ -19,11 +19,6 @@
                     이름으로 찾기
                 </button>
             </div>
-            <div class="col">
-                <button class="w-100 btn btn-info btn-lg" type="button" th:onclick="|location.href='@{logout}'|" >
-                    로그아웃
-                </button>
-            </div>
         </div>
         <br>
         <h4 class="mb-3" th:text="|로그인: ${member.name}|">로그인 사용자 이름</h4>
@@ -62,12 +57,31 @@
             </tbody>
         </table>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-info btn-lg" type="button" th:onclick="|location.href='@{logout}'|" >
+                로그아웃
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-success btn-lg" type="button" th:onclick="|location.href='@{member/change}'|" >
+                비밀번호 변경
+            </button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-warning btn-lg" type="button" th:onclick="|location.href='@{member/change}'|" >
+                회원탈퇴
+            </button>
+        </div>
+    </div>
+
     <div th:replace="fragments/footer :: footer" />
 </div> <!-- /container -->
 </body>
 <script>
 function erase(id){
-    if (confirm("정말 삭제하시겠습니까??") == true){    //확인
+    if (confirm("정말 삭제하시겠습니까?") == true){    //확인
         var form = document.createElement("form");
         form.setAttribute("method", "get");
         form.setAttribute("action", "/erase/" + id);
