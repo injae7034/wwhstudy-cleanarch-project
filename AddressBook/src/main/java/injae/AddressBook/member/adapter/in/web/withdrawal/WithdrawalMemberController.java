@@ -22,8 +22,8 @@ public class WithdrawalMemberController {
     private final FindMemberQuery query;
 
     @GetMapping("/withdrawal")
-    public String withdrawalMember(@SessionAttribute(name = "loginMember")
-                                           Member loginMember,
+    public String withdrawalMember(@SessionAttribute(name = "loginMemberId")
+                                           Long loginMemberId,
                                    HttpServletRequest request) {
 
         //세션 초기화
@@ -33,9 +33,9 @@ public class WithdrawalMemberController {
         }
 
         //멤버 삭제
-        Member findMember = query.findMember(loginMember.getId());
+        Member loginMember = query.findMember(loginMemberId);
 
-        useCase.withdrawalMember(findMember);
+        useCase.withdrawalMember(loginMember);
 
         return "redirect:/";
     }

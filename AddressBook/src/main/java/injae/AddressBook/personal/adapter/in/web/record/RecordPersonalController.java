@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web.record;
 
+import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.RecordPersonalUseCase;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,8 @@ public class RecordPersonalController {
 
     private final RecordPersonalUseCase useCase;
 
+    private final FindMemberQuery query;
+
     @GetMapping("/record")
     public String createForm(Model model) {
         model.addAttribute("recordPersonalForm", new RecordPersonalForm());
@@ -26,12 +29,14 @@ public class RecordPersonalController {
 
     @PostMapping("/record")
     public String recordPersonal(@Valid RecordPersonalForm form, BindingResult result,
-                                 @SessionAttribute(name = "loginMember")
-                                         Member loginMember) {
+                                 @SessionAttribute(name = "loginMemberId")
+                                         Long loginMemberId) {
 
         if (result.hasErrors()) {
             return "personal/recordPersonalForm";
         }
+
+        Member loginMember = query.findMember(loginMemberId);
 
         useCase.recordPersonal(form.getName(), form.getAddress(),
                 form.getTelephoneNumber(), form.getEmailAddress(), loginMember);

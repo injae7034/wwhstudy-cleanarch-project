@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.adapter.in.web.find;
 
+import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.FindPersonalUseCase;
 import injae.AddressBook.personal.domain.Personal;
@@ -20,6 +21,8 @@ public class FindPersonalController {
 
     private final FindPersonalUseCase useCase;
 
+    private final FindMemberQuery query;
+
     private List<Personal> personals;
 
     @GetMapping("/find")
@@ -39,12 +42,14 @@ public class FindPersonalController {
 
     @PostMapping("/find")
     public String findPersonal(
-            @SessionAttribute(name = "loginMember", required = false) Member loginMember,
+            @SessionAttribute(name = "loginMemberId") Long loginMemberId,
             @Valid FindPersonalForm form, BindingResult result) {
 
         if (result.hasErrors()) {
             return "personal/findPersonalForm";
         }
+
+        Member loginMember = query.findMember(loginMemberId);
 
         personals = useCase.findPersonalByName(loginMember, form.getName());
 

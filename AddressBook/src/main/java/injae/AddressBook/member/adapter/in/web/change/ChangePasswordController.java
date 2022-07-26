@@ -1,10 +1,10 @@
 package injae.AddressBook.member.adapter.in.web.change;
 
 import injae.AddressBook.member.application.port.in.ChangePasswordUseCase;
+import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -22,6 +22,8 @@ public class ChangePasswordController {
 
     private final ChangePasswordUseCase useCase;
 
+    private final FindMemberQuery findMemberQuery;
+
     @GetMapping("/change")
     public String changePasswordForm(@ModelAttribute ChangePasswordForm form) {
         return "member/changePasswordForm";
@@ -31,11 +33,13 @@ public class ChangePasswordController {
     public String changePassword(@Valid @ModelAttribute ChangePasswordForm form,
                                  BindingResult bindingResult,
                                  @RequestParam(defaultValue = "/") String redirectURL,
-                                 @SessionAttribute(name = "loginMember") Member loginMember) {
+                                 @SessionAttribute(name = "loginMemberId") Long loginMemberId) {
         //예외처리
         if (bindingResult.hasErrors()) {
             return "member/changePasswordForm";
         }
+
+        Member loginMember = findMemberQuery.findMember(loginMemberId);
 
         if (loginMember.getPassword().equals(form.getOriginalPassword()) == false) {
             bindingResult.reject("NotSameOriginalPassword",
