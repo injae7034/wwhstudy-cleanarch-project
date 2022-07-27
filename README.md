@@ -622,7 +622,9 @@ public class JpaFindPersonalRepository implements FindPersonalRepository {
 ![수정하기_기본_화면](https://user-images.githubusercontent.com/52854217/170686065-d18695f7-48f4-4e93-a5fb-328be17347c4.JPG)
 
 <br>
+
 **더티체킹**을 통해 변경사항을 db에 반영합니다.  
+
 ```java
 @Repository
 @RequiredArgsConstructor
