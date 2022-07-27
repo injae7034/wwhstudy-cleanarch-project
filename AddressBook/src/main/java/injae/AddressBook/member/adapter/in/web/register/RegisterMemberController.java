@@ -53,9 +53,6 @@ public class RegisterMemberController {
             return "member/registerMemberForm";
         }
 
-        //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
-        HttpSession session = request.getSession();
-
         //예외가 없으면(회원가입이 성공적으로 처리되면) 홈화면으로 돌아감
         return "redirect:/";
     }
