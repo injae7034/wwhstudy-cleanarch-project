@@ -723,7 +723,7 @@ public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
 
 ![데이터베이스에_저장된_순서](https://user-images.githubusercontent.com/52854217/170691042-53aeea82-f417-4f1d-b45d-04053cee3530.JPG)
 
-## 15.3 정리하기 기능과 관련된 홈화면 코드
+## 15.3 정리하기 기능과 관련된 Controller 
 ```java
 @Controller
 @RequiredArgsConstructor
@@ -792,6 +792,42 @@ public class HomeController {
 }
 ```
 
+## 15.4 db에서 로그인 된 멤버와 관련된 personal 데이터만 가져 오는 코드
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaGetPersonalsRepository implements GetPersonalsRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> findAll(Member member) {
+        return em.createQuery("select p from Personal p where p.member = :member",
+                        Personal.class)
+                .setParameter("member", member)
+                .getResultList();
+    }
+
+}
+```
+
+## 15.5 db에서 로그인 된 멤버와 관련된 personal 데이터를 정렬해서 가져 오는 코드
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaArrangePersonalByNameRepository implements ArrangePersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> arrange(Member member) {
+        return em.createQuery("select p from Personal p where p.member = :member order by p.name ",
+                        Personal.class)
+                .setParameter("member", member)
+                .getResultList();
+    }
+}
+```
 
 # 참고링크
 
