@@ -4,9 +4,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" th:object="${correctPersonalForm}"
-          method="post">
-        <!-- id -->
+    <form role="form" th:object="${correctPersonalForm}" method="post">
         <input type="hidden" th:field="*{id}" />
         <div class="form-group">
             <h4 th:for="name">이름: <span th:text="*{name}">message</span> </h4>

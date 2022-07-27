@@ -9,8 +9,7 @@
 <body>
 <div class="container">
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
-    <form role="form" action="/record" th:object="${recordPersonalForm}"
-          method="post">
+    <form role="form" th:object="${recordPersonalForm}" method="post">
         <div class="form-group">
             <label th:for="name">이름</label>
             <input type="text" th:field="*{name}" class="form-control"

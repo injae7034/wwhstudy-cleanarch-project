@@ -6,8 +6,7 @@
     <div th:replace="fragments/bodyHeader :: bodyHeader"/>
     <div>
         <div>
-            <form role="form" action="/find"
-                  th:object="${findPersonalForm}" method="post">
+            <form role="form" th:object="${findPersonalForm}" method="post">
                 <div class="form-group">
                     <label th:for="name">이름</label>
                     <input type="text" th:field="*{name}" class="form-control"
@@ -36,13 +35,12 @@ fieldError' : 'form-control'">
             </thead>
             <tbody th:if="${personals != null}">
             <tr th:each="personal : ${personals}">
-<!--                <td th:text="${personal.id}"></td>-->
                 <td th:text="${personal.name}"></td>
                 <td th:text="${personal.address}"></td>
                 <td th:text="${personal.telephoneNumber}"></td>
                 <td th:text="${personal.emailAddress}"></td>
                 <td>
-                    <a href="#" th:href="@{/correct/{id} (id=${personal.id})}"
+                    <a href="#" th:href="@{/personal/correct/{id} (id=${personal.id})}"
                        class="btn btn-primary" role="button">수정</a>
                 </td>
                 <td>
@@ -61,7 +59,7 @@ function erase(id){
     if (confirm("정말 삭제하시겠습니까??") == true){    //확인
         var form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/erase/" + id);
+        form.setAttribute("action", "/personal/erase/" + id);
         document.body.appendChild(form);
         form.submit();
     }else{   //취소

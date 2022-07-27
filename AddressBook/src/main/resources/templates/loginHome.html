@@ -10,12 +10,12 @@
     <div class="jumbotron">
         <div class="row">
             <div class="col">
-                <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{record}'|">
+                <button class="w-100 btn btn-secondary btn-lg" type="button" th:onclick="|location.href='@{/personal/record}'|">
                     기재하기
                 </button>
             </div>
             <div class="col">
-                <button class="w-100 btn btn-dark btn-lg" type="button" th:onclick="|location.href='@{find}'|" >
+                <button class="w-100 btn btn-dark btn-lg" type="button" th:onclick="|location.href='@{/personal/find}'|" >
                     이름으로 찾기
                 </button>
             </div>
@@ -46,7 +46,7 @@
                 <td th:text="${personal.telephoneNumber}"></td>
                 <td th:text="${personal.emailAddress}"></td>
                 <td>
-                    <a href="#" th:href="@{/correct/{id} (id=${personal.id})}"
+                    <a href="#" th:href="@{/personal/correct/{id} (id=${personal.id})}"
                        class="btn btn-primary" role="button">수정</a>
                 </td>
                 <td>
@@ -60,12 +60,12 @@
 
     <div class="row">
         <div class="col">
-            <button class="w-100 btn btn-info btn-lg" type="button" th:onclick="|location.href='@{logout}'|" >
+            <button class="w-100 btn btn-info btn-lg" type="button" th:onclick="|location.href='@{/member/logout}'|" >
                 로그아웃
             </button>
         </div>
         <div class="col">
-            <button class="w-100 btn btn-success btn-lg" type="button" th:onclick="|location.href='@{member/change}'|" >
+            <button class="w-100 btn btn-success btn-lg" type="button" th:onclick="|location.href='@{/member/change}'|" >
                 비밀번호 변경
             </button>
         </div>
@@ -84,7 +84,7 @@ function erase(id){
     if (confirm("정말 삭제하시겠습니까?") == true){    //확인
         var form = document.createElement("form");
         form.setAttribute("method", "get");
-        form.setAttribute("action", "/erase/" + id);
+        form.setAttribute("action", "/personal/erase/" + id);
         document.body.appendChild(form);
         form.submit();
     }else{   //취소
