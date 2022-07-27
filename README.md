@@ -1,5 +1,12 @@
 # 헥사고날 아키텍처를 적용한 주소록 웹프로젝트
-기존 버전에는 로그인 기능이 없이 주소록 기능만 있었는데 여기에 **로그인 기능을 추가**하였습니다.
+기존 버전에는 로그인 기능이 없이 주소록 기능만 있었습니다.  
+
+여기에 **로그인 기능을 추가**하여서 로그인 된 멤버만 주소록을 이용할 수 있도록 하였습니다.  
+
+로그인 하지 않은 회원은 url을 알더라도 접근하지 못하도록 스프링 인터셉터를 적용하였습니다.  
+
+또한 로그인한 회원마다 각자 다른 주소록의 개인 데이터를 가질 수 있도록 하였습니다.  
+
 
 # 목차
 [1. 기술 스택](#1-기술-스택)  
@@ -18,25 +25,6 @@
 [14. 지우기 팝업창](#14-지우기-팝업창)  
 [15. 홈화면에서 정렬하기 체크박스 체크했을 때 화면](#15-홈화면에서-정렬하기-체크박스-체크했을-때-화면)  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 1. 기술 스택
 ## 1.1 백엔드 : java, spring, jpa, h2 database
 ## 1.2 프론트엔드 : thymeleaf, html, javascript, bootstrap
@@ -44,6 +32,13 @@
 <br><br>
 
 # 2. 도메인
+도메인에는 회원인 Member와 주소록의 개인 정보를 의미하는 Personal이 있습니다.  
+
+Member는 Personal의 참조값들을 List로 가지고 있고, Personal은 Member의 단일 참조값을 가지고 있습니다.  
+
+즉, **일대다 양방향 관계**로 설정하였습니다.  
+
+
 ## 2.1 Member
 ```java
 @Entity
@@ -477,6 +472,82 @@ public class WebConfig implements WebMvcConfigurer {
 
 <br><br>
 
+그리고 기재된 개인의 정보는 당연히 현재 로그인된 멤버와 연관되어(현재 멤버의 id값을 외래키로 하여) DB에 저장됩니다.  
+```java
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/personal")
+public class RecordPersonalController {
+
+    private final RecordPersonalUseCase useCase;
+
+    private final FindMemberQuery query;
+
+    @GetMapping("/record")
+    public String createForm(Model model) {
+        model.addAttribute("recordPersonalForm", new RecordPersonalForm());
+        return "personal/recordPersonalForm";
+    }
+
+    @PostMapping("/record")
+    public String recordPersonal(@Valid RecordPersonalForm form, BindingResult result,
+                                 @SessionAttribute(name = "loginMemberId")
+                                         Long loginMemberId) {
+
+        if (result.hasErrors()) {
+            return "personal/recordPersonalForm";
+        }
+
+        Member loginMember = query.findMember(loginMemberId);
+
+        useCase.recordPersonal(form.getName(), form.getAddress(),
+                form.getTelephoneNumber(), form.getEmailAddress(), loginMember);
+
+        return "redirect:/";
+    }
+}
+```
+```java
+@RequiredArgsConstructor
+@Transactional
+@Service
+public class RecordPersonalService implements RecordPersonalUseCase {
+
+    private final RecordPersonalRepository recordRepository;
+
+    private final FindByEmailRepository findRepository;
+
+    @Override
+    public Long recordPersonal(String name, String address, String telephoneNumber,
+                               String emailAddress, Member member) {
+
+        //db에 저장할 새로운 personal 객체 생성
+        Personal personal = new Personal(name, address, telephoneNumber,
+                emailAddress, member);
+
+        //db에 저장(personal은 member의 참조값을 알고 있음)
+        recordRepository.save(personal);
+
+        //member는 현재 personal의 참조값을 모르기 때문에 연관관계를 맺어줘야 함.
+        // 멤버를 찾음으로써 영속성 컨텍스트를 활성화시킨다.
+        Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
+
+        //이메일에 해당하는 멤버가 있으면
+        if (findMember != null) {
+            //멤버에 새로 생성한 personal의 참조값을 추가한다.
+            findMember.getPersonals().add(personal);
+
+            return personal.getId();
+        } else {
+            //멤버가 없으면 예외를 발생시킨다.
+            throw new IllegalStateException();
+        }
+    }
+}
+```
+
+<br><br>
+
 ## 11.1 기재하기 예외 화면1(이름, 주소, 전화번호는 필수, 이메일 선택)
 **이름, 주소, 전화번호는 반드시 기재**해야합니다.  
 
@@ -564,6 +635,29 @@ public class JpaFindPersonalRepository implements FindPersonalRepository {
 
 ![수정하기_기본_화면](https://user-images.githubusercontent.com/52854217/170686065-d18695f7-48f4-4e93-a5fb-328be17347c4.JPG)
 
+<br>
+
+**더티체킹**을 통해 변경사항을 db에 반영합니다.  
+
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public void update(Long id, String address,
+                       String telephoneNumber, String emailAddress) {
+        Personal findPersonal = em.find(Personal.class, id);
+
+        findPersonal.changePersonalInfo(address, telephoneNumber, emailAddress);
+
+    }
+}
+```
+
+
 <br><br>
 
 ## 13.1 수정하기 예외 화면1(주소, 전화번호는 필수, 이메일 선택)  
@@ -643,6 +737,111 @@ public class JpaFindPersonalRepository implements FindPersonalRepository {
 
 ![데이터베이스에_저장된_순서](https://user-images.githubusercontent.com/52854217/170691042-53aeea82-f417-4f1d-b45d-04053cee3530.JPG)
 
+## 15.3 정리하기 기능과 관련된 Controller 
+```java
+@Controller
+@RequiredArgsConstructor
+public class HomeController {
+    private final GetPersonalsQuery getPersonalsQuery;
+
+    private final ArrangePersonalQuery arrangePersonalQuery;
+
+    private final FindMemberQuery findMemberQuery;
+
+    private boolean isArrangeChecked = false;
+
+    private List<Personal> personals;
+
+    @GetMapping("/")
+    public String home(
+            @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,
+            HttpServletRequest request,
+            Model model) {
+
+        //세션에 회원 데이타가 없으면 home
+        if (loginMemberId == null) {
+            //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
+            HttpSession session = request.getSession();
+
+            return "home";
+        }
+
+        Member loginMember = findMemberQuery.findMember(loginMemberId);
+
+        if(isArrangeChecked == false) {
+            personals = getPersonalsQuery.getPersonals(loginMember);
+        } else {
+            personals = arrangePersonalQuery.arrangePersonal(loginMember);
+        }
+
+        model.addAttribute("personals", personals);
+        model.addAttribute("isArrangeChecked", isArrangeChecked);
+        model.addAttribute("member", loginMember);
+
+        return "loginHome";
+    }
+
+    @PostMapping("/")
+    public String arrangePersonal( @SessionAttribute(name = "loginMemberId", required = false)
+                                               Long loginMemberId,
+                                   HttpServletRequest request,
+                                   Model model) {
+
+        Member loginMember = findMemberQuery.findMember(loginMemberId);
+
+        if(isArrangeChecked == false) {
+            isArrangeChecked = true;
+            personals = arrangePersonalQuery.arrangePersonal(loginMember);
+        } else {
+            isArrangeChecked = false;
+            personals = getPersonalsQuery.getPersonals(loginMember);
+        }
+        model.addAttribute("personals", personals);
+        model.addAttribute("isArrangeChecked", isArrangeChecked);
+        model.addAttribute("member", loginMember);
+
+        return "loginHome";
+    }
+
+}
+```
+
+## 15.4 db에서 로그인 된 멤버와 관련된 personal 데이터만 가져 오는 Repository
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaGetPersonalsRepository implements GetPersonalsRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> findAll(Member member) {
+        return em.createQuery("select p from Personal p where p.member = :member",
+                        Personal.class)
+                .setParameter("member", member)
+                .getResultList();
+    }
+
+}
+```
+
+## 15.5 db에서 로그인 된 멤버와 관련된 personal 데이터를 정렬해서 가져 오는 Repository
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaArrangePersonalByNameRepository implements ArrangePersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> arrange(Member member) {
+        return em.createQuery("select p from Personal p where p.member = :member order by p.name ",
+                        Personal.class)
+                .setParameter("member", member)
+                .getResultList();
+    }
+}
+```
 
 # 참고링크
 
