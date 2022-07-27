@@ -792,7 +792,7 @@ public class HomeController {
 }
 ```
 
-## 15.4 db에서 로그인 된 멤버와 관련된 personal 데이터만 가져 오는 코드
+## 15.4 db에서 로그인 된 멤버와 관련된 personal 데이터만 가져 오는 Repository
 ```java
 @Repository
 @RequiredArgsConstructor
@@ -811,7 +811,7 @@ public class JpaGetPersonalsRepository implements GetPersonalsRepository {
 }
 ```
 
-## 15.5 db에서 로그인 된 멤버와 관련된 personal 데이터를 정렬해서 가져 오는 코드
+## 15.5 db에서 로그인 된 멤버와 관련된 personal 데이터를 정렬해서 가져 오는 Repository
 ```java
 @Repository
 @RequiredArgsConstructor
