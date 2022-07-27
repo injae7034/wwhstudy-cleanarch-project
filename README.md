@@ -621,6 +621,27 @@ public class JpaFindPersonalRepository implements FindPersonalRepository {
 
 ![수정하기_기본_화면](https://user-images.githubusercontent.com/52854217/170686065-d18695f7-48f4-4e93-a5fb-328be17347c4.JPG)
 
+<br>
+**더티체킹**을 통해 변경사항을 db에 반영합니다.  
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public void update(Long id, String address,
+                       String telephoneNumber, String emailAddress) {
+        Personal findPersonal = em.find(Personal.class, id);
+
+        findPersonal.changePersonalInfo(address, telephoneNumber, emailAddress);
+
+    }
+}
+```
+
+
 <br><br>
 
 ## 13.1 수정하기 예외 화면1(주소, 전화번호는 필수, 이메일 선택)  
