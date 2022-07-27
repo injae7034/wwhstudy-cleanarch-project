@@ -18,25 +18,6 @@
 [14. 지우기 팝업창](#14-지우기-팝업창)  
 [15. 홈화면에서 정렬하기 체크박스 체크했을 때 화면](#15-홈화면에서-정렬하기-체크박스-체크했을-때-화면)  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # 1. 기술 스택
 ## 1.1 백엔드 : java, spring, jpa, h2 database
 ## 1.2 프론트엔드 : thymeleaf, html, javascript, bootstrap
@@ -642,6 +623,75 @@ public class JpaFindPersonalRepository implements FindPersonalRepository {
 **이름을 기준으로 오름차순으로 정렬되어서 출력되지 실제 데이터베이스의 저장 순서에는 영향을 끼치지 않습니다.**  
 
 ![데이터베이스에_저장된_순서](https://user-images.githubusercontent.com/52854217/170691042-53aeea82-f417-4f1d-b45d-04053cee3530.JPG)
+
+## 15.3 정리하기 기능과 관련된 홈화면 코드
+```java
+@Controller
+@RequiredArgsConstructor
+public class HomeController {
+    private final GetPersonalsQuery getPersonalsQuery;
+
+    private final ArrangePersonalQuery arrangePersonalQuery;
+
+    private final FindMemberQuery findMemberQuery;
+
+    private boolean isArrangeChecked = false;
+
+    private List<Personal> personals;
+
+    @GetMapping("/")
+    public String home(
+            @SessionAttribute(name = "loginMemberId", required = false) Long loginMemberId,
+            HttpServletRequest request,
+            Model model) {
+
+        //세션에 회원 데이타가 없으면 home
+        if (loginMemberId == null) {
+            //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
+            HttpSession session = request.getSession();
+
+            return "home";
+        }
+
+        Member loginMember = findMemberQuery.findMember(loginMemberId);
+
+        if(isArrangeChecked == false) {
+            personals = getPersonalsQuery.getPersonals(loginMember);
+        } else {
+            personals = arrangePersonalQuery.arrangePersonal(loginMember);
+        }
+
+        model.addAttribute("personals", personals);
+        model.addAttribute("isArrangeChecked", isArrangeChecked);
+        model.addAttribute("member", loginMember);
+
+        return "loginHome";
+    }
+
+    @PostMapping("/")
+    public String arrangePersonal( @SessionAttribute(name = "loginMemberId", required = false)
+                                               Long loginMemberId,
+                                   HttpServletRequest request,
+                                   Model model) {
+
+        Member loginMember = findMemberQuery.findMember(loginMemberId);
+
+        if(isArrangeChecked == false) {
+            isArrangeChecked = true;
+            personals = arrangePersonalQuery.arrangePersonal(loginMember);
+        } else {
+            isArrangeChecked = false;
+            personals = getPersonalsQuery.getPersonals(loginMember);
+        }
+        model.addAttribute("personals", personals);
+        model.addAttribute("isArrangeChecked", isArrangeChecked);
+        model.addAttribute("member", loginMember);
+
+        return "loginHome";
+    }
+
+}
+```
 
 
 # 참고링크
