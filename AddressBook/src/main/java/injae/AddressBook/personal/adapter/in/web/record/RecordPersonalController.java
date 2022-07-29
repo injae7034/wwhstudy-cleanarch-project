@@ -38,6 +38,7 @@ public class RecordPersonalController {
             return "personal/recordPersonalForm";
         }
 
+        //여기서 id로 멤버를 찾기 때문에 이제 member는 영속성컨텍스트에서 관리됨.
         Member loginMember = query.findMember(loginMemberId);
 
         useCase.recordPersonal(form.getName(), form.getAddress(),

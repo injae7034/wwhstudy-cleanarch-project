@@ -29,19 +29,23 @@ public class RecordPersonalService implements RecordPersonalUseCase {
         //db에 저장(personal은 member의 참조값을 알고 있음)
         recordRepository.save(personal);
 
+        member.getPersonals().add(personal);
+
+        return personal.getId();
+
         //member는 현재 personal의 참조값을 모르기 때문에 연관관계를 맺어줘야 함.
         // 멤버를 찾음으로써 영속성 컨텍스트를 활성화시킨다.
-        Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
-
-        //이메일에 해당하는 멤버가 있으면
-        if (findMember != null) {
-            //멤버에 새로 생성한 personal의 참조값을 추가한다.
-            findMember.getPersonals().add(personal);
-
-            return personal.getId();
-        } else {
-            //멤버가 없으면 예외를 발생시킨다.
-            throw new IllegalStateException();
-        }
+//        Member findMember = findRepository.findByEmail(member.getEmail()).orElse(null);
+//
+//        //이메일에 해당하는 멤버가 있으면
+//        if (findMember != null) {
+//            //멤버에 새로 생성한 personal의 참조값을 추가한다.
+//            findMember.getPersonals().add(personal);
+//
+//            return personal.getId();
+//        } else {
+//            //멤버가 없으면 예외를 발생시킨다.
+//            throw new IllegalStateException();
+//        }
     }
 }
