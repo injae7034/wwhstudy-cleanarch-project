@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.adapter.in.web.record;
+package injae.AddressBook.personal.adapter.in.webapplication.record;
 
 import lombok.Getter;
 import lombok.Setter;

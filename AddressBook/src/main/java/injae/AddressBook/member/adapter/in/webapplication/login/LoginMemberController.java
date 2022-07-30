@@ -1,4 +1,4 @@
-package injae.AddressBook.member.adapter.in.web.login;
+package injae.AddressBook.member.adapter.in.webapplication.login;
 
 import injae.AddressBook.member.application.port.in.LoginMemberUseCase;
 import injae.AddressBook.member.domain.Member;

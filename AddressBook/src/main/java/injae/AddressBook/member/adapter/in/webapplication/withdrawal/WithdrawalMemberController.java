@@ -1,4 +1,4 @@
-package injae.AddressBook.member.adapter.in.web.withdrawal;
+package injae.AddressBook.member.adapter.in.webapplication.withdrawal;
 
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.application.port.in.WithdrawalMemberUseCase;

@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.adapter.in.web.correct;
+package injae.AddressBook.personal.adapter.in.webapplication.correct;
 
 import injae.AddressBook.personal.application.port.in.CorrectPersonalUseCase;
 import injae.AddressBook.personal.application.port.in.GetPersonalQuery;

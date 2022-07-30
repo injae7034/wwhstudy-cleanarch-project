@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.adapter.in.web.erase;
+package injae.AddressBook.personal.adapter.in.webapplication.erase;
 
 import injae.AddressBook.personal.application.port.in.ErasePersonalUseCase;
 import injae.AddressBook.personal.application.port.in.GetPersonalQuery;

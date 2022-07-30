@@ -1,4 +1,4 @@
-package injae.AddressBook.member.adapter.in.web.register;
+package injae.AddressBook.member.adapter.in.webapplication.register;
 
 import injae.AddressBook.common.exception.DuplicateMemberException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller

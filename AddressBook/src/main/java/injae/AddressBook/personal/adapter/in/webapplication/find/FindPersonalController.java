@@ -1,4 +1,4 @@
-package injae.AddressBook.personal.adapter.in.web.find;
+package injae.AddressBook.personal.adapter.in.webapplication.find;
 
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;

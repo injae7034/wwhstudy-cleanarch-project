@@ -1,4 +1,4 @@
-package injae.AddressBook.member.adapter.in.web.logout;
+package injae.AddressBook.member.adapter.in.webapplication.logout;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
