@@ -24,6 +24,7 @@ public class LoginMemberController {
 
     @GetMapping("/login")
     public String loginForm(@ModelAttribute LoginMemberForm form) {
+
         return "member/loginMemberForm";
     }
 
