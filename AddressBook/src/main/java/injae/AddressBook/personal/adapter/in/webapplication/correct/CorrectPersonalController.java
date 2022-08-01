@@ -1,5 +1,7 @@
 package injae.AddressBook.personal.adapter.in.webapplication.correct;
 
+import injae.AddressBook.member.application.port.in.FindMemberQuery;
+import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.personal.application.port.in.CorrectPersonalUseCase;
 import injae.AddressBook.personal.application.port.in.GetPersonalQuery;
 import injae.AddressBook.personal.domain.Personal;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import javax.validation.Valid;
 
@@ -19,12 +22,16 @@ import javax.validation.Valid;
 @RequestMapping("/personal")
 public class CorrectPersonalController {
 
-    private final GetPersonalQuery query;
-    private final CorrectPersonalUseCase useCase;
+    private final FindMemberQuery findMemberQuery;
+    private final GetPersonalQuery getPersonalQuery;
+    private final CorrectPersonalUseCase correctPersonalUseCase;
 
     @GetMapping("/correct/{id}")
-    public String createForm(@PathVariable("id") Long id, Model model) {
-        Personal personal = query.getPersonal(id);
+    public String createForm(@SessionAttribute(name = "loginMemberId") Long loginMemberId,
+            @PathVariable("id") Long id, Model model) {
+        Member findMember = findMemberQuery.findMember(loginMemberId);
+
+        Personal personal = getPersonalQuery.getPersonal(findMember, id);
 
         model.addAttribute("correctPersonalForm",
                 new CorrectPersonalForm(
@@ -45,7 +52,7 @@ public class CorrectPersonalController {
             return "correctPersonalForm";
         }
 
-        useCase.correctPersonal(correctPersonalForm.getId(),
+        correctPersonalUseCase.correctPersonal(correctPersonalForm.getId(),
                 correctPersonalForm.getAddress(),
                 correctPersonalForm.getTelephoneNumber(),
                 correctPersonalForm.getEmailAddress());
