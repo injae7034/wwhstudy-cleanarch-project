@@ -22,14 +22,21 @@ public class RegisterMemberApiController {
 
     @PostMapping("/members")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerMember(@RequestBody @Valid
+    public ResponseEntity<RegisterMemberRequest> registerMember(@RequestBody @Valid
                                                          RegisterMemberRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new PasswordNotSameAsConfirmPasswordException(
                     "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
         }
 
-        Long savedId = useCase.registerMember(
-                request.getEmail(), request.getPassword(), request.getName());
+        Long savedId = useCase.registerMember(request.getEmail(), request.getPassword(), request.getName());
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+
     }
 }

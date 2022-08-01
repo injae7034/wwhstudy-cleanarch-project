@@ -18,7 +18,7 @@ public class LoginMemberApiController {
 
     private final LoginMemberUseCase useCase;
 
-    @GetMapping("/members")
+    @GetMapping("/members/login")
     public ResponseEntity<LoginMemberResponse> loginMember(@RequestBody @Valid LoginMemberRequest request) {
 
         Member loginMember = useCase.loginMember(request.getEmail(), request.getPassword());
