@@ -1,4 +1,4 @@
-package injae.AddressBook.common.exception;
+package injae.AddressBook.member.exception;
 
 public class DuplicateMemberException extends RuntimeException {
 

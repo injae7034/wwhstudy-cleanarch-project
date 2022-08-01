@@ -1,7 +1,7 @@
 package injae.AddressBook.member.adapter.in.api.withdrawal;
 
-import injae.AddressBook.common.exception.MemberNotFoundException;
-import injae.AddressBook.common.exception.NotSamePasswordException;
+import injae.AddressBook.member.exception.MemberNotFoundException;
+import injae.AddressBook.member.exception.NotSamePasswordException;
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.application.port.in.WithdrawalMemberUseCase;
 import injae.AddressBook.member.domain.Member;

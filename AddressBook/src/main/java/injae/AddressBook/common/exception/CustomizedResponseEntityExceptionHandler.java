@@ -1,5 +1,8 @@
 package injae.AddressBook.common.exception;
 
+import injae.AddressBook.member.exception.DuplicateMemberException;
+import injae.AddressBook.member.exception.MemberNotFoundException;
+import injae.AddressBook.member.exception.NotSamePasswordException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

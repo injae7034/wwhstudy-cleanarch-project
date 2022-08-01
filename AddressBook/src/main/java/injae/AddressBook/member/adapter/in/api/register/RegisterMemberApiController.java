@@ -1,6 +1,6 @@
 package injae.AddressBook.member.adapter.in.api.register;
 
-import injae.AddressBook.common.exception.NotSamePasswordException;
+import injae.AddressBook.member.exception.NotSamePasswordException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

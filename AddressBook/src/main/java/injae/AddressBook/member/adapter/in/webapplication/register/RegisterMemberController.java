@@ -1,6 +1,6 @@
 package injae.AddressBook.member.adapter.in.webapplication.register;
 
-import injae.AddressBook.common.exception.DuplicateMemberException;
+import injae.AddressBook.member.exception.DuplicateMemberException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

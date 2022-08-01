@@ -1,6 +1,6 @@
 package injae.AddressBook.member.application.service;
 
-import injae.AddressBook.common.exception.DuplicateMemberException;
+import injae.AddressBook.member.exception.DuplicateMemberException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
 import injae.AddressBook.member.application.port.out.FindByEmailRepository;
 import injae.AddressBook.member.application.port.out.RegisterMemberRepository;

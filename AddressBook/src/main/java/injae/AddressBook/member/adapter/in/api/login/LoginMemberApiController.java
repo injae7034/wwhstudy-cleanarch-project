@@ -1,6 +1,6 @@
 package injae.AddressBook.member.adapter.in.api.login;
 
-import injae.AddressBook.common.exception.MemberNotFoundException;
+import injae.AddressBook.member.exception.MemberNotFoundException;
 import injae.AddressBook.member.application.port.in.LoginMemberUseCase;
 import injae.AddressBook.member.domain.Member;
 import lombok.RequiredArgsConstructor;

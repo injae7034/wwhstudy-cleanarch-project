@@ -1,17 +1,15 @@
 package injae.AddressBook.member.adapter.in.api.change;
 
-import injae.AddressBook.common.exception.MemberNotFoundException;
-import injae.AddressBook.common.exception.NotSamePasswordException;
+import injae.AddressBook.member.exception.MemberNotFoundException;
+import injae.AddressBook.member.exception.NotSamePasswordException;
 import injae.AddressBook.member.application.port.in.ChangePasswordUseCase;
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

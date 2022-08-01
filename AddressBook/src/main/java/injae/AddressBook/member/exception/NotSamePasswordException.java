@@ -1,4 +1,4 @@
-package injae.AddressBook.common.exception;
+package injae.AddressBook.member.exception;
 
 public class NotSamePasswordException extends RuntimeException {
     public NotSamePasswordException() {
