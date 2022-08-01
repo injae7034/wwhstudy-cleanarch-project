@@ -1,6 +1,6 @@
 package injae.AddressBook.member.adapter.in.api.register;
 
-import injae.AddressBook.common.exception.PasswordNotSameAsConfirmPasswordException;
+import injae.AddressBook.common.exception.NotSamePasswordException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class RegisterMemberApiController {
     public ResponseEntity<RegisterMemberRequest> registerMember(@RequestBody @Valid
                                                          RegisterMemberRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
-            throw new PasswordNotSameAsConfirmPasswordException(
+            throw new NotSamePasswordException(
                     "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
         }
 

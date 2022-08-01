@@ -33,7 +33,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(PasswordNotSameAsConfirmPasswordException.class)
+    @ExceptionHandler(NotSamePasswordException.class)
     public final ResponseEntity<Object> handlePasswordNotSameAsConfirmPasswordExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(

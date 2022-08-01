@@ -19,7 +19,7 @@ public class FindMemberApiController {
         Member findMember = findMemberQuery.findMember(id);
 
         if (findMember == null) {
-            throw new MemberNotFoundException("해당 id의 회원정보를 찾을 수 없습니다.");
+            throw new MemberNotFoundException("해당 id와 일치하는 회원정보를 찾을 수 없습니다.");
         }
 
         return findMember;
