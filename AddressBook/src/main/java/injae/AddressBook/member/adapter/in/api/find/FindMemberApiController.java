@@ -15,14 +15,15 @@ public class FindMemberApiController {
     private final FindMemberQuery findMemberQuery;
 
     @GetMapping("/members/{id}")
-    public Member loginMemberController(@PathVariable Long id) {
+    public FindMemberResponse loginMemberController(@PathVariable Long id) {
         Member findMember = findMemberQuery.findMember(id);
 
         if (findMember == null) {
             throw new MemberNotFoundException("해당 id와 일치하는 회원정보를 찾을 수 없습니다.");
         }
 
-        return findMember;
+        return new FindMemberResponse(
+                findMember.getEmail(), findMember.getName(), findMember.getPersonals());
     }
 
 }
