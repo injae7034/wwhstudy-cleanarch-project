@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class GetPersonalResponse {
+public class GetPersonalByMemberResponse {
 
     private String name;
     private String address;

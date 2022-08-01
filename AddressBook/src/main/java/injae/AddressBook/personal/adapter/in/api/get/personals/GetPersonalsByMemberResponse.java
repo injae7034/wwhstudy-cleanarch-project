@@ -1,6 +1,6 @@
 package injae.AddressBook.personal.adapter.in.api.get.personals;
 
-import injae.AddressBook.personal.adapter.in.api.get.personal.GetPersonalResponse;
+import injae.AddressBook.personal.adapter.in.api.get.personal.GetPersonalByMemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,9 +8,9 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class GetPersonalsResponse {
+public class GetPersonalsByMemberResponse {
 
     int count;
-    List<GetPersonalResponse> personals;
+    List<GetPersonalByMemberResponse> personals;
 
 }

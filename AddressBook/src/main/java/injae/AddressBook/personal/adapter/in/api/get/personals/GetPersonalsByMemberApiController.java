@@ -3,7 +3,7 @@ package injae.AddressBook.personal.adapter.in.api.get.personals;
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import injae.AddressBook.member.exception.MemberNotFoundException;
-import injae.AddressBook.personal.adapter.in.api.get.personal.GetPersonalResponse;
+import injae.AddressBook.personal.adapter.in.api.get.personal.GetPersonalByMemberResponse;
 import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +16,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class GetPersonalsApiController {
+public class GetPersonalsByMemberApiController {
 
     private final FindMemberQuery findMemberQuery;
 
     private final GetPersonalsQuery getPersonalsQuery;
 
     @GetMapping("/members/{memberId}/personals")
-    public GetPersonalsResponse getPersonals(@PathVariable Long memberId) {
+    public GetPersonalsByMemberResponse getPersonalsByMember(@PathVariable Long memberId) {
 
         Member findMember = findMemberQuery.findMember(memberId);
 
@@ -31,18 +31,18 @@ public class GetPersonalsApiController {
             throw new MemberNotFoundException("해당 멤버를 찾을 수 없습니다.");
         }
 
-        List<GetPersonalResponse> getPersonalsResponses = new ArrayList<>();
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
         List<Personal> personals = getPersonalsQuery.getPersonals(findMember);
 
         for (Personal personal : personals) {
-            getPersonalsResponses.add(new GetPersonalResponse(
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
                     personal.getName(),
                     personal.getAddress(),
                     personal.getTelephoneNumber(),
                     personal.getEmailAddress()));
         }
 
-        return new GetPersonalsResponse(getPersonalsResponses.size(), getPersonalsResponses);
+        return new GetPersonalsByMemberResponse(getPersonalsResponses.size(), getPersonalsResponses);
     }
 
 }

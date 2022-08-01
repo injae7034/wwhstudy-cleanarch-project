@@ -22,7 +22,7 @@ public class RegisterMemberApiController {
 
     @PostMapping("/members")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<RegisterMemberRequest> registerMember(@RequestBody @Valid
+    public ResponseEntity registerMember(@RequestBody @Valid
                                                          RegisterMemberRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new NotSamePasswordException(

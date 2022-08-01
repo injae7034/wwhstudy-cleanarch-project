@@ -13,15 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class GetPersonalApiController {
+public class GetPersonalByMemberApiController {
 
     private final FindMemberQuery findMemberQuery;
 
     private final GetPersonalQuery getPersonalQuery;
 
     @GetMapping("/members/{memberId}/personals/{personalId}")
-    public GetPersonalResponse getPersonal(@PathVariable Long memberId,
-                                           @PathVariable Long personalId) {
+    public GetPersonalByMemberResponse getPersonalByMember(@PathVariable Long memberId,
+                                                           @PathVariable Long personalId) {
 
         Member findMember = findMemberQuery.findMember(memberId);
 
@@ -35,7 +35,7 @@ public class GetPersonalApiController {
             throw new PersonalNotFoundException("해당하는 개인 정보를 찾을 수 없습니다.");
         }
 
-        return new GetPersonalResponse(
+        return new GetPersonalByMemberResponse(
                 findPersonal.getName(),
                 findPersonal.getAddress(),
                 findPersonal.getTelephoneNumber(),
