@@ -3,9 +3,11 @@ package injae.AddressBook.member.adapter.in.api.register;
 import injae.AddressBook.common.exception.PasswordNotSameAsConfirmPasswordException;
 import injae.AddressBook.member.application.port.in.RegisterMemberUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -19,21 +21,15 @@ public class RegisterMemberApiController {
     private final RegisterMemberUseCase useCase;
 
     @PostMapping("/members")
-    public ResponseEntity<RegisterMemberRequest> registerMember(@RequestBody @Valid
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerMember(@RequestBody @Valid
                                                          RegisterMemberRequest request) {
         if (!request.getPassword().equals(request.getConfirmPassword())) {
             throw new PasswordNotSameAsConfirmPasswordException(
                     "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
         }
 
-        Long savedId = useCase.registerMember(request.getEmail(), request.getPassword(), request.getName());
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(savedId)
-                .toUri();
-
-        return ResponseEntity.created(location).build();
-
+        Long savedId = useCase.registerMember(
+                request.getEmail(), request.getPassword(), request.getName());
     }
 }
