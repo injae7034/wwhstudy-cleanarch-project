@@ -26,7 +26,6 @@ public class ChangeMemberApiController {
 
     private final FindMemberQuery findMemberQuery;
 
-    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/members/{id}")
     public ResponseEntity changeMember(@PathVariable Long id,
                                        @RequestBody @Valid ChangeMemberRequest request) {
