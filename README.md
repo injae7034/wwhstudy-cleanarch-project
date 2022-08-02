@@ -46,6 +46,7 @@ API
 [22. 비밀번호 변경 API](#22-비밀번호-변경-API)  
 [23. 회원탈퇴 API](#23-회원탈퇴-API)  
 [24. personal 도메인 패키지 구조](#24-personal-도메인-패키지-구조)  
+[25. 기재하기 API](#25-기재하기-API)  
 
 
 # 1. 기술 스택
@@ -1337,6 +1338,75 @@ httpBody를 통해 전달받은 비밀번호가 기존 비밀번호가 일치하
 
 # 24. personal 도메인 패키지 구조
 ![personal디렉토리구조](https://user-images.githubusercontent.com/52854217/182328851-9e65be8b-5f04-4d8f-b9d1-dc7fc3f2c609.JPG)
+
+<br><br>
+
+# 25. 기재하기 API
+## 25.1 RecordPersonalByMemberRequest
+```java
+@Data
+public class RecordPersonalByMemberRequest {
+
+    @NotBlank(message = "이름은 필수입니다.")
+    private String name;
+    @NotBlank(message = "주소는 필수입니다.")
+    private String address;
+    @NotBlank(message = "전화번호는 필수입니다.")
+    private String telephoneNumber;
+    @Email(message = "이메일 형식을 지켜주세요.")
+    private String emailAddress;
+
+}
+```
+주소록에 저장할 개인정보를 받아서 전달하는 dto 클래스입니다.  
+
+## 25.2 RecordPersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class RecordPersonalByMemberApiController {
+
+    private final RecordPersonalUseCase useCase;
+
+    private final FindMemberQuery query;
+
+    @PostMapping("/members/{memberId}/personals")
+    public ResponseEntity recordPersonalByMember(@PathVariable Long memberId,
+                                                 @RequestBody @Valid
+                                                         RecordPersonalByMemberRequest request) {
+        Member findMember = query.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        Long personalId = useCase.recordPersonal(request.getName(), request.getAddress(),
+                request.getTelephoneNumber(), request.getEmailAddress(), findMember);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{personalId}")
+                .buildAndExpand(personalId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+    }
+}
+```
+url을 통해 전달 받은 memberId를 통해 id와 일치하는 회원정보를 찾고, RecordPersonalByMemberRequest의 정보를 바탕으로 Personal 객체를 생성하여 주소록에 기재합니다.  
+
+기재가 끝난 다음 새로 생성된 Personal 객체에 대한 정보를 얻을 수 있는 url을 HTTP 헤더의 location에 저장하고, 상태코드를 201 Created로 하여 반환합니다.  
+
+## 25.3 RecordPersonalByMemberApiController postman 테스트
+
+![recordPersonalApiPostman](https://user-images.githubusercontent.com/52854217/182331183-d81a84a8-39b5-41a4-86b1-bb533d4f2c17.JPG)
+
+성공적으로 개인 정보가 send 되면 상태코드 201 Created와 Http Header의 location에 새로 생성된 개인 정보를 확인할 수 있도록 설정하였습니다.  
+
+![recordPersonalApiPostman후h2db](https://user-images.githubusercontent.com/52854217/182331776-ddbdee89-a924-4890-a879-73813a53ce16.JPG)
+
+h2 db에도 성공적으로 저장된 것을 확인할 수 있습니다.  
+
+예외처리나 validation의 경우 위와 같으므로 생략하도록 하겠습니다.  
 
 
 
