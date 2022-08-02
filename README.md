@@ -45,11 +45,7 @@ API
 [21. 로그아웃 API](#21-로그아웃-API)  
 [22. 비밀번호 변경 API](#22-비밀번호-변경-API)  
 [23. 회원탈퇴 API](#23-회원탈퇴-API)  
-
-
-
-
-
+[24. personal 도메인 패키지 구조](#24-personal-도메인-패키지-구조)  
 
 
 # 1. 기술 스택
@@ -1337,6 +1333,10 @@ httpBody를 통해 전달받은 비밀번호가 기존 비밀번호가 일치하
 ![withdrawalMemberPostman예외처리](https://user-images.githubusercontent.com/52854217/182325381-414484a6-e592-456b-a5a3-f39bf6abcd35.JPG)
 비밀번호가 일치하지 않는다는 안내문구와 상태코드 409 Conflict를 반환하도록 설정하였습니다.  
 
+<br><br>
+
+# 24. personal 도메인 패키지 구조
+![personal디렉토리구조](https://user-images.githubusercontent.com/52854217/182328851-9e65be8b-5f04-4d8f-b9d1-dc7fc3f2c609.JPG)
 
 
 
