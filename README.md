@@ -40,6 +40,8 @@ API
 [16. 예외처리 및 validation 체크](#16-예외처리-및-validation-체크)  
 [17. member 도메인 패키지 구조](#17-member-도메인-패키지-구조)  
 [18. 회원가입 API](#18-회원가입-API) 
+[19. 로그인 API](#19-로그인-API) 
+
 
 
 # 1. 기술 스택
@@ -943,7 +945,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 api와 webapplication 패키지를 각각 만들어 webapplication에서는 서버사이드 렌더링 쪽과 관련된 코드를 작성하였고, API와 관련된 코드들은 api 패키지에 작성하였습니다.  
 
 # 18. 회원가입 API
-## 18.1 RegisterMemberRequest 클래스
+## 18.1 RegisterMemberRequest
 ```java
 @Data
 public class RegisterMemberRequest {
@@ -965,7 +967,7 @@ public class RegisterMemberRequest {
 ```
 JSON형태로 넘어오는 데이터를 전달하는 DTO역할을 담당합니다.  
 
-## 18.2 RegisterMemberApiController 클래스
+## 18.2 RegisterMemberApiController
 ```java
 @RestController
 @RequiredArgsConstructor
@@ -1010,6 +1012,59 @@ postman을 활용하여 http body에 RegisterMemberRequest와 일치하는 형�
 
 ![registerMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182306677-4fcd9276-28e0-4f08-8bc4-810c709470fd.JPG)
 
+# 19. 로그인 API
+## 19.1 LoginMemberRequest
+```java
+@Data
+public class LoginMemberRequest {
+
+    @NotBlank(message = "아이디는 필수로 적어야 합니다.")
+    @Email(message = "이메일 형식을 지켜주세요.")
+    private String email;
+
+    @NotBlank(message = "비밀번호는 필수로 적어야 합니다.")
+    private String password;
+
+}
+```
+JSON형태로 넘어오는 데이터를 전달하는 DTO역할을 담당합니다.  
+
+## 19.2 LoginMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class LoginMemberApiController {
+
+    private final LoginMemberUseCase useCase;
+
+    @PostMapping("/members/login")
+    public void loginMember(
+            @RequestBody @Valid LoginMemberRequest request,
+            HttpServletRequest httpServletRequest) {
+
+        Member loginMember = useCase.loginMember(request.getEmail(), request.getPassword());
+
+        if (loginMember == null) {
+            throw new MemberNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        //로그인 성공 처리
+        //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
+        HttpSession session = httpServletRequest.getSession();
+        //세션에 로그인 회원 id 정보 보관
+        session.setAttribute("loginMemberId", loginMember.getId());
+    }
+}
+```
+
+## 19.3 LoginMemberApiController postman 테스트
+
+![loginMemberApiPostman](https://user-images.githubusercontent.com/52854217/182307935-bab7208c-9b92-4c45-bcfd-282cf12d9212.JPG)
+post메소드를 활용하여 http body에 로그인에 필요한 정보를 전달한 결과 성공적으로 JSESSIONID가 쿠키로 설정되는 것을 볼 수 있습니다.  
+
+## 19.4 로그인할 때 비밀번호 또는 아이디가 일치하지 않는 경우
+![loginMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182308400-1c74027c-9efe-4daa-9a8d-b6aada2c3156.JPG)
+위의 예외처리코드에서 이 경우 404 Not Found로 상태코드를 정의하였고, 예외메세지도 이에 맞게 출력됩니다.  
 
 
 
