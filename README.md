@@ -37,6 +37,12 @@ SSR(서버사이드 렌더링)
 [15. 홈화면에서 정렬하기 체크박스 체크했을 때 화면](#15-홈화면에서-정렬하기-체크박스-체크했을-때-화면)  
 
 API  
+[16. 예외처리 및 validation 체크](#16-예외처리-및-validation-체크)  
+[17. member 도메인 패키지 구조](#17-member-도메인-패키지-구조)  
+[18. 회원가입 API](#18-회원가입-API)  
+[19. 로그인 API](#19-로그인-API)  
+
+
 
 
 # 1. 기술 스택
@@ -856,6 +862,212 @@ public class JpaArrangePersonalByNameRepository implements ArrangePersonalReposi
     }
 }
 ```
+
+# 16. 예외처리 및 validation 체크
+## 16.1 ExceptionResponse
+
+```java
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ExceptionResponse {
+    private Date timestamp;
+    private String message;
+    private String details;
+}
+```
+예외가 발생했을 경우나 validation에서 통과하지 못할 경우 ExceptionResponse의 객체를 JSON형태로 반환하여 사용합니다.  
+
+## 16.2 CustomizedResponseEntityExceptionHandler
+```java
+@RestControllerAdvice(annotations = RestController.class)
+public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(Exception.class)
+    public final ResponseEntity<Object> handlerAllExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
+                        new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(DuplicateMemberException.class)
+    public final ResponseEntity<Object> handleDuplicateMemberExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
+                        new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NotSamePasswordException.class)
+    public final ResponseEntity<Object> handlePasswordNotSameAsConfirmPasswordExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
+                        new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public final ResponseEntity<Object> memberNotFoundExceptions(Exception ex, WebRequest request) {
+        ExceptionResponse exceptionResponse =
+                new ExceptionResponse(
+                        new Date(), ex.getMessage(), request.getDescription(false));
+
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
+    }
+
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatus status,
+            WebRequest request) {
+
+        ExceptionResponse exceptionResponse = new ExceptionResponse(
+                new Date(), "Validation Failed", ex.getBindingResult().toString());
+
+        return new ResponseEntity(exceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+}
+```
+각종 예외처리들과 validation 예외가 발생했을 때 처리를 하는 클래스입니다.  
+
+서버 사이드 렌더링과는 별도로 api에 적용하기 위해 RestController 애너테이션이 붙은 클래스에만 작동하도록 설정하였습니다.  
+
+# 17. member 도메인 패키지 구조
+![member디렉토리구조](https://user-images.githubusercontent.com/52854217/182298173-419c34d8-af28-4f3d-9bf8-a2b8867a764e.JPG)
+
+<br>
+
+api와 webapplication 패키지를 각각 만들어 webapplication에서는 서버사이드 렌더링 쪽과 관련된 코드를 작성하였고, API와 관련된 코드들은 api 패키지에 작성하였습니다.  
+
+# 18. 회원가입 API
+## 18.1 RegisterMemberRequest
+```java
+@Data
+public class RegisterMemberRequest {
+
+    @NotBlank(message = "아이디는 필수로 적어야 합니다.")
+    @Email(message = "이메일 형식을 지켜주세요.")
+    private String email; // 로그인 ID
+
+    @NotBlank(message = "비밀번호는 필수로 적어야 합니다.")
+    private String password;
+
+    @NotBlank(message = "확인 비밀번호는 비밀번호와 똑같이 적어야 합니다.")
+    private String confirmPassword;
+
+    @NotBlank(message = "이름은 필수로 적어야 합니다.")
+    private String name; // 사용자 이름
+
+}
+```
+JSON형태로 넘어오는 데이터를 전달하는 DTO역할을 담당합니다.  
+
+## 18.2 RegisterMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class RegisterMemberApiController {
+
+    private final RegisterMemberUseCase useCase;
+
+    @PostMapping("/members")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity registerMember(@RequestBody @Valid
+                                                         RegisterMemberRequest request) {
+        if (!request.getPassword().equals(request.getConfirmPassword())) {
+            throw new NotSamePasswordException(
+                    "비밀번호와 확인 비밀번호가 서로 일치하지 않습니다.");
+        }
+
+        Long savedId = useCase.registerMember(request.getEmail(), request.getPassword(), request.getName());
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedId)
+                .toUri();
+
+        return ResponseEntity.created(location).build();
+
+    }
+}
+```
+
+## 18.3 RegisterMemberApiController postman 테스트
+![registerMemberApiPostman](https://user-images.githubusercontent.com/52854217/182304729-1e8aebd7-19f4-4f86-bed8-b2ef2f3ee1b2.JPG)
+postman을 활용하여 http body에 RegisterMemberRequest와 일치하는 형태의 JSON형식의 데이터를 POST 메소드를 이용하여 해당 url에 보낸 결과  
+
+정상적으로 생성이 되었다는 상태코드 **201 Created**와 새로 생성된 멤버의 Location을 헤더에 실어서 반환하였습니다.  
+
+또한 h2 db에도 정상적으로 저장되었음을 확인할 수 있습니다.  
+
+![registerMemberApiPostman결과](https://user-images.githubusercontent.com/52854217/182305382-fd652375-cb7e-4978-a1b3-80a87f458af5.JPG)
+
+## 18.4 중복 아이디로 회원 가입시 예외처리
+똑같은 이메일 아이디로 회원 가입을 하려고 하면 아까 위에서 작성한 코드에 따라 예외처리가 되는데 이 때 중복아이디 예외일 경우 상태코드는 Conflict이고 그에 맞는 예외 메세지가 출력됩니다.  
+
+![registerMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182306677-4fcd9276-28e0-4f08-8bc4-810c709470fd.JPG)
+
+# 19. 로그인 API
+## 19.1 LoginMemberRequest
+```java
+@Data
+public class LoginMemberRequest {
+
+    @NotBlank(message = "아이디는 필수로 적어야 합니다.")
+    @Email(message = "이메일 형식을 지켜주세요.")
+    private String email;
+
+    @NotBlank(message = "비밀번호는 필수로 적어야 합니다.")
+    private String password;
+
+}
+```
+JSON형태로 넘어오는 데이터를 전달하는 DTO역할을 담당합니다.  
+
+## 19.2 LoginMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class LoginMemberApiController {
+
+    private final LoginMemberUseCase useCase;
+
+    @PostMapping("/members/login")
+    public void loginMember(
+            @RequestBody @Valid LoginMemberRequest request,
+            HttpServletRequest httpServletRequest) {
+
+        Member loginMember = useCase.loginMember(request.getEmail(), request.getPassword());
+
+        if (loginMember == null) {
+            throw new MemberNotFoundException("아이디 또는 비밀번호가 일치하지 않습니다.");
+        }
+
+        //로그인 성공 처리
+        //세션이 있으면 있는 세션을 반환, 없으면 신규 세션을 생성함
+        HttpSession session = httpServletRequest.getSession();
+        //세션에 로그인 회원 id 정보 보관
+        session.setAttribute("loginMemberId", loginMember.getId());
+    }
+}
+```
+
+## 19.3 LoginMemberApiController postman 테스트
+
+![loginMemberApiPostman](https://user-images.githubusercontent.com/52854217/182307935-bab7208c-9b92-4c45-bcfd-282cf12d9212.JPG)
+post메소드를 활용하여 http body에 로그인에 필요한 정보를 전달한 결과 성공적으로 JSESSIONID가 쿠키로 설정되는 것을 볼 수 있습니다.  
+
+## 19.4 로그인할 때 비밀번호 또는 아이디가 일치하지 않는 경우
+![loginMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182308400-1c74027c-9efe-4daa-9a8d-b6aada2c3156.JPG)
+위의 예외처리코드에서 이 경우 404 Not Found로 상태코드를 정의하였고, 예외메세지도 이에 맞게 출력됩니다.  
+
+
 
 # 참고링크
 
