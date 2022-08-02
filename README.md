@@ -47,6 +47,11 @@ API
 [23. 회원탈퇴 API](#23-회원탈퇴-API)  
 [24. personal 도메인 패키지 구조](#24-personal-도메인-패키지-구조)  
 [25. 기재하기 API](#25-기재하기-API)  
+[26. 개인 정보 하나 얻기 API](#26-개인-정보-하나-얻기-API)  
+[27. 전체 개인 정보 얻기 API](#27-전체-개인-정보-얻기-API)  
+[28. 이름으로 개인 정보 찾기 API](#28-이름으로-개인-정보-찾기-API)  
+
+
 
 
 # 1. 기술 스택
@@ -915,8 +920,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(MemberNotFoundException.class)
-    public final ResponseEntity<Object> memberNotFoundExceptions(Exception ex, WebRequest request) {
+    @ExceptionHandler({MemberNotFoundException.class, PersonalNotFoundException.class})
+    public final ResponseEntity<Object> NotFoundExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(
                         new Date(), ex.getMessage(), request.getDescription(false));
@@ -1125,7 +1130,7 @@ public class FindMemberResponse {
 
 Member에 대한 참조값이 빠진 GetPersonalByMemberResponse을 이용합니다.  
 
-또한 password와 id 값을 빼고 나머지 필드값들만 가지도록 설정하였습니다.  
+또한 id 값을 빼고, 꼭 필드한 정보들만 필드로 가지도록 설정하였습니다.  
 
 ## 20.3 FindMemberApiController
 ```java
@@ -1160,9 +1165,9 @@ public class FindMemberApiController {
 
 }
 ```
-먼저 url을 통해 전달받은 id를 통해 멤버를 찾고 찾은 멤버에서 personal 값을 구한다음 member에 대한 참조값과 password, id값을 뺀 나머지  
+먼저 url을 통해 전달받은 id를 통해 멤버를 찾고 찾은 멤버에서 personal 값을 구한 다음에 member에 대한 참조값과 id값을 뺀  
 
-이름, 주소, 전화번호, 이메일주소만 GetPersonalByMemberResponse객체에 담습니다.  
+꼭 필요한 정보 이름, 주소, 전화번호, 이메일주소만 GetPersonalByMemberResponse객체에 담습니다.  
 
 그리고 이 값을 반환합니다.  
 
@@ -1407,6 +1412,286 @@ url을 통해 전달 받은 memberId를 통해 id와 일치하는 회원정보�
 h2 db에도 성공적으로 저장된 것을 확인할 수 있습니다.  
 
 예외처리나 validation의 경우 위와 같으므로 생략하도록 하겠습니다.  
+
+<br><br>
+
+# 26. 개인 정보 하나 얻기 API
+## 26.1 GetPersonalByMemberResponse
+```java
+@Data
+@AllArgsConstructor
+public class GetPersonalByMemberResponse {
+
+    private String name;
+    private String address;
+    private String telephoneNumber;
+    private String emailAddress;
+
+}
+```
+아까 위에서 회원 정보 찾기 API에서 사용한 dto클래스인데 앞에서 말했듯이 무한반복을 막기 위해 Personal에서 Member에 대한 참조값을 빼고, id값을 빼어 꼭 필요한 정보만 필드로 가집니다.  
+
+## 26.2 GetPersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class GetPersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    private final GetPersonalQuery getPersonalQuery;
+
+    @GetMapping("/members/{memberId}/personals/{personalId}")
+    public GetPersonalByMemberResponse getPersonalByMember(@PathVariable Long memberId,
+                                                           @PathVariable Long personalId) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        Personal findPersonal = getPersonalQuery.getPersonal(findMember, personalId);
+
+        if (findPersonal == null) {
+            throw new PersonalNotFoundException("해당하는 개인 정보를 찾을 수 없습니다.");
+        }
+
+        return new GetPersonalByMemberResponse(
+                findPersonal.getName(),
+                findPersonal.getAddress(),
+                findPersonal.getTelephoneNumber(),
+                findPersonal.getEmailAddress());
+    }
+}
+```
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaGetPersonalRepository implements GetPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public Personal findOne(Member member, Long personalId) {
+        return em.createQuery(
+                        "Select p from Personal p where p.member = :member and" +
+                                " p.id = :personalId",
+                        Personal.class)
+                .setParameter("member", member)
+                .setParameter("personalId", personalId)
+                .getResultList()
+                .stream()
+                .findAny()
+                .orElse(null);
+    }
+
+}
+```
+전달받는 url에서 우선 memberId를 통해 멤버를 찾고, 멤버가 있으면 그 멤버객체와 personalId를 getPersonal의 매개변수로 넘깁니다.  
+
+getPersonal, 즉, 서비스 계층에서 레포지토리로 이 값이 전달되어 findOne 메소드에서는 이 매개변수를 바탕으로 Personal 객체 정보를 찾습니다.  
+
+Member와 personalId 둘 다 일치해야 Personal 객체가 반환될 것이고, 아니면 null 값이 반환될 것입니다.  
+
+즉, 해당 멤버가 자신의 데이터(개인 정보)에만 접근할 수 있도록 설정하였습니다.  
+
+personalId가 일치하더라도 자신의 데이터가 아니면 접근할 수 없도록 설정하였습니다.  
+
+찾은 후에는 무한반복을 막기 위해 별도로 GetPersonalByMemberResponse를 생성하여 이를 반환합니다.  
+
+## 26.3 GetPersonalByMemberApiController postman 테스트
+![getPersonalApiPostman](https://user-images.githubusercontent.com/52854217/182335624-a707cc6e-992f-4189-9473-e06107620f8e.JPG)
+멤버와 personalId가 일치하면 자신이 저장한 데이터(개인 정보)를 반환받을 수 있습니다.  
+
+## 26.4 자신의 데이터가 아닌 데이터에 접근하려고 할 때 postman 테스트
+
+![getPersonalApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182336739-bb0e1ef4-0662-4dbb-a382-a4baffb19391.JPG)
+
+보시다시피 personalId가 일치하더라도 본인의 데이터가 아니면 접근할 수 없고, 404 Not Found 상태코드와 예외 메세지가 반환됩니다.  
+
+<br><br>
+
+# 27. 전체 개인 정보 얻기 API
+## 27.1 GetPersonalsByMemberResponse
+```java
+@Data
+@AllArgsConstructor
+public class GetPersonalsByMemberResponse {
+
+    int count;
+    List<GetPersonalByMemberResponse> personals;
+
+}
+```
+해당 회원이 가지고 있는 개인 정보의 개수와 개인 정보 리스트들을 반환하기 위한 dto 클래스입니다.  
+
+이 때 List에 저장된 개인 정보는 무한반복을 방지하기 위해 Personal이 아니라 위의 개인 정보 하나 얻기 API에서 사용한 GetPersonalByMemberResponse를 사용합니다.  
+
+## 27.2 GetPersonalsByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class GetPersonalsByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    private final GetPersonalsQuery getPersonalsQuery;
+
+    @GetMapping("/members/{memberId}/personals")
+    public GetPersonalsByMemberResponse getPersonalsByMember(@PathVariable Long memberId) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 멤버를 찾을 수 없습니다.");
+        }
+
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
+        List<Personal> personals = getPersonalsQuery.getPersonals(findMember);
+
+        for (Personal personal : personals) {
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
+                    personal.getName(),
+                    personal.getAddress(),
+                    personal.getTelephoneNumber(),
+                    personal.getEmailAddress()));
+        }
+
+        return new GetPersonalsByMemberResponse(getPersonalsResponses.size(), getPersonalsResponses);
+    }
+
+}
+```
+자신의 데이터만 가지고 올 수 있도록 하였고, 무한반복을 막기 위해 마지막에 찾은 개인 Personal들을 모두 GetPersonalByMemberResponse로 변환하여 저장한 다음에 GetPersonalsByMemberResponse를 반환합니다.  
+
+## 27.3 GetPersonalsByMemberApiController postman 테스트
+![getPersonalsApiPostman](https://user-images.githubusercontent.com/52854217/182338831-ff121aba-d9e0-43ee-a159-6c29a296d7e0.JPG)
+
+자신이 저장한 개인정보의 개수와 각각의 데이터 값들이 반환되는 것을 확인할 수 있습니다.  
+
+<br><br>
+
+# 28. 이름으로 개인 정보 찾기 API
+## 28.1 FindPersonalByMemberRequest
+@Data
+public class FindPersonalByMemberRequest {
+
+    @NotBlank(message = "이름은 필수입니다.")
+    private String name;
+
+}
+HTTP Body에서 찾을 이름을 전달 받기 위한 dto 역할을 하는 클래스입니다.  
+
+## 28.2 FindPersonalByMemberResponse
+@Data
+@AllArgsConstructor
+public class FindPersonalByMemberResponse {
+
+    private int count;
+    private List<GetPersonalByMemberResponse> personals;
+}
+이름으로 찾은 개인들(동명이인이 있을 수 있기 때문에)의 정보를 개수와 List로 전달하는 dto 역할을 하는 클래스입니다.  
+
+## 28.3 FindPersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class FindPersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    private final FindPersonalUseCase findPersonalUseCase;
+
+    @PostMapping("/members/{memberId}/personals/find")
+    public ResponseEntity<FindPersonalByMemberResponse> findPersonalByMember(
+            @PathVariable Long memberId,
+            @RequestBody @Valid
+                    FindPersonalByMemberRequest request) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        List<Personal> findPersonals = findPersonalUseCase.findPersonalByName(
+                findMember, request.getName());
+
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
+
+        for (Personal personal : findPersonals) {
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
+                    personal.getName(),
+                    personal.getAddress(),
+                    personal.getTelephoneNumber(),
+                    personal.getEmailAddress()));
+        }
+
+        int count = getPersonalsResponses.size();
+
+        FindPersonalByMemberResponse findPersonalByMemberResponse =
+                new FindPersonalByMemberResponse(
+                        count, getPersonalsResponses);
+
+        if (count == 0) {
+            return new ResponseEntity<>(findPersonalByMemberResponse, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(findPersonalByMemberResponse, HttpStatus.OK);
+    }
+
+}
+```
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaFindPersonalRepository implements FindPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> findByName(Member member, String name) {
+        return em.createQuery(
+                        "select p from Personal p where p.member = :member and" +
+                                " p.name = :name",
+                        Personal.class)
+                .setParameter("member", member)
+                .setParameter("name", name)
+                .getResultList();
+    }
+
+}
+```
+post 메소드와 find url을 이용하여 이름으로 개인 정보 찾기 API를 구현합니다.  
+
+일단 url을 통해 전달받은 memberId를 통해 멤버를 구하고, 구한 멤버와 Http Body를 통해 전달받은 이름을 findPersonalByName 메소드의 매개변수로 넘깁니다.  
+
+그러면 서비스 계층에서 이 매개변수를 레포지토리 계층까지 넘기고 레포지토리에서 해당 멤버 자신의 데이터 중에서 현재 찾을 이름에 해당하는 개인 정보가 있는지 찾습니다.  
+
+있으면 해당 개인들의 정보가 List로 반환될 것이고, 없으면 null값이 반환될 것입니다.  
+
+즉, 해당 이름의 개인 정보도 본인의 데이터에서만 찾고 남의 데이터에서는 찾지 않도록 하였습니다.  
+
+마지막으로 해당 이름으로 찾은 데이터가 있으면 상태코드 200 Ok를 반환하도록 하였고, 찾은 데이터가 없으면 상태코드 204 No Content를 반환하도록 하였습니다.  
+
+## 28.4 FindPersonalByMemberApiController postman 테스트
+'박길동'이라는 이름으로 개인 정보를 찾을 것이고, 현재 db에는 '박길동'이라는 개인 정보는 3개가 저장되어 있습니다.  
+![findMemberByNameApiH2db2](https://user-images.githubusercontent.com/52854217/182342710-6c47e393-011c-489f-b85d-3ba4b7df3ad5.JPG)
+
+<br><br>
+
+여기서 memberId가 1인 회원이 '박길동'이라는 이름으로 개인 정보를 찾을 경우 db 결과는 다음과 같습니다. 
+
+![findMemberByNameApiH2db](https://user-images.githubusercontent.com/52854217/182342908-7ffb950d-26e2-4c65-91b9-ec21787ef5b2.JPG)
+
+<br><br>
+
+이를 postman에서 실험해보면 정확히 본인 데이터만 접근할 수 있음을 확인할 수 있습니다.  
+
+![findMemberByNamePostmanApi](https://user-images.githubusercontent.com/52854217/182343260-27e92b87-6d5b-4e86-8a5c-67f64ed59a71.JPG)
+
+<br><br>
 
 
 
