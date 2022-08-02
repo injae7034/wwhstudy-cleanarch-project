@@ -27,7 +27,7 @@ public class CorrectPersonalByMemberApiController {
     private final CorrectPersonalUseCase correctPersonalUseCase;
 
     @PutMapping("members/{memberId}/personals/{personalId}")
-    public ResponseEntity correctPersonalByMember(
+    public void correctPersonalByMember(
             @PathVariable Long memberId, @PathVariable Long personalId,
             @RequestBody @Valid CorrectPersonalByMemberRequest request) {
 
@@ -45,13 +45,6 @@ public class CorrectPersonalByMemberApiController {
 
         correctPersonalUseCase.correctPersonal(personalId, request.getAddress(),
                 request.getTelephoneNumber(), request.getEmailAddress());
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("")
-                .buildAndExpand()
-                .toUri();
-
-        return ResponseEntity.ok(location);
     }
 
 }
