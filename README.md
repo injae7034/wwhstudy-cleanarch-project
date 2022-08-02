@@ -43,11 +43,9 @@ API
 [19. 로그인 API](#19-로그인-API)  
 [20. 회원 정보 찾기 API](#20-회원-정보-찾기-API)  
 [21. 로그아웃 API](#21-로그아웃-API)  
-
-
-
-
-
+[22. 비밀번호 변경 API](#22-비밀번호-변경-API)  
+[23. 회원탈퇴 API](#23-회원탈퇴-API)  
+[24. personal 도메인 패키지 구조](#24-personal-도메인-패키지-구조)  
 
 
 # 1. 기술 스택
@@ -1179,7 +1177,7 @@ postman 테스트를 통해 무한반복이 되지 않고 꼭 필요한 회원�
 <br><br>
 
 # 21. 로그아웃 API
-# 21.1 LogoutMemberApiController
+## 21.1 LogoutMemberApiController
 ```java
 @RestController
 public class LogoutMemberApiController {
@@ -1193,7 +1191,7 @@ public class LogoutMemberApiController {
     }
 }
 ```
-# 21.2 LogoutMemberApiController postman 테스트
+## 21.2 LogoutMemberApiController postman 테스트
 
 ![logoutMemberPostman로그아웃전](https://user-images.githubusercontent.com/52854217/182319825-a620c813-06a5-4513-af67-2d3d53326f81.JPG)
 
@@ -1202,6 +1200,143 @@ public class LogoutMemberApiController {
 ![logoutMemberPostman로그아웃후](https://user-images.githubusercontent.com/52854217/182319958-00b079ef-2da8-4bed-ae32-eeafac1d1134.JPG)
 
 로그아웃 후에는 헤더의 set-cookie가 사라진 것을 볼 수 있습니다.  
+
+<br><br>
+
+# 22. 비밀번호 변경 API
+## 22.1 ChangeMemberRequest
+```java
+@Data
+public class ChangeMemberRequest {
+
+    @NotBlank(message = "비밀번호 변경하기 전에 기존 비밀번호를 먼저 적어야 합니다.")
+    private String originalPassword;
+
+    @NotBlank(message = "바꿀 비밀번호는 필수로 적어야 합니다.")
+    private String changePassword;
+
+    @NotBlank(message = "확인 비밀번호는 필수로 적어야 합니다.")
+    private String confirmPassword;
+
+}
+```
+비밀번호 변경시 그에 맞는 데이터를 전달하는데 사용하는 dto 클래스입니다.  
+
+## 22.2 ChangeMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class ChangeMemberApiController {
+
+    private final ChangePasswordUseCase changePasswordUseCase;
+
+    private final FindMemberQuery findMemberQuery;
+
+    @PutMapping("/members/{id}")
+    public void changeMember(@PathVariable Long id,
+                                       @RequestBody @Valid ChangeMemberRequest request) {
+        Member findMember = findMemberQuery.findMember(id);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException(
+                    "해당 id와 일치하는 회원정보가 없어서 비밀번호를 변경할 수 없습니다.");
+        }
+
+        if (!request.getOriginalPassword().equals(findMember.getPassword())) {
+            throw new NotSamePasswordException("기존 비밀번호와 일치하지 않습니다.");
+        }
+
+        if (!request.getChangePassword().equals(request.getConfirmPassword())) {
+            throw new NotSamePasswordException("변경 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        }
+
+        changePasswordUseCase.changePassword(id, request.getChangePassword());
+    }
+
+}
+```
+url의 id에 해당하는 멤버가 있는지 체크하고, 입력한 비밀번호가 기존 비밀번호와 일치하는지 체크하고, 변경 비밀번호와 확인 비밀번호가 일치하는지 체크합니다.  
+
+그리고 이 모든 게 다 통과되면 비밀번호를 변경합니다.  
+
+## 22.3 ChangeMemberApiController postman 테스트
+![changePasswordApiPostman](https://user-images.githubusercontent.com/52854217/182322678-9e955b97-c34d-490c-b3b1-f538242932dd.JPG)
+
+기존비밀번호와 변경 비밀번화 확인 비밀번호를 htttp body에 실어서 put 메소드를 통해 해당 url을 통해 send하면 성공적으로 비밀번호가 변경되는 것을 알 수 있습니다.  
+
+
+## 22.4 기존 비밀번호와 입력한 비밀번호 불일치시 예외처리
+![changePasswordApiPostman기존비밀번호불일치예외](https://user-images.githubusercontent.com/52854217/182322795-44fde03c-52a0-485f-92e9-f143bed89b71.JPG)
+
+## 22.5 변경 비밀번호와 확인 비밀번호 불일치시 예외처리
+![changePasswordApiPostman변경및확인비밀번호불일치예외](https://user-images.githubusercontent.com/52854217/182322943-87068256-a2ef-48f6-8de6-4e7325b3638c.JPG)
+
+<br><br>
+
+# 23. 회원탈퇴 API
+## 23.1 WithdrawalMemberRequest
+```java
+@Data
+public class WithdrawalMemberRequest {
+
+    @NotBlank(message = "회원 탈퇴를 하려면 기존비밀번호를 입력하셔야 합니다.")
+    private String password;
+
+}
+```
+회원탈퇴를 위해 사용자 비밀번호를 입력 받을 때 이 비밀번호를 전달하기 위한 dto클래스입니다.  
+
+## 23.2 WithdrawalMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class WithdrawalMemberApiController {
+
+    private final WithdrawalMemberUseCase withdrawalMemberUseCase;
+
+    private final FindMemberQuery findMemberQuery;
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/members/{id}")
+    void withdrawalMember(@PathVariable Long id,
+                          @RequestBody @Valid WithdrawalMemberRequest request) {
+        Member findMember = findMemberQuery.findMember(id);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException(
+                    "해당 id와 일치하는 회원정보가 없어서 회원탈퇴를 할 수 없습니다.");
+        }
+
+        if (!findMember.getPassword().equals(request.getPassword())) {
+            throw new NotSamePasswordException("기존 비밀번호와 일치하지 않습니다.");
+        }
+
+        withdrawalMemberUseCase.withdrawalMember(findMember);
+    }
+}
+```
+url을 통해 전달 받은 회원 id를 통해 회원이 있는지 찾고, 회원이 있는 경우  
+
+httpBody를 통해 전달받은 비밀번호가 기존 비밀번호가 일치하는지 확인한 다음에  
+
+이를 모두 통과하면 회원을 탈퇴시킵니다.  
+
+## 23.3 WithdrawalMemberApiController postman 테스트
+
+![withdrawalMemberPostman](https://user-images.githubusercontent.com/52854217/182324702-ad780a80-5e6c-4e2c-90a7-cfde533c034a.JPG)
+
+성공적으로 지워질 경우 상태코드를 204 No Content가 되도록 설정하였습니다.  
+
+## 23.4 기존비밀번호와 일치하지 않는 경우
+
+![withdrawalMemberPostman예외처리](https://user-images.githubusercontent.com/52854217/182325381-414484a6-e592-456b-a5a3-f39bf6abcd35.JPG)
+비밀번호가 일치하지 않는다는 안내문구와 상태코드 409 Conflict를 반환하도록 설정하였습니다.  
+
+<br><br>
+
+# 24. personal 도메인 패키지 구조
+![personal디렉토리구조](https://user-images.githubusercontent.com/52854217/182328851-9e65be8b-5f04-4d8f-b9d1-dc7fc3f2c609.JPG)
 
 
 
