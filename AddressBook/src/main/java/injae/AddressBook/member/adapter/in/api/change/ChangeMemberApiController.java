@@ -6,15 +6,12 @@ import injae.AddressBook.member.application.port.in.ChangePasswordUseCase;
 import injae.AddressBook.member.application.port.in.FindMemberQuery;
 import injae.AddressBook.member.domain.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,7 +22,7 @@ public class ChangeMemberApiController {
     private final FindMemberQuery findMemberQuery;
 
     @PutMapping("/members/{id}")
-    public ResponseEntity changeMember(@PathVariable Long id,
+    public void changeMember(@PathVariable Long id,
                                        @RequestBody @Valid ChangeMemberRequest request) {
         Member findMember = findMemberQuery.findMember(id);
 
@@ -43,13 +40,6 @@ public class ChangeMemberApiController {
         }
 
         changePasswordUseCase.changePassword(id, request.getChangePassword());
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("")
-                .buildAndExpand()
-                .toUri();
-
-        return ResponseEntity.ok(location);
     }
 
 }
