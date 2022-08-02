@@ -1502,10 +1502,13 @@ personalId가 일치하더라도 자신의 데이터가 아니면 접근할 수 
 ![getPersonalApiPostman](https://user-images.githubusercontent.com/52854217/182335624-a707cc6e-992f-4189-9473-e06107620f8e.JPG)
 멤버와 personalId가 일치하면 자신이 저장한 데이터(개인 정보)를 반환받을 수 있습니다.  
 
+## 26.4 자신의 데이터가 아닌 데이터에 접근하려고 할 때 postman 테스트
+
 ![getPersonalApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182336739-bb0e1ef4-0662-4dbb-a382-a4baffb19391.JPG)
 
 보시다시피 personalId가 일치하더라도 본인의 데이터가 아니면 접근할 수 없고, 404 Not Found 상태코드와 예외 메세지가 반환됩니다.  
 
+<br><br>
 
 
 
