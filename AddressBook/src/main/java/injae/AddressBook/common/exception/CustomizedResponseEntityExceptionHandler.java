@@ -3,6 +3,7 @@ package injae.AddressBook.common.exception;
 import injae.AddressBook.member.exception.DuplicateMemberException;
 import injae.AddressBook.member.exception.MemberNotFoundException;
 import injae.AddressBook.member.exception.NotSamePasswordException;
+import injae.AddressBook.personal.exception.PersonalNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +46,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(MemberNotFoundException.class)
-    public final ResponseEntity<Object> memberNotFoundExceptions(Exception ex, WebRequest request) {
+    @ExceptionHandler({MemberNotFoundException.class, PersonalNotFoundException.class})
+    public final ResponseEntity<Object> NotFoundExceptions(Exception ex, WebRequest request) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(
                         new Date(), ex.getMessage(), request.getDescription(false));
