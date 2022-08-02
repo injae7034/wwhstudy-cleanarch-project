@@ -1780,11 +1780,58 @@ public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
 
 db에서도 전화번호가 성공적으로 수정된 것을 확인할 수 있습니다.  
 
+<br><br>
 
+# 30. 개인 정보 지우기 API
+## 30.1 ErasePersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class ErasePersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+    private final GetPersonalQuery getPersonalQuery;
+    private final ErasePersonalUseCase erasePersonalUseCase;
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("members/{memberId}/personals/{personalId}")
+    void erasePersonalByMember(@PathVariable Long memberId, @PathVariable Long personalId) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        Personal findPersonal = getPersonalQuery.getPersonal(findMember, personalId);
+
+        if (findPersonal == null) {
+            throw new PersonalNotFoundException("해당하는 개인 정보를 찾을 수 없습니다.");
+        }
+
+        erasePersonalUseCase.erasePersonal(findPersonal);
+    }
+}
+```
+url을 통해 전달 받은 memberId와 personalId를 통해 해당 멤버가 가지고 있는 개인데이터를 구합니다.  
+
+개인 데이터가 있으면 개인 데이터를 지우고 상태코드는 204 No Content를 반환합니다.  
+
+## 30.2 ErasePersonalByMemberApiController postman 테스트
+![erasePersonalApiPostman](https://user-images.githubusercontent.com/52854217/182354297-32f3b2d2-3971-4517-ade4-8887d34b50d9.JPG)
+성공적으로 지워지고 상태코드는 204 No Content를 반환받은 것을 확인할 수 있습니다.  
+
+<br><br>
+
+![erasePersonalApiPostman후H2db](https://user-images.githubusercontent.com/52854217/182354401-1f8f1d17-24b9-4041-9cbe-077a9cc76388.JPG)
+h2 db에서도 성공적으로 개인 데이터가 지워진 것을 확인할 수 있습니다.  
+
+<br><br>
 
 # 참고링크
 
-아래 깃헙블로그에 코드와 화면 구성에 대한 자세한 설명을 적어놨습니다.  
+아래 깃헙블로그에 서버 사이드 렌더링 코드와 웹 화면 구성에 대한 자세한 설명을 적어놨습니다.  
 
 https://injae7034.github.io/java/addressbook_web_project_01/  
 
