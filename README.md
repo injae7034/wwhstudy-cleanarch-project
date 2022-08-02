@@ -42,6 +42,9 @@ API
 [18. 회원가입 API](#18-회원가입-API)  
 [19. 로그인 API](#19-로그인-API)  
 [20. 회원 정보 찾기 API](#20-회원-정보-찾기-API)  
+[21. 로그아웃 API](#21-로그아웃-API)  
+
+
 
 
 
@@ -1174,6 +1177,33 @@ postman 테스트를 통해 무한반복이 되지 않고 꼭 필요한 회원�
 404Not Found 상태코드와 회원을 찾을 수 없다는 예외 메세지를 반환합니다.  
 
 <br><br>
+
+# 21. 로그아웃 API
+# 21.1 LogoutMemberApiController
+```java
+@RestController
+public class LogoutMemberApiController {
+
+    @PostMapping("/members/logout")
+    public void logoutMember(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+    }
+}
+```
+# 21.2 LogoutMemberApiController postman 테스트
+
+![logoutMemberPostman로그아웃전](https://user-images.githubusercontent.com/52854217/182319825-a620c813-06a5-4513-af67-2d3d53326f81.JPG)
+
+로그아웃 전에는 헤더의 set-cookie에 sessionid가 설정되어 있습니다.  
+
+![logoutMemberPostman로그아웃후](https://user-images.githubusercontent.com/52854217/182319958-00b079ef-2da8-4bed-ae32-eeafac1d1134.JPG)
+
+로그아웃 후에는 헤더의 set-cookie가 사라진 것을 볼 수 있습니다.  
+
+
 
 # 참고링크
 
