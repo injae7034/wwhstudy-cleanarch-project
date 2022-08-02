@@ -1,6 +1,6 @@
 package injae.AddressBook.member.adapter.in.api.find;
 
-import injae.AddressBook.personal.domain.Personal;
+import injae.AddressBook.personal.adapter.in.api.get.personal.GetPersonalByMemberResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -12,6 +12,7 @@ public class FindMemberResponse {
 
     private String email;
     private String name;
-    private List<Personal> personals;
+    private int personalCount;
+    private List<GetPersonalByMemberResponse> personals;
 
 }
