@@ -50,7 +50,7 @@ API
 [26. 개인 정보 하나 얻기 API](#26-개인-정보-하나-얻기-API)  
 [27. 전체 개인 정보 얻기 API](#27-전체-개인-정보-얻기-API)  
 [28. 이름으로 개인 정보 찾기 API](#28-이름으로-개인-정보-찾기-API)  
-
+[29. 개인 정보 수정하기 API](#29-개인-정보-수정하기-API)  
 
 
 
@@ -1693,11 +1693,145 @@ post 메소드와 find url을 이용하여 이름으로 개인 정보 찾기 API
 
 <br><br>
 
+# 29. 개인 정보 수정하기 API
+## 29.1 CorrectPersonalByMemberRequest
+```java
+@Data
+public class CorrectPersonalByMemberRequest {
 
+    @NotBlank(message = "주소는 필수입니다.")
+    private String address;
+    @NotBlank(message = "전화번호는 필수입니다.")
+    private String telephoneNumber;
+    @Email(message = "이메일 형식을 지켜주세요.")
+    private String emailAddress;
+}
+```
+수정할 개인 정보를 전달하는 dto 역할을 하는 클래스입니다.  
+
+개인 정보 수정은 이름은 제외하고 주소, 전화번호, 이메일만 수정할 수 있도록 설정하였습니다.  
+
+## 29.2 CorrectPersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class CorrectPersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+    private final GetPersonalQuery getPersonalQuery;
+    private final CorrectPersonalUseCase correctPersonalUseCase;
+
+    @PutMapping("members/{memberId}/personals/{personalId}")
+    public void correctPersonalByMember(
+            @PathVariable Long memberId, @PathVariable Long personalId,
+            @RequestBody @Valid CorrectPersonalByMemberRequest request) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        Personal findPersonal = getPersonalQuery.getPersonal(findMember, personalId);
+
+        if (findPersonal == null) {
+            throw new PersonalNotFoundException("해당하는 개인 정보를 찾을 수 없습니다.");
+        }
+
+        correctPersonalUseCase.correctPersonal(personalId, request.getAddress(),
+                request.getTelephoneNumber(), request.getEmailAddress());
+    }
+
+}
+```
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaCorrectPersonalRepository implements CorrectPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public void update(Long id, String address,
+                       String telephoneNumber, String emailAddress) {
+        Personal findPersonal = em.find(Personal.class, id);
+
+        findPersonal.changePersonalInfo(address, telephoneNumber, emailAddress);
+
+    }
+}
+```
+
+해당하는 멤버와 개인 정보를 찾은 다음 개인 정보를 찾은 다음 둘 다 있으면 personalId와 수정할 정보들을 서비스 계층의 correctPersonal 메소드의 매개변수로 전달합니다.  
+
+서비스계층에서 레포지토리로 매개변수를 전달하고, 레포지토리계층에서는 personalId로 해당 개인 정보를 찾아내고, 그 정보를 수정합니다.  
+
+이후 **Transaction이 종료되면 더티체킹**으로 인해 변경된 내용이 자동으로 db에 반영됩니다.  
+
+## 29.3 CorrectPersonalByMemberApiController postman 테스트
+
+![correctPersonalApiPostman](https://user-images.githubusercontent.com/52854217/182352542-4bd78f4a-e9be-4753-99d8-78d74b3da5df.JPG)
+
+전화번호를 수정하였는데 200 OK 상태코드를 반환받은 것을 확인할 수 있습니다.  
+
+<br>
+
+![correctPersonalApiPostman후h2Db](https://user-images.githubusercontent.com/52854217/182352979-61279585-39f8-4ac9-b43d-4abbde8b989f.JPG)
+
+db에서도 전화번호가 성공적으로 수정된 것을 확인할 수 있습니다.  
+
+<br><br>
+
+# 30. 개인 정보 지우기 API
+## 30.1 ErasePersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class ErasePersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+    private final GetPersonalQuery getPersonalQuery;
+    private final ErasePersonalUseCase erasePersonalUseCase;
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("members/{memberId}/personals/{personalId}")
+    void erasePersonalByMember(@PathVariable Long memberId, @PathVariable Long personalId) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        Personal findPersonal = getPersonalQuery.getPersonal(findMember, personalId);
+
+        if (findPersonal == null) {
+            throw new PersonalNotFoundException("해당하는 개인 정보를 찾을 수 없습니다.");
+        }
+
+        erasePersonalUseCase.erasePersonal(findPersonal);
+    }
+}
+```
+url을 통해 전달 받은 memberId와 personalId를 통해 해당 멤버가 가지고 있는 개인데이터를 구합니다.  
+
+개인 데이터가 있으면 개인 데이터를 지우고 상태코드는 204 No Content를 반환합니다.  
+
+## 30.2 ErasePersonalByMemberApiController postman 테스트
+![erasePersonalApiPostman](https://user-images.githubusercontent.com/52854217/182354297-32f3b2d2-3971-4517-ade4-8887d34b50d9.JPG)
+성공적으로 지워지고 상태코드는 204 No Content를 반환받은 것을 확인할 수 있습니다.  
+
+<br><br>
+
+![erasePersonalApiPostman후H2db](https://user-images.githubusercontent.com/52854217/182354401-1f8f1d17-24b9-4041-9cbe-077a9cc76388.JPG)
+h2 db에서도 성공적으로 개인 데이터가 지워진 것을 확인할 수 있습니다.  
+
+<br><br>
 
 # 참고링크
 
-아래 깃헙블로그에 코드와 화면 구성에 대한 자세한 설명을 적어놨습니다.  
+아래 깃헙블로그에 서버 사이드 렌더링 코드와 웹 화면 구성에 대한 자세한 설명을 적어놨습니다.  
 
 https://injae7034.github.io/java/addressbook_web_project_01/  
 
