@@ -49,6 +49,7 @@ API
 [25. 기재하기 API](#25-기재하기-API)  
 [26. 개인 정보 하나 얻기 API](#26-개인-정보-하나-얻기-API)  
 [27. 전체 개인 정보 얻기 API](#27-전체-개인-정보-얻기-API)  
+[28. 이름으로 개인 정보 찾기 API](#28-이름으로-개인-정보-찾기-API)  
 
 
 
@@ -1568,6 +1569,127 @@ public class GetPersonalsByMemberApiController {
 ![getPersonalsApiPostman](https://user-images.githubusercontent.com/52854217/182338831-ff121aba-d9e0-43ee-a159-6c29a296d7e0.JPG)
 
 자신이 저장한 개인정보의 개수와 각각의 데이터 값들이 반환되는 것을 확인할 수 있습니다.  
+
+<br><br>
+
+# 28. 이름으로 개인 정보 찾기 API
+## 28.1 FindPersonalByMemberRequest
+@Data
+public class FindPersonalByMemberRequest {
+
+    @NotBlank(message = "이름은 필수입니다.")
+    private String name;
+
+}
+HTTP Body에서 찾을 이름을 전달 받기 위한 dto 역할을 하는 클래스입니다.  
+
+## 28.2 FindPersonalByMemberResponse
+@Data
+@AllArgsConstructor
+public class FindPersonalByMemberResponse {
+
+    private int count;
+    private List<GetPersonalByMemberResponse> personals;
+}
+이름으로 찾은 개인들(동명이인이 있을 수 있기 때문에)의 정보를 개수와 List로 전달하는 dto 역할을 하는 클래스입니다.  
+
+## 28.3 FindPersonalByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class FindPersonalByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    private final FindPersonalUseCase findPersonalUseCase;
+
+    @PostMapping("/members/{memberId}/personals/find")
+    public ResponseEntity<FindPersonalByMemberResponse> findPersonalByMember(
+            @PathVariable Long memberId,
+            @RequestBody @Valid
+                    FindPersonalByMemberRequest request) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 멤버를 찾을 수 없습니다.");
+        }
+
+        List<Personal> findPersonals = findPersonalUseCase.findPersonalByName(
+                findMember, request.getName());
+
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
+
+        for (Personal personal : findPersonals) {
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
+                    personal.getName(),
+                    personal.getAddress(),
+                    personal.getTelephoneNumber(),
+                    personal.getEmailAddress()));
+        }
+
+        int count = getPersonalsResponses.size();
+
+        FindPersonalByMemberResponse findPersonalByMemberResponse =
+                new FindPersonalByMemberResponse(
+                        count, getPersonalsResponses);
+
+        if (count == 0) {
+            return new ResponseEntity<>(findPersonalByMemberResponse, HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(findPersonalByMemberResponse, HttpStatus.OK);
+    }
+
+}
+```
+```java
+@Repository
+@RequiredArgsConstructor
+public class JpaFindPersonalRepository implements FindPersonalRepository {
+
+    private final EntityManager em;
+
+    @Override
+    public List<Personal> findByName(Member member, String name) {
+        return em.createQuery(
+                        "select p from Personal p where p.member = :member and" +
+                                " p.name = :name",
+                        Personal.class)
+                .setParameter("member", member)
+                .setParameter("name", name)
+                .getResultList();
+    }
+
+}
+```
+post 메소드와 find url을 이용하여 이름으로 개인 정보 찾기 API를 구현합니다.  
+
+일단 url을 통해 전달받은 memberId를 통해 멤버를 구하고, 구한 멤버와 Http Body를 통해 전달받은 이름을 findPersonalByName 메소드의 매개변수로 넘깁니다.  
+
+그러면 서비스 계층에서 이 매개변수를 레포지토리 계층까지 넘기고 레포지토리에서 해당 멤버 자신의 데이터 중에서 현재 찾을 이름에 해당하는 개인 정보가 있는지 찾습니다.  
+
+있으면 해당 개인들의 정보가 List로 반환될 것이고, 없으면 null값이 반환될 것입니다.  
+
+즉, 해당 이름의 개인 정보도 본인의 데이터에서만 찾고 남의 데이터에서는 찾지 않도록 하였습니다.  
+
+마지막으로 해당 이름으로 찾은 데이터가 있으면 상태코드 200 Ok를 반환하도록 하였고, 찾은 데이터가 없으면 상태코드 204 No Content를 반환하도록 하였습니다.  
+
+## 28.4 FindPersonalByMemberApiController postman 테스트
+'박길동'이라는 이름으로 개인 정보를 찾을 것이고, 현재 db에는 '박길동'이라는 개인 정보는 3개가 저장되어 있습니다.  
+![findMemberByNameApiH2db2](https://user-images.githubusercontent.com/52854217/182342710-6c47e393-011c-489f-b85d-3ba4b7df3ad5.JPG)
+
+<br><br>
+
+여기서 memberId가 1인 회원이 '박길동'이라는 이름으로 개인 정보를 찾을 경우 db 결과는 다음과 같습니다. 
+
+![findMemberByNameApiH2db](https://user-images.githubusercontent.com/52854217/182342908-7ffb950d-26e2-4c65-91b9-ec21787ef5b2.JPG)
+
+<br><br>
+
+이를 postman에서 실험해보면 정확히 본인 데이터만 접근할 수 있음을 확인할 수 있습니다.  
+
+![findMemberByNamePostmanApi](https://user-images.githubusercontent.com/52854217/182343260-27e92b87-6d5b-4e86-8a5c-67f64ed59a71.JPG)
 
 <br><br>
 
