@@ -857,6 +857,17 @@ public class JpaArrangePersonalByNameRepository implements ArrangePersonalReposi
 }
 ```
 
+# 16. member 도메인 패키지 구조
+![member디렉토리구조](https://user-images.githubusercontent.com/52854217/182298173-419c34d8-af28-4f3d-9bf8-a2b8867a764e.JPG)
+
+<br>
+
+api와 webapplication을 별도 패키지로 만들어서 webapplication에서는 서버사이드 렌더링 쪽과 관련된 Controller 코드를 작성하였습니다.  
+
+API와 관련된 코드들은 api 패키지에 Controller를 만들어 api를 구현하였습니다.  
+
+
+
 # 참고링크
 
 아래 깃헙블로그에 코드와 화면 구성에 대한 자세한 설명을 적어놨습니다.  
