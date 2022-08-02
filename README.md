@@ -864,6 +864,7 @@ public class JpaArrangePersonalByNameRepository implements ArrangePersonalReposi
     }
 }
 ```
+<br><br>
 
 # 16. 예외처리 및 validation 체크
 ## 16.1 ExceptionResponse
@@ -939,6 +940,7 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 각종 예외처리들과 validation 예외가 발생했을 때 처리를 하는 클래스입니다.  
 
 서버 사이드 렌더링과는 별도로 api에 적용하기 위해 RestController 애너테이션이 붙은 클래스에만 작동하도록 설정하였습니다.  
+<br><br>
 
 # 17. member 도메인 패키지 구조
 ![member디렉토리구조](https://user-images.githubusercontent.com/52854217/182298173-419c34d8-af28-4f3d-9bf8-a2b8867a764e.JPG)
@@ -946,6 +948,8 @@ public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExce
 <br>
 
 api와 webapplication 패키지를 각각 만들어 webapplication에서는 서버사이드 렌더링 쪽과 관련된 코드를 작성하였고, API와 관련된 코드들은 api 패키지에 작성하였습니다.  
+
+<br><br>
 
 # 18. 회원가입 API
 ## 18.1 RegisterMemberRequest
@@ -1015,6 +1019,14 @@ postman을 활용하여 http body에 RegisterMemberRequest와 일치하는 형�
 
 ![registerMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182306677-4fcd9276-28e0-4f08-8bc4-810c709470fd.JPG)
 
+## 18.5 이름을 공백으로 한 다음 회원 가입시 Validation check
+
+![registerMemberApiPostman결과](https://user-images.githubusercontent.com/52854217/182318269-56b7c22b-dacc-4e74-823a-ee6e1facd06a.JPG)
+
+위에서 정의한 Validation 체크 코드를 통해 validation 에러가 발생하면 상태코드 400 Bad Request와 안내 메세지가 출력됩니다.  
+
+<br><br>
+
 # 19. 로그인 API
 ## 19.1 LoginMemberRequest
 ```java
@@ -1068,6 +1080,8 @@ post메소드를 활용하여 http body에 로그인에 필요한 정보를 전�
 ## 19.4 로그인할 때 비밀번호 또는 아이디가 일치하지 않는 경우
 ![loginMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182308400-1c74027c-9efe-4daa-9a8d-b6aada2c3156.JPG)
 위의 예외처리코드에서 이 경우 404 Not Found로 상태코드를 정의하였고, 예외메세지도 이에 맞게 출력됩니다.  
+
+<br><br>
 
 # 20. 회원 정보 찾기 API
 ## 20.1 GetPersonalByMemberResponse
@@ -1158,6 +1172,7 @@ postman 테스트를 통해 무한반복이 되지 않고 꼭 필요한 회원�
 ![findMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182313310-77d4e072-e923-4f37-a681-cb4c96d3d20f.JPG)
 404Not Found 상태코드와 회원을 찾을 수 없다는 예외 메세지를 반환합니다.  
 
+<br><br>
 
 # 참고링크
 
