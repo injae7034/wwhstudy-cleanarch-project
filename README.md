@@ -1819,11 +1819,17 @@ url을 통해 전달 받은 memberId와 personalId를 통해 해당 멤버가 �
 
 ## 30.2 ErasePersonalByMemberApiController postman 테스트
 ![erasePersonalApiPostman](https://user-images.githubusercontent.com/52854217/182354297-32f3b2d2-3971-4517-ade4-8887d34b50d9.JPG)
+
+<br>
+
 성공적으로 지워지고 상태코드는 204 No Content를 반환받은 것을 확인할 수 있습니다.  
 
 <br><br>
 
 ![erasePersonalApiPostman후H2db](https://user-images.githubusercontent.com/52854217/182354401-1f8f1d17-24b9-4041-9cbe-077a9cc76388.JPG)
+
+<br>
+
 h2 db에서도 성공적으로 개인 데이터가 지워진 것을 확인할 수 있습니다.  
 
 <br><br>
