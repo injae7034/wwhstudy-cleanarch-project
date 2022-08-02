@@ -44,6 +44,7 @@ API
 [20. 회원 정보 찾기 API](#20-회원-정보-찾기-API)  
 [21. 로그아웃 API](#21-로그아웃-API)  
 [22. 비밀번호 변경 API](#22-비밀번호-변경-API) 
+[23. 회원탈퇴 API](#23-회원탈퇴-API)  
 
 
 
@@ -1272,6 +1273,70 @@ url의 id에 해당하는 멤버가 있는지 체크하고, 입력한 비밀번�
 
 ## 22.5 변경 비밀번호와 확인 비밀번호 불일치시 예외처리
 ![changePasswordApiPostman변경및확인비밀번호불일치예외](https://user-images.githubusercontent.com/52854217/182322943-87068256-a2ef-48f6-8de6-4e7325b3638c.JPG)
+
+<br><br>
+
+# 23. 회원탈퇴 API
+## 23.1 WithdrawalMemberRequest
+```java
+@Data
+public class WithdrawalMemberRequest {
+
+    @NotBlank(message = "회원 탈퇴를 하려면 기존비밀번호를 입력하셔야 합니다.")
+    private String password;
+
+}
+```
+회원탈퇴를 위해 사용자 비밀번호를 입력 받을 때 이 비밀번호를 전달하기 위한 dto클래스입니다.  
+
+## 23.2 WithdrawalMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class WithdrawalMemberApiController {
+
+    private final WithdrawalMemberUseCase withdrawalMemberUseCase;
+
+    private final FindMemberQuery findMemberQuery;
+
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/members/{id}")
+    void withdrawalMember(@PathVariable Long id,
+                          @RequestBody @Valid WithdrawalMemberRequest request) {
+        Member findMember = findMemberQuery.findMember(id);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException(
+                    "해당 id와 일치하는 회원정보가 없어서 회원탈퇴를 할 수 없습니다.");
+        }
+
+        if (!findMember.getPassword().equals(request.getPassword())) {
+            throw new NotSamePasswordException("기존 비밀번호와 일치하지 않습니다.");
+        }
+
+        withdrawalMemberUseCase.withdrawalMember(findMember);
+    }
+}
+```
+url을 통해 전달 받은 회원 id를 통해 회원이 있는지 찾고, 회원이 있는 경우  
+
+httpBody를 통해 전달받은 비밀번호가 기존 비밀번호가 일치하는지 확인한 다음에  
+
+이를 모두 통과하면 회원을 탈퇴시킵니다.  
+
+## 23.3 WithdrawalMemberApiController postman 테스트
+
+![withdrawalMemberPostman](https://user-images.githubusercontent.com/52854217/182324702-ad780a80-5e6c-4e2c-90a7-cfde533c034a.JPG)
+
+성공적으로 지워질 경우 상태코드를 204 No Content가 되도록 설정하였습니다.  
+
+## 23.4 기존비밀번호와 일치하지 않는 경우
+
+![withdrawalMemberPostman예외처리](https://user-images.githubusercontent.com/52854217/182325381-414484a6-e592-456b-a5a3-f39bf6abcd35.JPG)
+비밀번호가 일치하지 않는다는 안내문구와 상태코드 409 Conflict를 반환하도록 설정하였습니다.  
+
+
 
 
 # 참고링크
