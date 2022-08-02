@@ -1021,7 +1021,8 @@ postman을 활용하여 http body에 RegisterMemberRequest와 일치하는 형�
 
 ## 18.5 이름을 공백으로 한 다음 회원 가입시 Validation check
 
-![registerMemberApiPostman결과](https://user-images.githubusercontent.com/52854217/182318269-56b7c22b-dacc-4e74-823a-ee6e1facd06a.JPG)
+![registerMemberApiPostmanValidationCheck](https://user-images.githubusercontent.com/52854217/182318626-d91c9c05-56d6-47a1-aeaf-c0e6c032c8e2.JPG)
+
 
 위에서 정의한 Validation 체크 코드를 통해 validation 에러가 발생하면 상태코드 400 Bad Request와 안내 메세지가 출력됩니다.  
 
