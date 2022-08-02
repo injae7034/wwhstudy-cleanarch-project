@@ -1675,18 +1675,26 @@ post 메소드와 find url을 이용하여 이름으로 개인 정보 찾기 API
 마지막으로 해당 이름으로 찾은 데이터가 있으면 상태코드 200 Ok를 반환하도록 하였고, 찾은 데이터가 없으면 상태코드 204 No Content를 반환하도록 하였습니다.  
 
 ## 28.4 FindPersonalByMemberApiController postman 테스트
+
 '박길동'이라는 이름으로 개인 정보를 찾을 것이고, 현재 db에는 '박길동'이라는 개인 정보는 3개가 저장되어 있습니다.  
+
+<br>
+
 ![findMemberByNameApiH2db2](https://user-images.githubusercontent.com/52854217/182342710-6c47e393-011c-489f-b85d-3ba4b7df3ad5.JPG)
 
 <br><br>
 
 여기서 memberId가 1인 회원이 '박길동'이라는 이름으로 개인 정보를 찾을 경우 db 결과는 다음과 같습니다. 
 
+<br>
+
 ![findMemberByNameApiH2db](https://user-images.githubusercontent.com/52854217/182342908-7ffb950d-26e2-4c65-91b9-ec21787ef5b2.JPG)
 
 <br><br>
 
 이를 postman에서 실험해보면 정확히 본인 데이터만 접근할 수 있음을 확인할 수 있습니다.  
+
+<br>
 
 ![findMemberByNamePostmanApi](https://user-images.githubusercontent.com/52854217/182343260-27e92b87-6d5b-4e86-8a5c-67f64ed59a71.JPG)
 
