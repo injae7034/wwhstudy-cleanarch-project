@@ -48,6 +48,7 @@ API
 [24. personal 도메인 패키지 구조](#24-personal-도메인-패키지-구조)  
 [25. 기재하기 API](#25-기재하기-API)  
 [26. 개인정보 하나 얻기 API](#26-개인정보-하나-얻기-API)  
+[27. 전체 개인 정보 얻기 API](#27-전체-개인정보-얻기-API)  
 
 
 
@@ -1507,6 +1508,66 @@ personalId가 일치하더라도 자신의 데이터가 아니면 접근할 수 
 ![getPersonalApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182336739-bb0e1ef4-0662-4dbb-a382-a4baffb19391.JPG)
 
 보시다시피 personalId가 일치하더라도 본인의 데이터가 아니면 접근할 수 없고, 404 Not Found 상태코드와 예외 메세지가 반환됩니다.  
+
+<br><br>
+
+# 27. 전체 개인 정보 얻기 API
+## 27.1 GetPersonalsByMemberResponse
+```java
+@Data
+@AllArgsConstructor
+public class GetPersonalsByMemberResponse {
+
+    int count;
+    List<GetPersonalByMemberResponse> personals;
+
+}
+```
+해당 회원이 가지고 있는 개인 정보의 개수와 개인 정보 리스트들을 반환하기 위한 dto 클래스입니다.  
+
+이 때 List에 저장된 개인 정보는 무한반복을 방지하기 위해 Personal이 아니라 위의 개인 정보 하나 얻기 API에서 사용한 GetPersonalByMemberResponse를 사용합니다.  
+
+## 27.2 GetPersonalsByMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class GetPersonalsByMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    private final GetPersonalsQuery getPersonalsQuery;
+
+    @GetMapping("/members/{memberId}/personals")
+    public GetPersonalsByMemberResponse getPersonalsByMember(@PathVariable Long memberId) {
+
+        Member findMember = findMemberQuery.findMember(memberId);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 멤버를 찾을 수 없습니다.");
+        }
+
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
+        List<Personal> personals = getPersonalsQuery.getPersonals(findMember);
+
+        for (Personal personal : personals) {
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
+                    personal.getName(),
+                    personal.getAddress(),
+                    personal.getTelephoneNumber(),
+                    personal.getEmailAddress()));
+        }
+
+        return new GetPersonalsByMemberResponse(getPersonalsResponses.size(), getPersonalsResponses);
+    }
+
+}
+```
+자신의 데이터만 가지고 올 수 있도록 하였고, 무한반복을 막기 위해 마지막에 찾은 개인 Personal들을 모두 GetPersonalByMemberResponse로 변환하여 저장한 다음에 GetPersonalsByMemberResponse를 반환합니다.  
+
+## 27.3 GetPersonalsByMemberApiController postman 테스트
+![getPersonalsApiPostman](https://user-images.githubusercontent.com/52854217/182338831-ff121aba-d9e0-43ee-a159-6c29a296d7e0.JPG)
+
+자신이 저장한 개인정보의 개수와 각각의 데이터 값들이 반환되는 것을 확인할 수 있습니다.  
 
 <br><br>
 
