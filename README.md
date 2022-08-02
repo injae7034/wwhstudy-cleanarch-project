@@ -41,6 +41,8 @@ API
 [17. member 도메인 패키지 구조](#17-member-도메인-패키지-구조)  
 [18. 회원가입 API](#18-회원가입-API)  
 [19. 로그인 API](#19-로그인-API)  
+[20. 회원 정보 찾기 API](#20-회원-정보-찾기-API)  
+
 
 
 
@@ -1067,6 +1069,94 @@ post메소드를 활용하여 http body에 로그인에 필요한 정보를 전�
 ![loginMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182308400-1c74027c-9efe-4daa-9a8d-b6aada2c3156.JPG)
 위의 예외처리코드에서 이 경우 404 Not Found로 상태코드를 정의하였고, 예외메세지도 이에 맞게 출력됩니다.  
 
+# 20. 회원 정보 찾기 API
+## 20.1 GetPersonalByMemberResponse
+```java
+@Data
+@AllArgsConstructor
+public class GetPersonalByMemberResponse {
+
+    private String name;
+    private String address;
+    private String telephoneNumber;
+    private String emailAddress;
+
+}
+```
+제일 위의 도메인 코드를 보면 아시다시피 **현재 Member와 Personal은 양방향 순환 참조**를 하고 있습니다.  
+
+그래서 Member의 정보를 얻기 위해 그냥 Member에 있는 데이터를 그대로 반환하면 Member가 Personal을 부르고,  
+
+Personal이 또 Member를 계속 불러서 **무한 반복**이 됩니다.  
+
+이를 예방하기 위해 Member가 가지고 있는 Personal 정보에서 Member에 대한 참조값을 뺀 GetPersonalByMemberResponse을 별도로 생성합니다.  
+
+## 20.2 FindMemberResponse
+```java
+@Data
+@AllArgsConstructor
+public class FindMemberResponse {
+
+    private String email;
+    private String name;
+    private int personalCount;
+    private List<GetPersonalByMemberResponse> personals;
+
+}
+```
+회원 정보 찾기 API의 반환값으로 사용되는데 이 때 위에서 언급한대로 무한반복을 막기위해 List에는 Personal 객체 대신  
+
+Member에 대한 참조값이 빠진 GetPersonalByMemberResponse을 이용합니다.  
+
+또한 password와 id 값을 빼고 나머지 필드값들만 가지도록 설정하였습니다.  
+
+## 20.3 FindMemberApiController
+```java
+@RestController
+@RequiredArgsConstructor
+public class FindMemberApiController {
+
+    private final FindMemberQuery findMemberQuery;
+
+    @GetMapping("/members/{id}")
+    public FindMemberResponse loginMemberController(@PathVariable Long id) {
+        Member findMember = findMemberQuery.findMember(id);
+
+        if (findMember == null) {
+            throw new MemberNotFoundException("해당 id와 일치하는 회원정보를 찾을 수 없습니다.");
+        }
+
+        List<GetPersonalByMemberResponse> getPersonalsResponses = new ArrayList<>();
+
+        for (Personal personal : findMember.getPersonals()) {
+            getPersonalsResponses.add(new GetPersonalByMemberResponse(
+                    personal.getName(),
+                    personal.getAddress(),
+                    personal.getTelephoneNumber(),
+                    personal.getEmailAddress()));
+        }
+
+        return new FindMemberResponse(
+                findMember.getEmail(), findMember.getName(),
+                getPersonalsResponses.size(), getPersonalsResponses);
+    }
+
+}
+```
+먼저 url을 통해 전달받은 id를 통해 멤버를 찾고 찾은 멤버에서 personal 값을 구한다음 member에 대한 참조값과 password, id값을 뺀 나머지  
+
+이름, 주소, 전화번호, 이메일주소만 GetPersonalByMemberResponse객체에 담습니다.  
+
+그리고 이 값을 반환합니다.  
+
+## 20.4 FindMemberApiController postman 테스트
+
+![findMemberApiPostman](https://user-images.githubusercontent.com/52854217/182312644-77240f81-1bb1-4857-b25e-71269fc010bc.JPG)
+postman 테스트를 통해 무한반복이 되지 않고 꼭 필요한 회원정보만 반환하는 것을 확인할 수 있습니다.  
+
+## 20.5 회원 정보를 찾을 때 해당 id와 일치하는 회원이 없을 경우 예외처리
+![findMemberApiPostman예외처리](https://user-images.githubusercontent.com/52854217/182313310-77d4e072-e923-4f37-a681-cb4c96d3d20f.JPG)
+404Not Found 상태코드와 회원을 찾을 수 없다는 예외 메세지를 반환합니다.  
 
 
 # 참고링크
