@@ -1,5 +1,6 @@
 package injae.AddressBook.personal.domain;
 
+import injae.AddressBook.common.BaseEntity;
 import injae.AddressBook.member.domain.Member;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -13,6 +14,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
@@ -20,7 +23,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @EqualsAndHashCode
 @ToString(exclude = "id")
-public class Personal {
+public class Personal extends BaseEntity {
 
     @Id @GeneratedValue
     @Column(name = "personal_id")
@@ -62,6 +65,8 @@ public class Personal {
         if (this.emailAddress.compareTo(emailAddress) != 0) {
             this.emailAddress = emailAddress;
         }
+
+        this.setLastModifiedDate(LocalDateTime.now());
     }
 
 }
