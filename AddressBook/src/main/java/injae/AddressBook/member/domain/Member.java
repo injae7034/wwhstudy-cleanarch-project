@@ -1,5 +1,6 @@
 package injae.AddressBook.member.domain;
 
+import injae.AddressBook.common.BaseEntity;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,13 +11,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue
@@ -45,6 +47,7 @@ public class Member {
 
     public void changePassword(String password) {
         this.password = password;
+        this.setLastModifiedDate(LocalDateTime.now());
     }
 
 }
