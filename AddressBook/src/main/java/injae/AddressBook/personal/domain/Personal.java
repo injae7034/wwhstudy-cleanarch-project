@@ -1,7 +1,5 @@
 package injae.AddressBook.personal.domain;
 
-import injae.AddressBook.common.BaseEntity;
-import injae.AddressBook.member.domain.Member;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
