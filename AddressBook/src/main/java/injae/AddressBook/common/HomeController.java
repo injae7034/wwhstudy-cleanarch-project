@@ -1,9 +1,5 @@
 package injae.AddressBook.common;
 
-import injae.AddressBook.member.application.port.in.FindMemberQuery;
-import injae.AddressBook.member.domain.Member;
-import injae.AddressBook.personal.application.port.in.ArrangePersonalQuery;
-import injae.AddressBook.personal.application.port.in.GetPersonalsQuery;
 import injae.AddressBook.personal.domain.Personal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
